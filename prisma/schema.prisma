@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Package {
+  id                String   @id @default(cuid())
+  title             String   // e.g., "Amalfi Coast"
+  slug              String   @unique
+  durationDays      Int
+  
+  // Pricing & Toggles
+  sellingPrice      Float
+  isCustomizable    Boolean  @default(false)
+  flightsIncluded   Boolean  @default(false)
+  
+  // Content
+  mainImage         String
+  shortDescription  String   @db.Text
+  
+  // Relations
+  departures        DepartureDate[]
+  bookings          Booking[]
+    
+  @@map("packages")
+}
+
+model DepartureDate {
+  id           String   @id @default(cuid())
+  packageId    String
+  package      Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  startDate    DateTime
+  seatsLeft    Int
+  dynamicPrice Float?
+}
+
+model LuxuryInventoryItem {
+  id          String   @id @default(cuid())
+  packageId   String
+  type        String   // e.g., 'VILLA_SUITE'
+  version     Int      @default(1) // Used for OCC locking
+  claimedById String?
+  claimedBy   User?    @relation(fields: [claimedById], references: [id])
+}
+
+model Booking {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  packageId       String
+  package         Package  @relation(fields: [packageId], references: [id])
+  status          String   @default("PENDING") // PENDING, CONFIRMED
+  totalAmount     Float
+  createdAt       DateTime @default(now())
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          String    @default("USER") // SUPERADMIN, ADMIN, USER
+  
+  bookings      Booking[]
+  inventoryItems LuxuryInventoryItem[]
+}
