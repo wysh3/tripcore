@@ -40,7 +40,7 @@ export const Services = () => {
   const [activeId, setActiveId] = useState(SERVICES[0].id);
 
   return (
-    <section className="py-40 px-6 bg-[#f5f2ed] text-black border-t border-black/5">
+    <section className="py-40 px-6 bg-[#f5f2ed] text-black">
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-20">
           <div className="lg:w-1/2 space-y-12">

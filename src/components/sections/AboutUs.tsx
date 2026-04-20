@@ -7,13 +7,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 export const AboutUs = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const innerImageRef = useRef<HTMLImageElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Register the ScrollTrigger plugin for safety in the React lifecycle
+    gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
-      // Parallax effect for the image
+      // 1. Subtle movement for the whole blob wrapper (the mask itself)
       gsap.to(imageRef.current, {
-        y: -100,
+        y: -40, // Reduced from -100 so it doesn't fly away
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -23,7 +27,26 @@ export const AboutUs = () => {
         },
       });
 
-      // Text fade-up
+      // 2. THE DEPTH EFFECT: Parallax the image independently inside the mask
+      gsap.fromTo(
+        innerImageRef.current,
+        {
+          yPercent: -15, // Start pushed up inside the mask
+          scale: 1.2, // Ensure it's scaled up enough so edges don't show when moving
+        },
+        {
+          yPercent: 15, // Move it down as you scroll
+          ease: "none",
+          scrollTrigger: {
+            trigger: imageRef.current, // Trigger when the blob enters the screen
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+
+      // Text fade-up sequence (your original code)
       gsap.from(textRef.current?.children || [], {
         y: 50,
         opacity: 0,
@@ -42,26 +65,28 @@ export const AboutUs = () => {
 
   return (
     <section ref={sectionRef} className="py-60 px-6 bg-[#f5f2ed] overflow-hidden">
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
-        <div ref={textRef} className="space-y-12 order-2 lg:order-1">
-          <h2 className="text-[10vw] lg:text-[8vw] font-serif leading-[0.9] tracking-tighter text-black/90">
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center justify-items-center">
+
+        {/* TEXT CONTENT (Your original layout) */}
+        <div ref={textRef} className="space-y-16 order-2 lg:order-1 lg:pl-20">
+          <h2 className="text-[12vw] lg:text-[10vw] font-serif leading-none tracking-tighter text-black/90 whitespace-nowrap">
             ABOUT US
           </h2>
-          
-          <div className="space-y-8 max-w-md">
-            <p className="text-sm font-jost text-black/60 leading-relaxed uppercase tracking-widest">
+
+          <div className="space-y-8 max-w-sm ml-auto mr-2 text-right">
+            <p className="text-[10px] md:text-xs font-jost text-black/50 leading-relaxed uppercase tracking-[0.25em]">
               Lorem ipsum dolor sit amet, consect <br />
               duispeee que-saessmetat <br />
               euismod amper sssuisi.antfla <br />
               edlamnoom stai oenvel dbi rvilterssac <br />
               asese lass al sar cermoess.
             </p>
-            <p className="text-sm font-jost text-black/60 leading-relaxed uppercase tracking-widest">
+            <p className="text-[10px] md:text-xs font-jost text-black/50 leading-relaxed uppercase tracking-[0.25em]">
               Balnao-sem excet socila flrar- dinia <br />
               exceterne meda examadation abiass <br />
               anucatlat ii ouftaen.
             </p>
-            <p className="text-sm font-jost text-black/60 leading-relaxed uppercase tracking-widest">
+            <p className="text-[10px] md:text-xs font-jost text-black/50 leading-relaxed uppercase tracking-[0.25em]">
               Saooou ecrentas mitsaamim riakra <br />
               tobiaocsa sa iia paitaa sul tu suss deta <br />
               cenlaala.
@@ -69,28 +94,43 @@ export const AboutUs = () => {
           </div>
         </div>
 
-        <div 
-          ref={imageRef} 
-          className="relative aspect-square order-1 lg:order-2"
-          style={{
-            clipPath: "path('M444.5,232.5C444.5,335.5,361,419,258,419C155,419,71.5,335.5,71.5,232.5C71.5,129.5,155,46,258,46C361,46,444.5,129.5,444.5,232.5Z')",
-            transform: "scale(1.2)"
-          }}
-        >
-          {/* Custom SVG mask for organic shape as seen in UI */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 500 500">
-            <defs>
-              <clipPath id="blob">
-                <path d="M418.5,250C418.5,343.1,343.1,418.5,250,418.5C156.9,418.5,81.5,343.1,81.5,250C81.5,156.9,156.9,81.5,250,81.5C343.1,81.5,418.5,156.9,418.5,250Z" />
-              </clipPath>
-            </defs>
-          </svg>
-          <div className="w-full h-full bg-[#e5e1da] overflow-hidden" style={{ clipPath: "url(#blob)" }}>
-            <img
-              src="/images/rajasthan.png"
-              alt="Architectural Detail"
-              className="w-full h-full object-cover scale-110"
-            />
+        {/* IMAGE CONTENT */}
+        <div className="order-1 lg:order-2 flex justify-center lg:pr-20">
+          <div
+            ref={imageRef}
+            className="relative w-full max-w-[81%] aspect-square filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+          >
+            {/* The Invisible SVG Mask */}
+            <svg style={{ position: "absolute", width: 0, height: 0, pointerEvents: "none" }}>
+              <defs>
+                <clipPath id="blob-mask" clipPathUnits="objectBoundingBox">
+                  <path d="M0.628509 0.00033666C0.647771 -0.000682815 0.665059 0.000708452 0.684051 0.0032247C0.747935 0.0112259 0.80844 0.0364403 0.859103 0.0761733C0.881688 0.0936358 0.90496 0.116146 0.922232 0.138798C0.954343 0.18093 0.979065 0.244271 0.97928 0.297547C0.979212 0.323228 0.974508 0.348686 0.965393 0.372694C0.957248 0.394419 0.945273 0.415455 0.93516 0.436355C0.920602 0.466456 0.907375 0.500425 0.903708 0.533824C0.897594 0.589424 0.92521 0.635777 0.932588 0.688901C0.93948 0.738498 0.929734 0.795435 0.898564 0.835779C0.876961 0.863729 0.849644 0.881196 0.816484 0.892948C0.776425 0.907143 0.736558 0.905083 0.695168 0.907374C0.664112 0.910122 0.63002 0.91336 0.59972 0.920926C0.533912 0.93736 0.478432 0.981998 0.411249 0.995262C0.401933 0.997101 0.392435 0.99832 0.383019 0.999493C0.381913 0.999595 0.380805 0.999674 0.379695 0.99973C0.329111 1.00216 0.286944 0.988323 0.249819 0.953795C0.194584 0.90242 0.175573 0.833167 0.133207 0.772055C0.109976 0.738537 0.0854802 0.718227 0.0602012 0.688511C0.0474593 0.673673 0.0363752 0.657487 0.0271462 0.640246C-0.0304489 0.531127 0.00645293 0.343781 0.110866 0.272569C0.169251 0.233777 0.243385 0.224396 0.309701 0.205259C0.384474 0.183682 0.422123 0.131837 0.471391 0.076263C0.512106 0.0303358 0.566429 0.00286475 0.628509 0.00033666Z" />
+                </clipPath>
+              </defs>
+            </svg>
+
+            {/* The Cutout Wrapper */}
+            <div 
+              className="w-full h-full bg-[#e5e1da] overflow-hidden relative" 
+              style={{ clipPath: "url(#blob-mask)", transform: "translateZ(0)" }}
+            >
+              {/* 1. The moving image (parallax depth) */}
+              <img
+                ref={innerImageRef}
+                src="/images/rajasthan.png"
+                alt="Architectural Detail"
+                className="w-full h-full object-cover brightness-[0.85] contrast-[1.15] origin-center"
+              />
+
+              {/* 2. THE DEPTH EFFECT OVERLAY (Ambient Occlusion - Intensified) */}
+              <div 
+                className="absolute inset-0 pointer-events-none z-10"
+                style={{
+                  background: "radial-gradient(circle at center, transparent 20%, rgba(10, 8, 5, 0.7) 100%)",
+                  boxShadow: "inset 0 0 100px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.15)"
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
