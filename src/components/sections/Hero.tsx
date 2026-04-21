@@ -10,17 +10,24 @@ export const Hero = () => {
 
   useEffect(() => {
     if (titleRef.current) {
-      const chars = titleRef.current.innerText.split("");
-      titleRef.current.innerHTML = chars
-        .map((char) => `<span class="char inline-block">${char === " " ? "&nbsp;" : char}</span>`)
-        .join("");
+      const content = titleRef.current.innerHTML;
+      const lines = content.split(/<br\s*\/?>/i);
+      
+      titleRef.current.innerHTML = lines
+        .map((line) => {
+          const chars = line.trim().split("");
+          return chars
+            .map((char) => `<span class="char inline-block">${char === " " ? "&nbsp;" : char}</span>`)
+            .join("");
+        })
+        .join("<br />");
 
       gsap.fromTo(
         ".char",
-        { 
-          y: 100, 
-          opacity: 0, 
-          filter: "blur(10px)" 
+        {
+          y: 100,
+          opacity: 0,
+          filter: "blur(10px)"
         },
         {
           y: 0,
@@ -36,7 +43,7 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section 
+    <section
       ref={containerRef}
       className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-[#f5f2ed]"
     >
@@ -62,7 +69,7 @@ export const Hero = () => {
 
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6">
         <div className="w-px h-16 bg-white/30 relative overflow-hidden">
-          <motion.div 
+          <motion.div
             animate={{ y: ["-100%", "100%"] }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
             className="absolute inset-0 bg-white"
