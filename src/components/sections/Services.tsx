@@ -147,17 +147,19 @@ export const Services = () => {
               {SERVICES.map((service, idx) => (
                 <div
                   key={service.id}
-                  onMouseEnter={() => {
-                    setActiveId(service.id);
-                    setActiveImage(service.image);
-                    setCurrentIndex(idx);
-                    setIsHovering(true);
-                  }}
-                  className="group py-6 border-b border-black/10 cursor-pointer flex justify-between items-center relative z-10"
+                  className="group py-6 border-b border-black/10 flex justify-between items-center relative z-10"
                 >
                   <h3
-                    className={`text-2xl md:text-4xl font-serif transition-all duration-500 ${activeId === service.id ? "text-black" : "text-black/40"
-                      }`}
+                    onMouseEnter={() => {
+                      setActiveId(service.id);
+                      setActiveImage(service.image);
+                      setCurrentIndex(idx);
+                      setIsHovering(true);
+                    }}
+                    onMouseLeave={() => setIsHovering(false)}
+                    className={`text-2xl md:text-4xl font-serif transition-all duration-500 cursor-pointer w-fit ${
+                      activeId === service.id ? "text-black" : "text-black/40"
+                    }`}
                   >
                     {service.title}
                   </h3>

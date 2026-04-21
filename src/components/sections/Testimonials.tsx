@@ -1,94 +1,405 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect, memo } from "react";
+import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsapConfig";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 const REVIEWS = [
   {
-    name: "Alara Vossen",
-    role: "Collector",
-    content: "The attention to detail in the Rajasthan journey was unparalleled. It felt less like a tour and more like being invited into a private world.",
+    id: 1,
+    name: "Alexander Davies",
+    role: "Explorer & Philanthropist",
+    content:
+      "A truly bespoke design experience. The studio's meticulous approach brought concepts to life with a fresh and impactful vision.",
+    image: "/images/rajasthan.png",
   },
   {
-    name: "Julian Thorne",
-    role: "Architect",
-    content: "A masterclass in spatial choreography. The way they handle transitions between locations is as fluid as their digital interface.",
+    id: 2,
+    name: "Eleanor Vance",
+    role: "Creative Director",
+    content:
+      "Their vision completely transformed our brand identity. The depth and precision in their design work are unmatched, and the results exceeded all expectations.",
+    image: "/images/hero.png",
   },
   {
-    name: "Elena Rossi",
-    role: "Director",
-    content: "They don't just book hotels; they curate moments. The Amalfi experience was a symphony of light, taste, and absolute serenity.",
+    id: 3,
+    name: "Chen Wei",
+    role: "Architectural Visionary",
+    content:
+      "Professionalism, creativity, and incredible execution. They did not just design a space, they designed an experience.",
+    image: "/images/amalfi.png",
+  },
+  {
+    id: 4,
+    name: "Chloe Isabella",
+    role: "Cultural Curator",
+    content:
+      "Professional execution and collision of ideas that brought our vision to life in ways we never imagined possible.",
+    image: "/images/rajasthan.png",
+  },
+  {
+    id: 5,
+    name: "Marcus Webb",
+    role: "Principal Architect",
+    content:
+      "An extraordinary collaboration. Every detail was considered, every moment crafted with intentionality and grace.",
+    image: "/images/hero.png",
   },
 ];
 
-export const Testimonials = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+const QuoteIcon = ({ opacity = 1 }: { opacity?: number }) => (
+  <svg
+    width="36"
+    height="28"
+    viewBox="0 0 48 36"
+    fill="none"
+    style={{ opacity }}
+  >
+    <path
+      d="M0 36V23C0 16 2.33 10.33 7 6C11.67 1.67 17.67 0 25 0V6C21 6 17.83 7.17 15.5 9.5C13.17 11.83 12 15 12 19.5H20V36H0ZM28 36V23C28 16 30.33 10.33 35 6C39.67 1.67 45.67 0 53 0V6C49 6 45.83 7.17 43.5 9.5C41.17 11.83 40 15 40 19.5H48V36H28Z"
+      fill="#d4af37"
+    />
+  </svg>
+);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = cardsRef.current?.children;
-      if (!cards) return;
+const TestimonialCard = memo(
+  ({
+    review,
+    isActive,
+    onClick,
+    cardRef,
+  }: {
+    review: (typeof REVIEWS)[0];
+    isActive: boolean;
+    onClick: () => void;
+    cardRef: (el: HTMLDivElement | null) => void;
+  }) => {
+    const activeContentRef = useRef<HTMLDivElement>(null);
+    const inactiveContentRef = useRef<HTMLDivElement>(null);
+    const imageRef = useRef<HTMLDivElement>(null);
+    const textRef = useRef<HTMLDivElement>(null);
 
-      Array.from(cards).forEach((card, i) => {
-        if (i === 0) return;
-
-        gsap.fromTo(
-          card,
-          {
-            y: 100 * i,
-            scale: 1 - 0.05 * i,
+    return (
+      <div
+        ref={cardRef}
+        onClick={onClick}
+        className="absolute will-change-transform preserve-3d"
+        style={{
+          width: "clamp(280px, 30vw, 460px)",
+          aspectRatio: "1 / 1.1",
+          top: "50%",
+          left: "50%",
+          marginLeft: "calc(clamp(280px, 30vw, 460px) / -2)",
+          marginTop: "calc(clamp(280px, 30vw, 460px) * 1.1 / -2)",
+          cursor: isActive ? "default" : "pointer",
+        }}
+      >
+        {/* ── Active View (Image Card) ── */}
+        <div
+          ref={activeContentRef}
+          className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none"
+          style={{ 
             opacity: 0,
-          },
-          {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: `top+=${i * 300} center`,
-              end: `top+=${(i + 1) * 300} center`,
-              scrub: true,
-            },
-          }
-        );
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <section ref={containerRef} className="py-60 px-6 relative bg-[#f5f2ed] border-t border-black/5">
-      <div className="container mx-auto text-center mb-32">
-        <h2 className="text-7xl md:text-9xl font-serif tracking-tighter">Testimonials</h2>
-      </div>
-
-      <div ref={cardsRef} className="max-w-4xl mx-auto relative h-[600px]">
-        {REVIEWS.map((review, i) => (
+            boxShadow: "0 32px 80px -8px rgba(0,0,0,0.35), 0 8px 32px -4px rgba(0,0,0,0.2)",
+          }}
+        >
+          <div ref={imageRef} className="absolute inset-0 scale-110">
+            <Image
+              src={review.image}
+              alt={review.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 80vw, 35vw"
+              priority
+            />
+          </div>
+          {/* Overlay */}
           <div
-            key={review.name}
-            className="absolute inset-0 p-16 bg-white/40 backdrop-blur-3xl border border-black/5 rounded-[2rem] flex flex-col justify-center items-center text-center space-y-10 shadow-2xl"
-            style={{ zIndex: REVIEWS.length - i }}
-          >
-            <div className="text-black/20 text-8xl font-serif leading-none h-10 flex items-end">“</div>
-            <p className="text-2xl md:text-4xl font-serif leading-tight text-black/90 max-w-2xl">
-              {review.content}
-            </p>
-            <div className="pt-4 border-t border-black/5 w-40">
-              <h4 className="font-jost uppercase tracking-[0.3em] text-[10px] text-black/80">{review.name}</h4>
-              <p className="font-jost text-[8px] uppercase tracking-[0.2em] text-black/40 mt-1">{review.role}</p>
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(160deg, rgba(10,8,5,0.15) 0%, rgba(5,4,2,0.85) 100%)",
+            }}
+          />
+          {/* Text Content */}
+          <div ref={textRef} className="absolute inset-0 z-10 flex flex-col justify-between p-9">
+            <div>
+              <div className="quote-icon-wrapper">
+                <QuoteIcon opacity={0.9} />
+              </div>
+              <p
+                className="font-serif text-white/90 leading-snug mt-6"
+                style={{ fontSize: "clamp(16px, 1.6vw, 24px)" }}
+              >
+                {review.content}
+              </p>
+            </div>
+            <div className="footer-content">
+              <div className="w-10 h-px bg-[#d4af37] mb-4" />
+              <p
+                className="font-serif text-white/80"
+                style={{ fontSize: "clamp(12px, 1vw, 15px)" }}
+              >
+                — {review.name}
+              </p>
+              <p
+                className="font-serif italic text-white/40 mt-1"
+                style={{ fontSize: "clamp(10px, 0.8vw, 13px)" }}
+              >
+                {review.role}
+              </p>
             </div>
           </div>
+        </div>
+
+        {/* ── Inactive View (Glass Card) ── */}
+        <div
+          ref={inactiveContentRef}
+          className="absolute inset-0 rounded-[2rem] flex flex-col justify-between overflow-hidden"
+          style={{
+            padding: "clamp(22px, 2.4vw, 38px)",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.04)",
+          }}
+        >
+          <div>
+            <QuoteIcon opacity={0.3} />
+            <p
+              className="font-serif leading-snug mt-4 text-black/50"
+              style={{
+                fontSize: "clamp(12px, 1.1vw, 17px)",
+              }}
+            >
+              {review.content}
+            </p>
+          </div>
+          <div>
+            <div
+              className="w-8 h-px mb-3"
+              style={{ background: "#d4af37", opacity: 0.3 }}
+            />
+            <p
+              className="font-serif text-black/35"
+              style={{
+                fontSize: "clamp(11px, 0.85vw, 14px)",
+              }}
+            >
+              — {review.name}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+TestimonialCard.displayName = "TestimonialCard";
+
+export const Testimonials = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const isAnimating = useRef(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const goTo = (index: number) => {
+    if (isAnimating.current || index === activeIndex) return;
+    setActiveIndex(index);
+    resetInterval();
+  };
+
+  const resetInterval = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % REVIEWS.length);
+    }, 4500);
+  };
+
+  // Auto-rotate
+  useEffect(() => {
+    resetInterval();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Header entrance animation
+  useGSAP(
+    () => {
+      gsap.from(headerRef.current, {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out",
+      });
+    },
+    { scope: containerRef }
+  );
+
+  // Cards animation
+  useGSAP(
+    () => {
+      const total = REVIEWS.length;
+      const isMobile = window.innerWidth < 768;
+
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return;
+
+        // Circular shortest offset
+        let offset = i - activeIndex;
+        if (offset > total / 2) offset -= total;
+        if (offset < -total / 2) offset += total;
+
+        const abs = Math.abs(offset);
+        const sign = offset < 0 ? -1 : 1;
+
+        if (abs > 2) {
+          gsap.to(card, {
+            autoAlpha: 0,
+            scale: 0.5,
+            x: sign * 800,
+            duration: 0.8,
+            ease: "power2.inOut",
+            overwrite: true,
+          });
+          return;
+        }
+
+        const activeView = card.children[0];
+        const inactiveView = card.children[1];
+        const isActive = i === activeIndex;
+
+        // Dynamic spacing based on screen width
+        const stepX = isMobile ? 180 : 380;
+        const xPos = sign * (abs === 0 ? 0 : abs === 1 ? stepX : stepX + 220);
+        
+        const scale = abs === 0 ? 1 : abs === 1 ? 0.8 : 0.6;
+        const rotationY = sign * (abs === 0 ? 0 : abs === 1 ? 25 : 45);
+        const z = abs === 0 ? 100 : abs === 1 ? -100 : -300;
+        const blur = abs === 0 ? 0 : abs === 1 ? 2 : 6;
+
+        const tl = gsap.timeline({
+          overwrite: true,
+          onStart: () => { isAnimating.current = true; },
+          onComplete: () => { isAnimating.current = false; }
+        });
+
+        tl.to(card, {
+          x: xPos,
+          y: abs * 10,
+          z: z,
+          scale: scale,
+          rotationY: rotationY,
+          autoAlpha: abs === 0 ? 1 : abs === 1 ? 0.9 : 0.5,
+          filter: `blur(${blur}px)`,
+          zIndex: 10 - abs,
+          duration: 0.6,
+          ease: "back.out(1.2)",
+        });
+
+        // Cross-fade internal views
+        tl.to(activeView, {
+          opacity: isActive ? 1 : 0,
+          duration: 0.35,
+          ease: "power2.out"
+        }, "<");
+
+        tl.to(inactiveView, {
+          opacity: isActive ? 0 : 1,
+          duration: 0.35,
+          ease: "power2.out"
+        }, "<");
+
+        // Content animations for active card
+        if (isActive) {
+          const image = activeView.querySelector("div > div");
+          
+          tl.to(image, {
+            scale: 1,
+            duration: 1.2,
+            ease: "power2.out"
+          }, 0);
+        } else {
+          // Reset image scale for non-active
+          const image = activeView.querySelector("div > div");
+          gsap.set(image, { scale: 1.15 });
+        }
+      });
+    },
+    { dependencies: [activeIndex], scope: containerRef }
+  );
+
+
+  return (
+    <section
+      ref={containerRef}
+      className="relative w-full min-h-screen py-40 bg-[#f5f2ed] flex flex-col overflow-hidden"
+    >
+      {/* Header */}
+      <div
+        ref={headerRef}
+        className="container mx-auto relative z-20 w-full flex items-start justify-between px-10 md:px-20 mb-16"
+      >
+        <div>
+          <p
+            className="font-sans uppercase tracking-[0.2em] text-[11px] font-semibold mb-4"
+            style={{ color: "#d4af37" }}
+          >
+            Testimonials
+          </p>
+          <h2
+            className="font-serif tracking-tight leading-[0.9] text-black/90"
+            style={{
+              fontSize: "clamp(2.8rem, 6vw, 6rem)",
+            }}
+          >
+            Kind words from
+            <br />
+            our clients
+          </h2>
+        </div>
+
+        <div className="hidden md:block max-w-[240px] mt-8">
+          <p
+            className="font-serif leading-relaxed text-black/40"
+            style={{
+              fontSize: "clamp(13px, 1vw, 16px)",
+            }}
+          >
+            We partner with ambitious brands to build thoughtful, impactful and
+            timeless experiences.
+          </p>
+        </div>
+      </div>
+
+      {/* Stage */}
+      <div
+        className="relative w-full flex-1 flex items-center justify-center perspective-2000"
+        style={{ minHeight: "clamp(450px, 50vw, 720px)" }}
+      >
+        {REVIEWS.map((review, i) => (
+          <TestimonialCard
+            key={review.id}
+            review={review}
+            isActive={i === activeIndex}
+            onClick={() => goTo(i)}
+            cardRef={(el) => {
+              cardRefs.current[i] = el;
+            }}
+          />
         ))}
       </div>
-      
-      <div className="flex justify-center mt-20 gap-3">
-        <div className="w-10 h-0.5 bg-black rounded-full" />
-        <div className="w-2 h-0.5 bg-black/10 rounded-full" />
-        <div className="w-2 h-0.5 bg-black/10 rounded-full" />
-      </div>
+
+      <div className="pb-20" />
     </section>
   );
 };
