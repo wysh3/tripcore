@@ -4,13 +4,13 @@
   --font-serif: var(--font-cormorant);
   --font-sans: var(--font-jost);
   --font-roboto: var(--font-roboto);
-  --color-accent-gold: #d4af37;
+  --color-accent-blue: #4A7C92;
 }
 
 :root {
   --background: #f5f2ed; /* Warm Bone */
   --foreground: #1a1a1a; /* Deep Charcoal */
-  --accent-gold: #d4af37; /* Dusty Gold */
+  --accent-blue: #4A7C92; /* Amalfi Blue */
   --midnight: #1a1a2e; /* Midnight Opulence */
 }
 
@@ -25,7 +25,7 @@
   }
 
   body::selection {
-    background-color: var(--accent-gold);
+    background-color: var(--accent-blue);
     color: white;
   }
 

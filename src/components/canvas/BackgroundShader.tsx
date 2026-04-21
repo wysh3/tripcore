@@ -75,7 +75,7 @@ export const BackgroundShader = () => {
       uTime: { value: 0 },
       uScroll: { value: 0 },
       uColorA: { value: new THREE.Color("#f5f2ed") }, // Warm Bone
-      uColorB: { value: new THREE.Color("#fef4d5") }, // Golden Hour
+      uColorB: { value: new THREE.Color("#5B8A9C") }, // Golden Hour
     }),
     []
   );
@@ -94,7 +94,7 @@ export const BackgroundShader = () => {
       if (material.uniforms.uScroll.value > 0.8) {
         material.uniforms.uColorB.value.lerp(new THREE.Color("#1a1a2e"), 0.05); // Fade to midnight
       } else {
-        material.uniforms.uColorB.value.lerp(new THREE.Color("#fef4d5"), 0.05);
+        material.uniforms.uColorB.value.lerp(new THREE.Color("#5B8A9C"), 0.05);
       }
     }
   });

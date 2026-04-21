@@ -37,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jost.variable} ${roboto.variable}`}>
-      <body className="antialiased selection:bg-accent-gold selection:text-white overflow-x-hidden">
+      <body className="antialiased selection:bg-accent-blue selection:text-white overflow-x-hidden">
         <Providers>
           <CustomScrollbar />
           {children}

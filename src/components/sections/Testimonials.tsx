@@ -58,7 +58,7 @@ const QuoteIcon = ({ opacity = 1 }: { opacity?: number }) => (
   >
     <path
       d="M0 36V23C0 16 2.33 10.33 7 6C11.67 1.67 17.67 0 25 0V6C21 6 17.83 7.17 15.5 9.5C13.17 11.83 12 15 12 19.5H20V36H0ZM28 36V23C28 16 30.33 10.33 35 6C39.67 1.67 45.67 0 53 0V6C49 6 45.83 7.17 43.5 9.5C41.17 11.83 40 15 40 19.5H48V36H28Z"
-      fill="#d4af37"
+      fill="#4A7C92"
     />
   </svg>
 );
@@ -135,7 +135,7 @@ const TestimonialCard = memo(
               </p>
             </div>
             <div className="footer-content">
-              <div className="w-10 h-px bg-[#d4af37] mb-4" />
+              <div className="w-10 h-px bg-[#4A7C92] mb-4" />
               <p
                 className="font-serif text-white/80"
                 style={{ fontSize: "clamp(12px, 1vw, 15px)" }}
@@ -179,7 +179,7 @@ const TestimonialCard = memo(
           <div>
             <div
               className="w-8 h-px mb-3"
-              style={{ background: "#d4af37", opacity: 0.3 }}
+              style={{ background: "#4A7C92", opacity: 0.3 }}
             />
             <p
               className="font-serif text-black/35"
@@ -352,7 +352,7 @@ export const Testimonials = () => {
         <div>
           <p
             className="font-sans uppercase tracking-[0.2em] text-[11px] font-semibold mb-4"
-            style={{ color: "#d4af37" }}
+            style={{ color: "#4A7C92" }}
           >
             Testimonials
           </p>

@@ -35,14 +35,14 @@ export const Navbar = () => {
             <a 
               key={item} 
               href={`#${item.toLowerCase()}`}
-              className="font-jost text-[10px] uppercase tracking-[0.3em] text-white/70 hover:text-white transition-colors"
+              className="font-jost text-[10px] uppercase tracking-[0.3em] text-white/70 hover:text-accent-blue transition-colors"
             >
               {item}
             </a>
           ))}
         </div>
 
-        <button className="bg-white/90 backdrop-blur-md text-black px-8 py-3 rounded-sm font-jost text-[10px] uppercase tracking-widest hover:bg-white transition-all">
+        <button className="bg-accent-blue/90 backdrop-blur-md text-white px-8 py-3 rounded-sm font-jost text-[10px] uppercase tracking-widest hover:bg-white transition-all">
           Book Now
         </button>
       </div>
