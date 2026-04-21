@@ -1,91 +1,168 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { gsap } from "gsap";
 
 const SERVICES = [
   {
     id: "01",
-    title: "Travel through Photos",
-    image: "https://images.unsplash.com/photo-1449156001931-828332764303?q=80&w=2070&auto=format&fit=crop",
+    title: "Domestic & International Tours",
+    image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1886&auto=format&fit=crop",
   },
   {
     id: "02",
-    title: "Cinematic Masoury",
+    title: "Hotel & Flight Bookings",
     image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=2070&auto=format&fit=crop",
   },
   {
     id: "03",
-    title: "Typographic Services",
+    title: "Visa Assistance",
     image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop",
   },
   {
     id: "04",
-    title: "Filhay film Textures",
+    title: "Leisure Packages (Family, Honeymoon, Group/Bachelor)",
     image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop",
   },
   {
     id: "05",
-    title: "Travel & Services",
+    title: "Corporate Travel",
     image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=1965&auto=format&fit=crop",
-  },
-  {
-    id: "06",
-    title: "Femeroff Flights",
-    image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2070&auto=format&fit=crop",
   },
 ];
 
 export const Services = () => {
+  const [activeImage, setActiveImage] = useState(SERVICES[0].image);
   const [activeId, setActiveId] = useState(SERVICES[0].id);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const floatingRef = useRef<HTMLDivElement>(null);
+  const listContainerRef = useRef<HTMLDivElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  // Floating Cursor Preview Logic
+  useEffect(() => {
+    if (!floatingRef.current || !listContainerRef.current) return;
+
+    const floating = floatingRef.current;
+    const container = listContainerRef.current;
+
+    const xTo = gsap.quickTo(floating, "x", { duration: 0.6, ease: "power3" });
+    const yTo = gsap.quickTo(floating, "y", { duration: 0.6, ease: "power3" });
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const rect = container.getBoundingClientRect();
+
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      xTo(x);
+      yTo(y);
+    };
+
+    container.addEventListener("mousemove", handleMouseMove);
+    return () => container.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // Floating Card Entrance/Exit
+  useEffect(() => {
+    if (!floatingRef.current) return;
+
+    if (isHovering) {
+      gsap.to(floatingRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.4,
+        ease: "back.out(1.7)",
+      });
+    } else {
+      gsap.to(floatingRef.current, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
+      });
+    }
+  }, [isHovering]);
+
+  // Alternating Tilt & transition
+  useEffect(() => {
+    if (!floatingRef.current || !isHovering) return;
+
+    const tilts = [6, -6, 6, -6, 6];
+    const targetTilt = tilts[currentIndex] || 0;
+
+    const tl = gsap.timeline({ overwrite: "auto" });
+
+    tl.to(floatingRef.current, {
+      scale: 0.3,
+      opacity: 0,
+      duration: 0.15,
+      ease: "power2.in",
+    }).to(floatingRef.current, {
+      rotation: targetTilt,
+      scale: 1,
+      opacity: 1,
+      duration: 0.5,
+      ease: "back.out(1.4)",
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, [currentIndex, isHovering]);
 
   return (
-    <section className="py-40 px-6 bg-[#f5f2ed] text-black">
+    <section
+      className="py-40 px-6 bg-[#f5f2ed] text-black relative overflow-hidden"
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row gap-20">
-          <div className="lg:w-1/2 space-y-12">
-            <h2 className="text-7xl md:text-9xl font-serif tracking-tighter">Services</h2>
-
-            <div className="space-y-0">
-              {SERVICES.map((service) => (
-                <div
-                  key={service.id}
-                  onMouseEnter={() => setActiveId(service.id)}
-                  className="group py-6 border-b border-black/10 cursor-pointer flex justify-between items-center"
-                >
-                  <h3 className={`text-2xl md:text-4xl font-serif transition-all duration-500 ${
-                    activeId === service.id ? "text-black translate-x-2" : "text-black/40"
-                  }`}>
-                    {service.title}
-                  </h3>
-                  <span className="text-xl opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </div>
-              ))}
+        <div className="relative" ref={listContainerRef}>
+          {/* Floating Preview Card */}
+          <div
+            ref={floatingRef}
+            className="absolute top-0 left-0 w-40 aspect-[4/3] pointer-events-none z-20 opacity-0 scale-0 origin-center"
+            style={{
+              transform: "translate(-50%, -50%)",
+              willChange: "transform",
+            }}
+          >
+            <div className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-white/20">
+              <img
+                src={activeImage}
+                className="w-full h-full object-cover"
+                alt="Floating Preview"
+                loading="lazy"
+              />
             </div>
           </div>
 
-          <div className="lg:w-1/2 flex flex-col gap-4">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="aspect-square rounded-[1rem] overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop" className="w-full h-full object-cover" />
-              </div>
-              <div className="aspect-square rounded-[1rem] overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2074&auto=format&fit=crop" className="w-full h-full object-cover" />
-              </div>
-              <div className="aspect-square rounded-[1rem] overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover" />
-              </div>
-            </div>
-            <div className="relative aspect-video rounded-[1rem] overflow-hidden group">
-              <img
-                src={SERVICES.find(s => s.id === activeId)?.image}
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 cursor-pointer hover:scale-110 transition-transform">
-                  <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1" />
+          <div className="space-y-12">
+            <h2 className="text-7xl md:text-9xl font-serif tracking-tighter">
+              Services
+            </h2>
+
+            <div className="space-y-0">
+              {SERVICES.map((service, idx) => (
+                <div
+                  key={service.id}
+                  onMouseEnter={() => {
+                    setActiveId(service.id);
+                    setActiveImage(service.image);
+                    setCurrentIndex(idx);
+                    setIsHovering(true);
+                  }}
+                  className="group py-6 border-b border-black/10 cursor-pointer flex justify-between items-center relative z-10"
+                >
+                  <h3
+                    className={`text-2xl md:text-4xl font-serif transition-all duration-500 ${activeId === service.id ? "text-black" : "text-black/40"
+                      }`}
+                  >
+                    {service.title}
+                  </h3>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

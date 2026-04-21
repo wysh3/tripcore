@@ -38,6 +38,15 @@ const DESTINATIONS = [
 
 export const Destinations = () => {
   const [filter, setFilter] = useState("International");
+  const [direction, setDirection] = useState(0); // 1 for right-to-left, -1 for left-to-right
+
+  const handleFilterChange = (newFilter: string) => {
+    if (newFilter === filter) return;
+    const newDir = newFilter === "International" ? 1 : -1;
+    setDirection(newDir);
+    setFilter(newFilter);
+  };
+
   const filteredDestinations = DESTINATIONS.filter(d => d.category === filter);
 
   return (
@@ -65,8 +74,8 @@ export const Destinations = () => {
             {["Domestic", "International"].map((cat) => (
               <button
                 key={cat}
-                onClick={() => setFilter(cat)}
-                className={`relative z-10 px-8 py-3 rounded-full font-jost text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 ${
+                onClick={() => handleFilterChange(cat)}
+                className={`relative z-10 px-8 py-3 rounded-full font-jost font-semibold text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 ${
                   filter === cat ? "text-white" : "text-black/40 hover:text-black"
                 }`}
               >
@@ -83,21 +92,34 @@ export const Destinations = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[350px]">
-          <AnimatePresence mode="popLayout">
-            {filteredDestinations.map((dest, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[720px] relative">
+          <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+            {filteredDestinations.map((dest) => (
               <motion.div 
                 key={dest.title}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ 
-                  layout: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.3 },
-                  scale: { duration: 0.3 }
+                custom={direction}
+                variants={{
+                  enter: (direction: number) => ({
+                    x: direction > 0 ? "100%" : "-100%",
+                    opacity: 0
+                  }),
+                  center: {
+                    x: 0,
+                    opacity: 1
+                  },
+                  exit: (direction: number) => ({
+                    x: direction > 0 ? "-100%" : "100%",
+                    opacity: 0
+                  })
                 }}
-                className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm"
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 200, damping: 25, mass: 0.8 },
+                  opacity: { duration: 0.3 }
+                }}
+                className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[350px]"
               >
                 <img 
                   src={dest.image} 
@@ -110,12 +132,6 @@ export const Destinations = () => {
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
-        
-        <div className="flex justify-center mt-20 gap-3">
-          <div className="w-8 h-1.5 bg-black rounded-full" />
-          <div className="w-1.5 h-1.5 bg-black/20 rounded-full" />
-          <div className="w-1.5 h-1.5 bg-black/20 rounded-full" />
         </div>
       </div>
     </section>
