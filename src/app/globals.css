@@ -3,6 +3,7 @@
 @theme {
   --font-serif: var(--font-cormorant);
   --font-sans: var(--font-jost);
+  --font-roboto: var(--font-roboto);
   --color-accent-gold: #d4af37;
 }
 
@@ -48,22 +49,14 @@
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+/* Hide native scrollbar */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
+*::-webkit-scrollbar {
+  display: none;
 }
 
 /* Lenis CSS */

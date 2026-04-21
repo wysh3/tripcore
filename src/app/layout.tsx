@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Cormorant_Garamond, Jost, Roboto } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { CustomScrollbar } from "@/components/ui/CustomScrollbar";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -17,6 +18,13 @@ const jost = Jost({
   display: "swap",
 });
 
+const roboto = Roboto({
+  variable: "--font-roboto",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "The Art of Escape | Luxury Travel Agency",
   description: "A hyper-fluid, WebGL-enhanced journey through the world's most exclusive destinations.",
@@ -28,9 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${jost.variable} ${roboto.variable}`}>
       <body className="antialiased selection:bg-accent-gold selection:text-white overflow-x-hidden">
         <Providers>
+          <CustomScrollbar />
           {children}
         </Providers>
       </body>

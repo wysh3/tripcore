@@ -43,9 +43,9 @@ export const Hero = () => {
       {/* Background with specific texture/image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/rajasthan.png"
-          alt="Luxury Villa"
-          className="w-full h-full object-cover brightness-[0.85] contrast-[1.05]"
+          src="https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop"
+          alt="Amalfi Coast"
+          className="w-full h-full object-cover brightness-[0.75] contrast-[1.1]"
         />
         <div className="absolute inset-0 bg-black/10" />
       </div>
