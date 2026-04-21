@@ -10,6 +10,7 @@ const REVIEWS = [
     id: 1,
     name: "Alexander Davies",
     role: "Explorer & Philanthropist",
+    location: "Rajasthan, India",
     content:
       "A truly bespoke design experience. The studio's meticulous approach brought concepts to life with a fresh and impactful vision.",
     image: "/images/rajasthan.png",
@@ -18,6 +19,7 @@ const REVIEWS = [
     id: 2,
     name: "Eleanor Vance",
     role: "Creative Director",
+    location: "Amalfi Coast, Italy",
     content:
       "Their vision completely transformed our brand identity. The depth and precision in their design work are unmatched, and the results exceeded all expectations.",
     image: "/images/hero.png",
@@ -26,6 +28,7 @@ const REVIEWS = [
     id: 3,
     name: "Chen Wei",
     role: "Architectural Visionary",
+    location: "Kyoto, Japan",
     content:
       "Professionalism, creativity, and incredible execution. They did not just design a space, they designed an experience.",
     image: "/images/amalfi.png",
@@ -34,6 +37,7 @@ const REVIEWS = [
     id: 4,
     name: "Chloe Isabella",
     role: "Cultural Curator",
+    location: "Florence, Italy",
     content:
       "Professional execution and collision of ideas that brought our vision to life in ways we never imagined possible.",
     image: "/images/rajasthan.png",
@@ -42,26 +46,12 @@ const REVIEWS = [
     id: 5,
     name: "Marcus Webb",
     role: "Principal Architect",
+    location: "Santorini, Greece",
     content:
       "An extraordinary collaboration. Every detail was considered, every moment crafted with intentionality and grace.",
     image: "/images/hero.png",
   },
 ];
-
-const QuoteIcon = ({ opacity = 1 }: { opacity?: number }) => (
-  <svg
-    width="36"
-    height="28"
-    viewBox="0 0 48 36"
-    fill="none"
-    style={{ opacity }}
-  >
-    <path
-      d="M0 36V23C0 16 2.33 10.33 7 6C11.67 1.67 17.67 0 25 0V6C21 6 17.83 7.17 15.5 9.5C13.17 11.83 12 15 12 19.5H20V36H0ZM28 36V23C28 16 30.33 10.33 35 6C39.67 1.67 45.67 0 53 0V6C49 6 45.83 7.17 43.5 9.5C41.17 11.83 40 15 40 19.5H48V36H28Z"
-      fill="#4A7C92"
-    />
-  </svg>
-);
 
 const TestimonialCard = memo(
   ({
@@ -93,6 +83,8 @@ const TestimonialCard = memo(
           marginLeft: "calc(clamp(280px, 30vw, 460px) / -2)",
           marginTop: "calc(clamp(280px, 30vw, 460px) * 1.1 / -2)",
           cursor: isActive ? "default" : "pointer",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
         }}
       >
         {/* ── Active View (Image Card) ── */}
@@ -102,6 +94,7 @@ const TestimonialCard = memo(
           style={{ 
             opacity: 0,
             boxShadow: "0 32px 80px -8px rgba(0,0,0,0.35), 0 8px 32px -4px rgba(0,0,0,0.2)",
+            backfaceVisibility: "hidden",
           }}
         >
           <div ref={imageRef} className="absolute inset-0 scale-110">
@@ -122,20 +115,20 @@ const TestimonialCard = memo(
             }}
           />
           {/* Text Content */}
-          <div ref={textRef} className="absolute inset-0 z-10 flex flex-col justify-between p-9">
+          <div ref={textRef} className="absolute inset-0 z-10 flex flex-col justify-between p-9 antialiased">
             <div>
-              <div className="quote-icon-wrapper">
-                <QuoteIcon opacity={0.9} />
-              </div>
+              <p className="font-sans text-[10px] uppercase tracking-[0.3em] text-white/50 mb-6">
+                {review.location}
+              </p>
               <p
-                className="font-serif text-white/90 leading-snug mt-6"
+                className="font-serif text-white/90 leading-snug"
                 style={{ fontSize: "clamp(16px, 1.6vw, 24px)" }}
               >
                 {review.content}
               </p>
             </div>
             <div className="footer-content">
-              <div className="w-10 h-px bg-[#4A7C92] mb-4" />
+              <div className="w-10 h-px bg-white/30 mb-4" />
               <p
                 className="font-serif text-white/80"
                 style={{ fontSize: "clamp(12px, 1vw, 15px)" }}
@@ -163,12 +156,15 @@ const TestimonialCard = memo(
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             boxShadow: "0 10px 30px rgba(0,0,0,0.04)",
+            backfaceVisibility: "hidden",
           }}
         >
-          <div>
-            <QuoteIcon opacity={0.3} />
+          <div className="antialiased">
+            <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-black/30 mb-4">
+              {review.location}
+            </p>
             <p
-              className="font-serif leading-snug mt-4 text-black/50"
+              className="font-serif leading-snug text-black/50"
               style={{
                 fontSize: "clamp(12px, 1.1vw, 17px)",
               }}
@@ -179,7 +175,7 @@ const TestimonialCard = memo(
           <div>
             <div
               className="w-8 h-px mb-3"
-              style={{ background: "#4A7C92", opacity: 0.3 }}
+              style={{ background: "rgba(0,0,0,0.1)" }}
             />
             <p
               className="font-serif text-black/35"
@@ -285,7 +281,7 @@ export const Testimonials = () => {
         const scale = abs === 0 ? 1 : abs === 1 ? 0.8 : 0.6;
         const rotationY = sign * (abs === 0 ? 0 : abs === 1 ? 25 : 45);
         const z = abs === 0 ? 100 : abs === 1 ? -100 : -300;
-        const blur = abs === 0 ? 0 : abs === 1 ? 2 : 6;
+        const blur = abs === 0 ? 0 : abs === 1 ? 4 : 10;
 
         const tl = gsap.timeline({
           overwrite: true,
@@ -300,10 +296,13 @@ export const Testimonials = () => {
           scale: scale,
           rotationY: rotationY,
           autoAlpha: abs === 0 ? 1 : abs === 1 ? 0.9 : 0.5,
-          filter: `blur(${blur}px)`,
+          filter: abs === 0 ? "blur(0px)" : `blur(${blur}px)`, // Explicit blur(0px) usually cleans up, but I'll add "none" too
           zIndex: 10 - abs,
           duration: 0.6,
           ease: "back.out(1.2)",
+          onComplete: () => {
+            if (abs === 0) gsap.set(card, { filter: "none" }); // Force clear filter on completion
+          }
         });
 
         // Cross-fade internal views
@@ -351,8 +350,7 @@ export const Testimonials = () => {
       >
         <div>
           <p
-            className="font-sans uppercase tracking-[0.2em] text-[11px] font-semibold mb-4"
-            style={{ color: "#4A7C92" }}
+            className="font-sans uppercase tracking-[0.2em] text-[11px] font-semibold mb-4 text-black/50"
           >
             Testimonials
           </p>
