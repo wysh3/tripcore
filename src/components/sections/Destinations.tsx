@@ -50,7 +50,7 @@ export const Destinations = () => {
   const filteredDestinations = DESTINATIONS.filter(d => d.category === filter);
 
   return (
-    <section className="py-60 px-10 md:px-20 relative bg-[#f5f2ed] overflow-hidden">
+    <section className="min-h-screen flex flex-col justify-center py-12 px-10 md:px-20 relative bg-[#f5f2ed] overflow-hidden">
       <div 
         className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden"
         style={{
@@ -65,8 +65,8 @@ export const Destinations = () => {
         />
       </div>
 
-      <div className="relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+      <div className="relative z-10 w-full">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-8">
           <div>
             <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
               DESTINATIONS
@@ -78,7 +78,7 @@ export const Destinations = () => {
               <button
                 key={cat}
                 onClick={() => handleFilterChange(cat)}
-                className={`relative z-10 px-8 py-3 rounded-full font-jost font-semibold text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 ${
+                className={`relative z-10 px-6 py-2 rounded-full font-jost font-semibold text-[9px] uppercase tracking-[0.2em] transition-colors duration-500 ${
                   filter === cat ? "text-white" : "text-black/40 hover:text-black"
                 }`}
               >
@@ -95,7 +95,7 @@ export const Destinations = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[720px] relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
           <AnimatePresence mode="popLayout" custom={direction} initial={false}>
             {filteredDestinations.map((dest) => (
               <motion.div 
@@ -103,7 +103,7 @@ export const Destinations = () => {
                 custom={direction}
                 variants={{
                   enter: (direction: number) => ({
-                    x: direction > 0 ? "100%" : "-100%",
+                    x: direction > 0 ? "20%" : "-20%",
                     opacity: 0
                   }),
                   center: {
@@ -111,7 +111,7 @@ export const Destinations = () => {
                     opacity: 1
                   },
                   exit: (direction: number) => ({
-                    x: direction > 0 ? "-100%" : "100%",
+                    x: direction > 0 ? "-20%" : "20%",
                     opacity: 0
                   })
                 }}
@@ -122,15 +122,15 @@ export const Destinations = () => {
                   x: { type: "spring", stiffness: 200, damping: 25, mass: 0.8 },
                   opacity: { duration: 0.3 }
                 }}
-                className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[350px]"
+                className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[200px] md:h-[240px]"
               >
                 <img 
                   src={dest.image} 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-8 left-8 pointer-events-none">
-                  <h3 className="text-3xl font-serif text-white tracking-wide">{dest.title}</h3>
+                <div className="absolute bottom-6 left-6 pointer-events-none">
+                  <h3 className="text-xl font-serif text-white tracking-wide">{dest.title}</h3>
                 </div>
               </motion.div>
             ))}

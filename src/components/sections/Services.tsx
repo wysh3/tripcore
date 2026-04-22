@@ -39,41 +39,31 @@ export const Services = () => {
   const listContainerRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Floating Cursor Preview Logic
   useEffect(() => {
     if (!floatingRef.current || !listContainerRef.current) return;
-
     const floating = floatingRef.current;
     const container = listContainerRef.current;
-
-    // Set initial centering
     gsap.set(floating, { xPercent: -50, yPercent: -50 });
-
     const xTo = gsap.quickTo(floating, "x", { duration: 0.4, ease: "power3.out" });
     const yTo = gsap.quickTo(floating, "y", { duration: 0.4, ease: "power3.out" });
-
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-
       xTo(x);
       yTo(y);
     };
-
     container.addEventListener("mousemove", handleMouseMove);
     return () => container.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Floating Card Entrance/Exit
   useEffect(() => {
     if (!floatingRef.current) return;
-
     if (isHovering) {
       gsap.to(floatingRef.current, {
         scale: 1,
         autoAlpha: 1,
-        z: 100, // Ensure it's high on the 3D z-axis
+        z: 100,
         duration: 0.5,
         ease: "expo.out",
       });
@@ -88,15 +78,11 @@ export const Services = () => {
     }
   }, [isHovering]);
 
-  // Transition between services
   useEffect(() => {
     if (!floatingRef.current || !isHovering) return;
-
     const tilts = [10, -10, 10, -10, 10];
     const targetTilt = tilts[currentIndex] || 0;
-
     const tl = gsap.timeline({ overwrite: "auto" });
-
     tl.to(floatingRef.current, {
       rotation: targetTilt,
       scale: 1.05,
@@ -107,50 +93,34 @@ export const Services = () => {
       duration: 0.4,
       ease: "elastic.out(1, 0.75)",
     });
-
-    return () => {
-      tl.kill();
-    };
+    return () => tl.kill();
   }, [currentIndex, isHovering]);
 
   return (
-    <section
-      className="py-60 px-10 md:px-20 bg-[#f5f2ed] text-black relative overflow-hidden perspective-2000"
-    >
+    <section className="min-h-screen flex flex-col justify-center py-20 px-10 md:px-20 bg-[#f5f2ed] text-black relative overflow-hidden perspective-2000">
       <div className="relative preserve-3d" ref={listContainerRef}>
-        {/* Floating Preview Card */}
         <div
           ref={floatingRef}
           className="absolute top-0 left-0 w-44 aspect-[4/3] pointer-events-none z-[100] opacity-0 invisible scale-0 origin-center preserve-3d"
-          style={{
-            willChange: "transform, opacity",
-          }}
+          style={{ willChange: "transform, opacity" }}
         >
           <div className="w-full h-full rounded-lg overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.4)] border border-white/30 bg-white">
-            <img
-              src={activeImage}
-              className="w-full h-full object-cover"
-              alt="Floating Preview"
-              loading="lazy"
-            />
+            <img src={activeImage} className="w-full h-full object-cover" alt="Floating Preview" loading="lazy" />
           </div>
         </div>
 
-        <div className="space-y-12">
+        <div className="space-y-10">
           <div onMouseEnter={() => setIsHovering(false)}>
             <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
               SERVICES
             </h2>
           </div>
 
-          <div 
-            className="space-y-0 max-w-5xl"
-            onMouseLeave={() => setIsHovering(false)}
-          >
+          <div className="space-y-0 max-w-5xl" onMouseLeave={() => setIsHovering(false)}>
             {SERVICES.map((service, idx) => (
               <div
                 key={service.id}
-                className="group py-10 border-b border-black/10 flex justify-between items-center relative z-10"
+                className="group py-6 border-b border-black/10 flex justify-between items-center relative z-10"
                 onMouseEnter={() => {
                   setActiveId(service.id);
                   setActiveImage(service.image);
@@ -158,18 +128,12 @@ export const Services = () => {
                   setIsHovering(true);
                 }}
               >
-                <h3
-                  className={`text-2xl md:text-5xl font-serif transition-all duration-700 cursor-pointer w-fit leading-tight ${
-                    activeId === service.id && isHovering ? "text-black translate-x-6" : "text-black/40 translate-x-0"
-                  }`}
-                >
+                <h3 className={`text-xl md:text-3xl font-serif transition-all duration-700 cursor-pointer w-fit leading-tight ${activeId === service.id && isHovering ? "text-black translate-x-6" : "text-black/40 translate-x-0"}`}>
                   {service.title}
                 </h3>
                 <div className={`flex items-center gap-4 transition-all duration-700 ${activeId === service.id && isHovering ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"}`}>
-                  <span className="text-[10px] font-jost uppercase tracking-[0.2em] font-semibold text-black/60">
-                    DISCOVER
-                  </span>
-                  <div className="w-8 h-px bg-black/20" />
+                  <span className="text-[9px] font-jost uppercase tracking-[0.2em] font-semibold text-black/60">DISCOVER</span>
+                  <div className="w-6 h-px bg-black/20" />
                 </div>
               </div>
             ))}

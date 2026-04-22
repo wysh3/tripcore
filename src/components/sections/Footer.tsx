@@ -85,17 +85,17 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Section: Links & Branding */}
-        <div className="w-full text-white/90 font-roboto">
+        <div className="w-full text-white/90">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 items-end">
             {/* Brand */}
             <div className="lg:col-span-4">
-              <h1 className="text-4xl md:text-5xl font-roboto leading-tight text-white font-medium">
+              <h1 className="text-4xl md:text-5xl font-serif leading-tight text-white font-medium uppercase tracking-tighter">
                 Art of Escape<br />Travel
               </h1>
             </div>
 
             {/* Links Columns */}
-            <div className="lg:col-span-5 grid grid-cols-2 md:grid-cols-2 gap-10">
+            <div className="lg:col-span-5 grid grid-cols-2 md:grid-cols-2 gap-10 font-jost">
               <div className="space-y-6">
                 <div className="flex flex-col gap-3 text-base text-white/60">
                   <a href="#" className="hover:text-white transition-all duration-300">Home</a>
@@ -126,7 +126,7 @@ export const Footer = () => {
           </div>
 
           {/* Copyright Bar */}
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-[9px] uppercase tracking-[0.5em] text-white/30">
+          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-[9px] uppercase tracking-[0.5em] text-white/30 font-jost">
             <span>Copyright © TCSO Vinmar 2026</span>
             <div className="flex gap-10 mt-6 md:mt-0">
               <span className="hover:text-white cursor-default transition-colors">Art of Escape Travel</span>
@@ -138,6 +138,3 @@ export const Footer = () => {
     </footer>
   );
 };
-
-
-

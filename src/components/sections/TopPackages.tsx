@@ -135,8 +135,8 @@ export const TopPackages = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="py-60 bg-[#f5f2ed] text-black overflow-hidden relative">
-      <div className="px-10 md:px-20 mb-16 flex flex-col md:flex-row justify-between items-end gap-10">
+    <section ref={containerRef} className="min-h-screen flex flex-col justify-center bg-[#f5f2ed] text-black overflow-hidden relative py-20">
+      <div className="px-10 md:px-20 mb-12 flex flex-col md:flex-row justify-between items-end gap-10">
         <div>
           <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
             TOP PACKAGES
@@ -174,12 +174,12 @@ export const TopPackages = () => {
 
       <div
         ref={sliderRef}
-        className="flex gap-6 px-10 md:px-20 overflow-x-auto no-scrollbar cursor-grab select-none pb-10"
+        className="flex gap-6 px-10 md:px-20 overflow-x-auto no-scrollbar cursor-grab select-none"
       >
         {PACKAGES.map((pkg) => (
           <div
             key={pkg.id}
-            className="package-card group relative flex-shrink-0 w-[320px] md:w-[420px] aspect-[10/16] rounded-[1rem] overflow-hidden bg-white snap-start pointer-events-none md:pointer-events-auto"
+            className="package-card group relative flex-shrink-0 w-[280px] md:w-[380px] aspect-[10/14] rounded-[1rem] overflow-hidden bg-white snap-start pointer-events-none md:pointer-events-auto"
           >
             <img
               src={pkg.image}
@@ -191,13 +191,13 @@ export const TopPackages = () => {
             <div className="absolute bottom-0 left-0 right-0 p-8 pt-20 bg-gradient-to-t from-black/60 to-transparent backdrop-blur-[2px] pointer-events-none">
               <div className="flex justify-between items-end gap-4 text-white">
                 <div className="space-y-3">
-                  <h3 className="text-3xl md:text-4xl font-serif leading-tight">{pkg.title}</h3>
-                  <p className="text-[10px] font-jost text-white/60 uppercase tracking-[0.1em] leading-relaxed max-w-[200px]">
-                    {pkg.location} — Exclusive journey through hidden architectural gems.
+                  <h3 className="text-2xl md:text-3xl font-serif leading-tight">{pkg.title}</h3>
+                  <p className="text-[9px] font-jost text-white/60 uppercase tracking-[0.1em] leading-relaxed max-w-[180px]">
+                    {pkg.location} — Exclusive journey.
                   </p>
                 </div>
                 <div className="text-right flex-shrink-0 mb-1">
-                  <span className="text-lg font-serif opacity-90">{pkg.price}</span>
+                  <span className="text-base font-serif opacity-90">{pkg.price}</span>
                 </div>
               </div>
             </div>
