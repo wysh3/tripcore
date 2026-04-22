@@ -3,6 +3,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
+import { useSmoothScroll } from "../providers/SmoothScrollProvider";
 
 const vertexShader = `
   varying vec2 vUv;
@@ -19,7 +20,6 @@ const fragmentShader = `
   uniform vec3 uColorB;
   varying vec2 vUv;
 
-  // Simplex 2D noise
   vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
   float snoise(vec2 v) {
     const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
@@ -47,21 +47,13 @@ const fragmentShader = `
 
   void main() {
     vec2 uv = vUv;
-    
-    // Create organic movement
     float noise = snoise(uv * 2.0 + uTime * 0.1 + uScroll * 0.5);
     float noise2 = snoise(uv * 4.0 - uTime * 0.05);
-    
     float finalNoise = noise * 0.5 + noise2 * 0.25;
-    
-    // Mix colors based on noise and scroll
     float mixFactor = smoothstep(-1.0, 1.0, finalNoise + uScroll);
     vec3 color = mix(uColorA, uColorB, mixFactor);
-    
-    // Add a subtle vignette
     float dist = distance(uv, vec2(0.5));
     color *= 1.0 - dist * 0.2;
-
     gl_FragColor = vec4(color, 1.0);
   }
 `;
@@ -69,13 +61,14 @@ const fragmentShader = `
 export const BackgroundShader = () => {
   const meshRef = useRef<THREE.Mesh>(null);
   const { viewport } = useThree();
+  const lenis = useSmoothScroll();
 
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
       uScroll: { value: 0 },
-      uColorA: { value: new THREE.Color("#f5f2ed") }, // Warm Bone
-      uColorB: { value: new THREE.Color("#5B8A9C") }, // Golden Hour
+      uColorA: { value: new THREE.Color("#f5f2ed") },
+      uColorB: { value: new THREE.Color("#5B8A9C") },
     }),
     []
   );
@@ -85,17 +78,21 @@ export const BackgroundShader = () => {
       const material = meshRef.current.material as THREE.ShaderMaterial;
       material.uniforms.uTime.value = state.clock.getElapsedTime();
       
-      // Get scroll progress from window or a provider
-      const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-      const maxScroll = typeof document !== "undefined" ? document.body.scrollHeight - window.innerHeight : 1;
-      material.uniforms.uScroll.value = scrollY / maxScroll;
+      // Use Lenis's internal scroll value for perfect frame-sync
+      const currentScroll = lenis?.scroll || 0;
+      const limit = lenis?.limit || 1;
+      const progress = currentScroll / limit;
       
-      // Dynamic color morphing based on scroll
-      if (material.uniforms.uScroll.value > 0.8) {
-        material.uniforms.uColorB.value.lerp(new THREE.Color("#1a1a2e"), 0.05); // Fade to midnight
-      } else {
-        material.uniforms.uColorB.value.lerp(new THREE.Color("#5B8A9C"), 0.05);
-      }
+      // Interpolate the uniform to smooth out micro-jitters
+      material.uniforms.uScroll.value = THREE.MathUtils.lerp(
+        material.uniforms.uScroll.value,
+        progress,
+        0.1
+      );
+      
+      // Dynamic color morphing
+      const targetColor = progress > 0.8 ? "#1a1a2e" : "#5B8A9C";
+      material.uniforms.uColorB.value.lerp(new THREE.Color(targetColor), 0.02);
     }
   });
 
@@ -106,6 +103,7 @@ export const BackgroundShader = () => {
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniforms}
+        transparent={true}
       />
     </mesh>
   );

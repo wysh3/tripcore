@@ -11,13 +11,11 @@ export const AboutUs = () => {
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Register the ScrollTrigger plugin for safety in the React lifecycle
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // 1. Subtle movement for the whole blob wrapper (the mask itself)
       gsap.to(imageRef.current, {
-        y: -40, // Reduced from -100 so it doesn't fly away
+        y: -40,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -27,18 +25,17 @@ export const AboutUs = () => {
         },
       });
 
-      // 2. THE DEPTH EFFECT: Parallax the image independently inside the mask
       gsap.fromTo(
         innerImageRef.current,
         {
-          yPercent: -15, // Start pushed up inside the mask
-          scale: 1.2, // Ensure it's scaled up enough so edges don't show when moving
+          yPercent: -15,
+          scale: 1.2,
         },
         {
-          yPercent: 15, // Move it down as you scroll
+          yPercent: 15,
           ease: "none",
           scrollTrigger: {
-            trigger: imageRef.current, // Trigger when the blob enters the screen
+            trigger: imageRef.current,
             start: "top bottom",
             end: "bottom top",
             scrub: true,
@@ -46,7 +43,6 @@ export const AboutUs = () => {
         }
       );
 
-      // Text fade-up sequence (your original code)
       gsap.from(textRef.current?.children || [], {
         y: 50,
         opacity: 0,
@@ -64,16 +60,17 @@ export const AboutUs = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-60 px-6 bg-[#f5f2ed] overflow-hidden">
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center justify-items-center">
+    <section ref={sectionRef} className="py-60 px-10 md:px-20 bg-[#f5f2ed] overflow-hidden">
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        {/* TEXT CONTENT */}
+        <div ref={textRef} className="space-y-16 order-2 lg:order-1">
+          <div>
+            <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+              ABOUT US
+            </h2>
+          </div>
 
-        {/* TEXT CONTENT (Your original layout) */}
-        <div ref={textRef} className="space-y-16 order-2 lg:order-1 lg:pl-20">
-          <h2 className="text-[12vw] lg:text-[10vw] font-serif leading-none tracking-tighter text-black/90 whitespace-nowrap">
-            ABOUT US
-          </h2>
-
-          <div className="space-y-8 max-w-sm ml-auto mr-2 text-right">
+          <div className="space-y-8 max-w-sm">
             <p className="text-[10px] md:text-xs font-jost text-black/50 leading-relaxed uppercase tracking-[0.25em]">
               Lorem ipsum dolor sit amet, consect <br />
               duispeee que-saessmetat <br />
@@ -86,21 +83,15 @@ export const AboutUs = () => {
               exceterne meda examadation abiass <br />
               anucatlat ii ouftaen.
             </p>
-            <p className="text-[10px] md:text-xs font-jost text-black/50 leading-relaxed uppercase tracking-[0.25em]">
-              Saooou ecrentas mitsaamim riakra <br />
-              tobiaocsa sa iia paitaa sul tu suss deta <br />
-              cenlaala.
-            </p>
           </div>
         </div>
 
         {/* IMAGE CONTENT */}
-        <div className="order-1 lg:order-2 flex justify-center lg:pr-20">
+        <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
           <div
             ref={imageRef}
             className="relative w-full max-w-[81%] aspect-square filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
           >
-            {/* The Invisible SVG Mask */}
             <svg style={{ position: "absolute", width: 0, height: 0, pointerEvents: "none" }}>
               <defs>
                 <clipPath id="blob-mask" clipPathUnits="objectBoundingBox">
@@ -109,20 +100,16 @@ export const AboutUs = () => {
               </defs>
             </svg>
 
-            {/* The Cutout Wrapper */}
             <div 
               className="w-full h-full bg-[#e5e1da] overflow-hidden relative" 
               style={{ clipPath: "url(#blob-mask)", transform: "translateZ(0)" }}
             >
-              {/* 1. The moving image (parallax depth) */}
               <img
                 ref={innerImageRef}
                 src="/images/rajasthan.png"
                 alt="Architectural Detail"
                 className="w-full h-full object-cover brightness-[0.85] contrast-[1.15] origin-center"
               />
-
-              {/* 2. THE DEPTH EFFECT OVERLAY (Ambient Occlusion - Intensified) */}
               <div 
                 className="absolute inset-0 pointer-events-none z-10"
                 style={{

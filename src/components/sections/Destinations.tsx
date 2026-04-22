@@ -38,7 +38,7 @@ const DESTINATIONS = [
 
 export const Destinations = () => {
   const [filter, setFilter] = useState("International");
-  const [direction, setDirection] = useState(0); // 1 for right-to-left, -1 for left-to-right
+  const [direction, setDirection] = useState(0);
 
   const handleFilterChange = (newFilter: string) => {
     if (newFilter === filter) return;
@@ -50,8 +50,7 @@ export const Destinations = () => {
   const filteredDestinations = DESTINATIONS.filter(d => d.category === filter);
 
   return (
-    <section className="py-40 px-6 relative bg-[#f5f2ed] overflow-hidden">
-      {/* Actual Ripples Background Image with Seamless Blending */}
+    <section className="py-60 px-10 md:px-20 relative bg-[#f5f2ed] overflow-hidden">
       <div 
         className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden"
         style={{
@@ -66,11 +65,15 @@ export const Destinations = () => {
         />
       </div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-          <h2 className="text-6xl md:text-9xl font-serif tracking-tighter">Destinations</h2>
+          <div>
+            <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+              DESTINATIONS
+            </h2>
+          </div>
           
-          <div className="relative flex bg-white/40 backdrop-blur-md p-1 rounded-full border border-black/5">
+          <div className="relative flex bg-white/40 backdrop-blur-md p-1 rounded-full border border-black/5 mb-4">
             {["Domestic", "International"].map((cat) => (
               <button
                 key={cat}

@@ -296,12 +296,12 @@ export const Testimonials = () => {
           scale: scale,
           rotationY: rotationY,
           autoAlpha: abs === 0 ? 1 : abs === 1 ? 0.9 : 0.5,
-          filter: abs === 0 ? "blur(0px)" : `blur(${blur}px)`, // Explicit blur(0px) usually cleans up, but I'll add "none" too
+          filter: abs === 0 ? "blur(0px)" : `blur(${blur}px)`,
           zIndex: 10 - abs,
           duration: 0.6,
           ease: "back.out(1.2)",
           onComplete: () => {
-            if (abs === 0) gsap.set(card, { filter: "none" }); // Force clear filter on completion
+            if (abs === 0) gsap.set(card, { filter: "none" });
           }
         });
 
@@ -341,28 +341,16 @@ export const Testimonials = () => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-screen py-40 bg-[#f5f2ed] flex flex-col overflow-hidden"
+      className="relative w-full min-h-screen py-60 bg-[#f5f2ed] flex flex-col overflow-hidden"
     >
       {/* Header */}
       <div
         ref={headerRef}
-        className="container mx-auto relative z-20 w-full flex items-start justify-between px-10 md:px-20 mb-16"
+        className="px-10 md:px-20 mb-16 flex flex-col md:flex-row justify-between items-start gap-10"
       >
         <div>
-          <p
-            className="font-sans uppercase tracking-[0.2em] text-[11px] font-semibold mb-4 text-black/50"
-          >
-            Testimonials
-          </p>
-          <h2
-            className="font-serif tracking-tight leading-[0.9] text-black/90"
-            style={{
-              fontSize: "clamp(2.8rem, 6vw, 6rem)",
-            }}
-          >
-            Kind words from
-            <br />
-            our clients
+          <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+            TESTIMONIALS
           </h2>
         </div>
 
@@ -373,8 +361,7 @@ export const Testimonials = () => {
               fontSize: "clamp(13px, 1vw, 16px)",
             }}
           >
-            We partner with ambitious brands to build thoughtful, impactful and
-            timeless experiences.
+            Kind words from our clients. We partner with ambitious brands to build timeless experiences.
           </p>
         </div>
       </div>

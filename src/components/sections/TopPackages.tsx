@@ -56,7 +56,6 @@ export const TopPackages = () => {
   const startX = useRef(0);
   const scrollLeft = useRef(0);
 
-  // Smooth scroll function using GSAP for "fluid asf" movement
   const smoothScroll = (distance: number) => {
     if (!sliderRef.current) return;
     const target = sliderRef.current.scrollLeft + distance;
@@ -88,7 +87,7 @@ export const TopPackages = () => {
       if (!isDragging.current) return;
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX.current) * 1.5; // Multiplier for sensitivity
+      const walk = (x - startX.current) * 1.5;
       const prevScroll = slider.scrollLeft;
       slider.scrollLeft = scrollLeft.current - walk;
       velocity = slider.scrollLeft - prevScroll;
@@ -99,11 +98,10 @@ export const TopPackages = () => {
       slider.classList.remove("cursor-grabbing");
       slider.classList.add("cursor-grab");
       
-      // Momentum Scroll
       const momentum = () => {
         if (Math.abs(velocity) < 0.1) return;
         slider.scrollLeft += velocity;
-        velocity *= 0.95; // Friction
+        velocity *= 0.95;
         rafId = requestAnimationFrame(momentum);
       };
       momentum();
@@ -137,14 +135,15 @@ export const TopPackages = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="py-40 bg-[#f5f2ed] text-black overflow-hidden relative">
-      <div className="container mx-auto px-10 md:px-20 mb-16 flex justify-between items-center">
+    <section ref={containerRef} className="py-60 bg-[#f5f2ed] text-black overflow-hidden relative">
+      <div className="px-10 md:px-20 mb-16 flex flex-col md:flex-row justify-between items-end gap-10">
         <div>
-          <h2 className="text-6xl md:text-7xl font-serif tracking-tight text-black/90">Top Packages</h2>
+          <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+            TOP PACKAGES
+          </h2>
         </div>
 
-        <div className="flex gap-10 items-center">
-          {/* Left Arrow - Unbreakable single path lengthening */}
+        <div className="flex gap-10 items-center pb-4">
           <button
             onClick={() => smoothScroll(-450)}
             className="group flex items-center text-black/40 hover:text-black transition-all duration-500 py-4 px-2"
@@ -158,7 +157,6 @@ export const TopPackages = () => {
             </svg>
           </button>
 
-          {/* Right Arrow - Unbreakable single path lengthening */}
           <button
             onClick={() => smoothScroll(450)}
             className="group flex items-center text-black/40 hover:text-black transition-all duration-500 py-4 px-2"
@@ -206,7 +204,6 @@ export const TopPackages = () => {
           </div>
         ))}
       </div>
-
     </section>
   );
 };

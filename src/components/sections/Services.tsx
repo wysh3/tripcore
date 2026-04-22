@@ -46,15 +46,16 @@ export const Services = () => {
     const floating = floatingRef.current;
     const container = listContainerRef.current;
 
-    const xTo = gsap.quickTo(floating, "x", { duration: 0.6, ease: "power3" });
-    const yTo = gsap.quickTo(floating, "y", { duration: 0.6, ease: "power3" });
+    // Set initial centering
+    gsap.set(floating, { xPercent: -50, yPercent: -50 });
+
+    const xTo = gsap.quickTo(floating, "x", { duration: 0.4, ease: "power3.out" });
+    const yTo = gsap.quickTo(floating, "y", { duration: 0.4, ease: "power3.out" });
 
     const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
       const rect = container.getBoundingClientRect();
-
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
       xTo(x);
       yTo(y);
@@ -71,40 +72,40 @@ export const Services = () => {
     if (isHovering) {
       gsap.to(floatingRef.current, {
         scale: 1,
-        opacity: 1,
-        duration: 0.4,
-        ease: "back.out(1.7)",
+        autoAlpha: 1,
+        z: 100, // Ensure it's high on the 3D z-axis
+        duration: 0.5,
+        ease: "expo.out",
       });
     } else {
       gsap.to(floatingRef.current, {
-        scale: 0,
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
+        scale: 0.4,
+        autoAlpha: 0,
+        z: 0,
+        duration: 0.4,
+        ease: "expo.in",
       });
     }
   }, [isHovering]);
 
-  // Alternating Tilt & transition
+  // Transition between services
   useEffect(() => {
     if (!floatingRef.current || !isHovering) return;
 
-    const tilts = [6, -6, 6, -6, 6];
+    const tilts = [10, -10, 10, -10, 10];
     const targetTilt = tilts[currentIndex] || 0;
 
     const tl = gsap.timeline({ overwrite: "auto" });
 
     tl.to(floatingRef.current, {
-      scale: 0.3,
-      opacity: 0,
-      duration: 0.15,
-      ease: "power2.in",
-    }).to(floatingRef.current, {
       rotation: targetTilt,
+      scale: 1.05,
+      duration: 0.3,
+      ease: "power2.out",
+    }).to(floatingRef.current, {
       scale: 1,
-      opacity: 1,
-      duration: 0.5,
-      ease: "back.out(1.4)",
+      duration: 0.4,
+      ease: "elastic.out(1, 0.75)",
     });
 
     return () => {
@@ -114,58 +115,64 @@ export const Services = () => {
 
   return (
     <section
-      className="py-40 px-6 bg-[#f5f2ed] text-black relative overflow-hidden"
-      onMouseLeave={() => setIsHovering(false)}
+      className="py-60 px-10 md:px-20 bg-[#f5f2ed] text-black relative overflow-hidden perspective-2000"
     >
-      <div className="container mx-auto">
-        <div className="relative" ref={listContainerRef}>
-          {/* Floating Preview Card */}
-          <div
-            ref={floatingRef}
-            className="absolute top-0 left-0 w-40 aspect-[4/3] pointer-events-none z-20 opacity-0 scale-0 origin-center"
-            style={{
-              transform: "translate(-50%, -50%)",
-              willChange: "transform",
-            }}
-          >
-            <div className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-white/20">
-              <img
-                src={activeImage}
-                className="w-full h-full object-cover"
-                alt="Floating Preview"
-                loading="lazy"
-              />
-            </div>
+      <div className="relative preserve-3d" ref={listContainerRef}>
+        {/* Floating Preview Card */}
+        <div
+          ref={floatingRef}
+          className="absolute top-0 left-0 w-44 aspect-[4/3] pointer-events-none z-[100] opacity-0 invisible scale-0 origin-center preserve-3d"
+          style={{
+            willChange: "transform, opacity",
+          }}
+        >
+          <div className="w-full h-full rounded-lg overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.4)] border border-white/30 bg-white">
+            <img
+              src={activeImage}
+              className="w-full h-full object-cover"
+              alt="Floating Preview"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-12">
+          <div onMouseEnter={() => setIsHovering(false)}>
+            <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+              SERVICES
+            </h2>
           </div>
 
-          <div className="space-y-12">
-            <h2 className="text-7xl md:text-9xl font-serif tracking-tighter">
-              Services
-            </h2>
-
-            <div className="space-y-0">
-              {SERVICES.map((service, idx) => (
-                <div
-                  key={service.id}
-                  className="group py-6 border-b border-black/10 flex justify-between items-center relative z-10"
+          <div 
+            className="space-y-0 max-w-5xl"
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            {SERVICES.map((service, idx) => (
+              <div
+                key={service.id}
+                className="group py-10 border-b border-black/10 flex justify-between items-center relative z-10"
+                onMouseEnter={() => {
+                  setActiveId(service.id);
+                  setActiveImage(service.image);
+                  setCurrentIndex(idx);
+                  setIsHovering(true);
+                }}
+              >
+                <h3
+                  className={`text-2xl md:text-5xl font-serif transition-all duration-700 cursor-pointer w-fit leading-tight ${
+                    activeId === service.id && isHovering ? "text-black translate-x-6" : "text-black/40 translate-x-0"
+                  }`}
                 >
-                  <h3
-                    onMouseEnter={() => {
-                      setActiveId(service.id);
-                      setActiveImage(service.image);
-                      setCurrentIndex(idx);
-                      setIsHovering(true);
-                    }}
-                    onMouseLeave={() => setIsHovering(false)}
-                    className={`text-2xl md:text-4xl font-serif transition-all duration-500 cursor-pointer w-fit ${
-                      activeId === service.id ? "text-black" : "text-black/40"
-                    }`}
-                  >
-                    {service.title}
-                  </h3>
+                  {service.title}
+                </h3>
+                <div className={`flex items-center gap-4 transition-all duration-700 ${activeId === service.id && isHovering ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"}`}>
+                  <span className="text-[10px] font-jost uppercase tracking-[0.2em] font-semibold text-black/60">
+                    DISCOVER
+                  </span>
+                  <div className="w-8 h-px bg-black/20" />
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -1,46 +1,55 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import Lenis from "lenis";
-import { gsap } from "@/lib/gsapConfig";
+import { gsap, ScrollTrigger } from "@/lib/gsapConfig";
 
 const SmoothScrollContext = createContext<Lenis | null>(null);
 
 export const useSmoothScroll = () => useContext(SmoothScrollContext);
 
 export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }) => {
-  const lenisRef = useRef<Lenis | null>(null);
+  const [lenis, setLenis] = useState<Lenis | null>(null);
 
   useEffect(() => {
     // Initialize Lenis
-    const lenis = new Lenis({
+    const lenisInstance = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
+      touchMultiplier: 1.5,
       infinite: false,
+      autoRaf: false, // Driving RAF manually via GSAP for perfect sync
     });
 
-    lenisRef.current = lenis;
+    setLenis(lenisInstance);
 
-    // Sync with GSAP Ticker
+    // Sync ScrollTrigger with Lenis
+    lenisInstance.on("scroll", () => {
+      ScrollTrigger.update();
+    });
+
+    // GSAP Ticker handles the animation loop to prevent micro-stutter
     const update = (time: number) => {
-      lenis.raf(time * 1000);
+      lenisInstance.raf(time * 1000);
     };
 
     gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
 
+    // Cleanup
     return () => {
       gsap.ticker.remove(update);
-      lenis.destroy();
+      lenisInstance.destroy();
+      setLenis(null);
     };
   }, []);
 
   return (
-    <SmoothScrollContext.Provider value={lenisRef.current}>
+    <SmoothScrollContext.Provider value={lenis}>
       {children}
     </SmoothScrollContext.Provider>
   );
