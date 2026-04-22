@@ -70,23 +70,42 @@ const TestimonialCard = memo(({ review, isActive, onClick, cardRef }: any) => {
         backfaceVisibility: "hidden",
       }}
     >
-      <div ref={activeContentRef} className="absolute inset-0 rounded-[1.5rem] overflow-hidden pointer-events-none" style={{ opacity: 0, boxShadow: "0 32px 80px -8px rgba(0,0,0,0.35)", backfaceVisibility: "hidden" }}>
+      {/* ── Active View (Image Card) ── */}
+      <div 
+        ref={activeContentRef} 
+        className="absolute inset-0 rounded-[1.5rem] overflow-hidden pointer-events-none" 
+        style={{ opacity: 0, boxShadow: "0 32px 80px -8px rgba(0,0,0,0.35)", backfaceVisibility: "hidden" }}
+      >
         <div ref={imageRef} className="absolute inset-0 scale-110">
           <Image src={review.image} alt={review.name} fill className="object-cover" sizes="(max-width: 768px) 80vw, 35vw" priority />
         </div>
-        <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(10,8,5,0.15) 0%, rgba(5,4,2,0.85) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.9) 100%)" }} />
         <div ref={textRef} className="absolute inset-0 z-10 flex flex-col justify-between p-7 antialiased">
           <div>
-            <p className="font-sans text-[9px] uppercase tracking-[0.3em] text-white/50 mb-4">{review.location}</p>
-            <p className="font-serif text-white/90 leading-snug" style={{ fontSize: "clamp(14px, 1.4vw, 20px)" }}>{review.content}</p>
+            <p className="font-sans text-[9px] uppercase tracking-[0.3em] text-white/70 mb-4 font-semibold">{review.location}</p>
+            <p className="font-serif text-white leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]" style={{ fontSize: "clamp(14px, 1.4vw, 22px)", fontWeight: 500 }}>{review.content}</p>
           </div>
           <div className="footer-content">
-            <div className="w-8 h-px bg-white/30 mb-3" />
-            <p className="font-serif text-white/80" style={{ fontSize: "clamp(11px, 0.9vw, 14px)" }}>— {review.name}</p>
+            <div className="w-8 h-px bg-white/40 mb-3" />
+            <p className="font-serif text-white/90" style={{ fontSize: "clamp(11px, 0.9vw, 15px)" }}>— {review.name}</p>
+            <p className="font-sans text-[8px] uppercase tracking-widest text-white/40 mt-1">{review.role}</p>
           </div>
         </div>
       </div>
-      <div ref={inactiveContentRef} className="absolute inset-0 rounded-[1.5rem] flex flex-col justify-between overflow-hidden" style={{ padding: "clamp(20px, 2vw, 32px)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", backfaceVisibility: "hidden" }}>
+
+      {/* ── Inactive View (Glass Card) ── */}
+      <div 
+        ref={inactiveContentRef} 
+        className="absolute inset-0 rounded-[1.5rem] flex flex-col justify-between overflow-hidden" 
+        style={{ 
+          padding: "clamp(20px, 2vw, 32px)", 
+          background: "rgba(255,255,255,0.06)", 
+          border: "1px solid rgba(255,255,255,0.1)", 
+          backdropFilter: "blur(2px)", // SIGNIFICANTLY REDUCED BLUR FROM 12px
+          WebkitBackdropFilter: "blur(2px)", 
+          backfaceVisibility: "hidden" 
+        }}
+      >
         <div className="antialiased">
           <p className="font-sans text-[8px] uppercase tracking-[0.2em] text-black/30 mb-3">{review.location}</p>
           <p className="font-serif leading-snug text-black/50" style={{ fontSize: "clamp(11px, 1vw, 15px)" }}>{review.content}</p>
@@ -157,9 +176,12 @@ export const Testimonials = () => {
       const scale = abs === 0 ? 1 : abs === 1 ? 0.8 : 0.6;
       const rotationY = sign * (abs === 0 ? 0 : abs === 1 ? 25 : 45);
       const z = abs === 0 ? 100 : abs === 1 ? -100 : -300;
-      const blur = abs === 0 ? 0 : abs === 1 ? 4 : 10;
+      
+      // SIGNIFICANTLY REDUCED GSAP BLUR FROM [4, 10] TO [1, 2]
+      const blurValue = abs === 0 ? 0 : abs === 1 ? 1 : 2;
+      
       const tl = gsap.timeline({ overwrite: true, onStart: () => { isAnimating.current = true; }, onComplete: () => { isAnimating.current = false; } });
-      tl.to(card, { x: xPos, y: abs * 10, z: z, scale: scale, rotationY: rotationY, autoAlpha: abs === 0 ? 1 : abs === 1 ? 0.9 : 0.5, filter: abs === 0 ? "blur(0px)" : `blur(${blur}px)`, zIndex: 10 - abs, duration: 0.6, ease: "back.out(1.2)", onComplete: () => { if (abs === 0) gsap.set(card, { filter: "none" }); } });
+      tl.to(card, { x: xPos, y: abs * 10, z: z, scale: scale, rotationY: rotationY, autoAlpha: abs === 0 ? 1 : abs === 1 ? 0.9 : 0.5, filter: abs === 0 ? "blur(0px)" : `blur(${blurValue}px)`, zIndex: 10 - abs, duration: 0.6, ease: "back.out(1.2)", onComplete: () => { if (abs === 0) gsap.set(card, { filter: "none" }); } });
       tl.to(activeView, { opacity: isActive ? 1 : 0, duration: 0.35, ease: "power2.out" }, "<");
       tl.to(inactiveView, { opacity: isActive ? 0 : 1, duration: 0.35, ease: "power2.out" }, "<");
       if (isActive) {

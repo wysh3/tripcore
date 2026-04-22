@@ -39,73 +39,88 @@ export const Services = () => {
   const listContainerRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
+  // Velocity and Smoothing Variables
+  const mouse = useRef({ x: 0, y: 0 });
+  const delayedMouse = useRef({ x: 0, y: 0 });
+  const rotationRef = useRef(0);
+
   useEffect(() => {
     if (!floatingRef.current || !listContainerRef.current) return;
     const floating = floatingRef.current;
     const container = listContainerRef.current;
-    gsap.set(floating, { xPercent: -50, yPercent: -50 });
-    const xTo = gsap.quickTo(floating, "x", { duration: 0.4, ease: "power3.out" });
-    const yTo = gsap.quickTo(floating, "y", { duration: 0.4, ease: "power3.out" });
+
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      xTo(x);
-      yTo(y);
+      mouse.current.x = e.clientX - rect.left;
+      mouse.current.y = e.clientY - rect.top;
     };
+
+    const ticker = (time: number, deltaTime: number) => {
+      // Lerp for smooth position
+      const lerpFactor = 0.08;
+      delayedMouse.current.x += (mouse.current.x - delayedMouse.current.x) * lerpFactor;
+      delayedMouse.current.y += (mouse.current.y - delayedMouse.current.y) * lerpFactor;
+
+      // Velocity based rotation (The "Tilt" effect from the video)
+      const diffX = mouse.current.x - delayedMouse.current.x;
+      const targetRotation = gsap.utils.clamp(-20, 20, diffX * 0.4);
+      rotationRef.current += (targetRotation - rotationRef.current) * 0.1;
+
+      gsap.set(floating, {
+        x: delayedMouse.current.x,
+        y: delayedMouse.current.y,
+        xPercent: -50,
+        yPercent: -50,
+        rotation: rotationRef.current,
+      });
+    };
+
     container.addEventListener("mousemove", handleMouseMove);
-    return () => container.removeEventListener("mousemove", handleMouseMove);
+    gsap.ticker.add(ticker);
+
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+      gsap.ticker.remove(ticker);
+    };
   }, []);
 
+  // Entrance/Exit Animations (Matching the video's snappiness)
   useEffect(() => {
     if (!floatingRef.current) return;
     if (isHovering) {
       gsap.to(floatingRef.current, {
         scale: 1,
         autoAlpha: 1,
-        z: 100,
         duration: 0.5,
-        ease: "expo.out",
+        ease: "power4.out",
       });
     } else {
       gsap.to(floatingRef.current, {
-        scale: 0.4,
+        scale: 0,
         autoAlpha: 0,
-        z: 0,
-        duration: 0.4,
-        ease: "expo.in",
+        duration: 0.3,
+        ease: "power2.in",
       });
     }
   }, [isHovering]);
 
-  useEffect(() => {
-    if (!floatingRef.current || !isHovering) return;
-    const tilts = [10, -10, 10, -10, 10];
-    const targetTilt = tilts[currentIndex] || 0;
-    const tl = gsap.timeline({ overwrite: "auto" });
-    tl.to(floatingRef.current, {
-      rotation: targetTilt,
-      scale: 1.05,
-      duration: 0.3,
-      ease: "power2.out",
-    }).to(floatingRef.current, {
-      scale: 1,
-      duration: 0.4,
-      ease: "elastic.out(1, 0.75)",
-    });
-    return () => tl.kill();
-  }, [currentIndex, isHovering]);
-
   return (
     <section className="min-h-screen flex flex-col justify-center py-20 px-10 md:px-20 bg-[#f5f2ed] text-black relative overflow-hidden perspective-2000">
       <div className="relative preserve-3d" ref={listContainerRef}>
+        {/* Floating Preview Card - Optimized as per Video Analysis */}
         <div
           ref={floatingRef}
-          className="absolute top-0 left-0 w-44 aspect-[4/3] pointer-events-none z-[100] opacity-0 invisible scale-0 origin-center preserve-3d"
+          className="absolute top-0 left-0 w-56 aspect-[4/3] pointer-events-none z-[100] opacity-0 invisible scale-0 origin-center preserve-3d"
           style={{ willChange: "transform, opacity" }}
         >
-          <div className="w-full h-full rounded-lg overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.4)] border border-white/30 bg-white">
-            <img src={activeImage} className="w-full h-full object-cover" alt="Floating Preview" loading="lazy" />
+          <div className="w-full h-full rounded-2xl overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.35)] bg-white">
+            {/* Smooth transition between images using cross-fade technique if needed, or simple update */}
+            <img 
+              src={activeImage} 
+              className="w-full h-full object-cover transition-all duration-300" 
+              alt="Floating Preview" 
+              loading="lazy" 
+            />
           </div>
         </div>
 
@@ -126,13 +141,21 @@ export const Services = () => {
                   setActiveImage(service.image);
                   setCurrentIndex(idx);
                   setIsHovering(true);
+                  
+                  // Small rotational jolt when switching (as seen in high-end implementations)
+                  if (floatingRef.current) {
+                    gsap.fromTo(floatingRef.current, 
+                      { scale: 0.95 }, 
+                      { scale: 1, duration: 0.4, ease: "back.out(1.7)" }
+                    );
+                  }
                 }}
               >
-                <h3 className={`text-xl md:text-3xl font-serif transition-all duration-700 cursor-pointer w-fit leading-tight ${activeId === service.id && isHovering ? "text-black translate-x-6" : "text-black/40 translate-x-0"}`}>
+                <h3 className={`text-xl md:text-4xl font-serif transition-all duration-500 cursor-pointer w-fit leading-tight  ${activeId === service.id && isHovering ? "text-black translate-x-6" : "text-black/40 translate-x-0"}`}>
                   {service.title}
                 </h3>
                 <div className={`flex items-center gap-4 transition-all duration-700 ${activeId === service.id && isHovering ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"}`}>
-                  <span className="text-[9px] font-jost uppercase tracking-[0.2em] font-semibold text-black/60">DISCOVER</span>
+                  <span className="text-[9px] font-jost uppercase tracking-[0.2em] font-semibold text-black/60 ">DISCOVER</span>
                   <div className="w-6 h-px bg-black/20" />
                 </div>
               </div>

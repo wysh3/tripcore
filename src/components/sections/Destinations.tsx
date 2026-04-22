@@ -50,7 +50,7 @@ export const Destinations = () => {
   const filteredDestinations = DESTINATIONS.filter(d => d.category === filter);
 
   return (
-    <section className="min-h-screen flex flex-col justify-center py-12 px-10 md:px-20 relative bg-[#f5f2ed] overflow-hidden">
+    <section className="min-h-screen flex flex-col justify-center py-24 px-10 md:px-20 relative bg-[#f5f2ed] overflow-hidden">
       <div 
         className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden"
         style={{
@@ -65,8 +65,8 @@ export const Destinations = () => {
         />
       </div>
 
-      <div className="relative z-10 w-full">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-8">
+      <div className="relative z-10 w-full flex flex-col items-center">
+        <div className="w-full flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
           <div>
             <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
               DESTINATIONS
@@ -95,45 +95,32 @@ export const Destinations = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
-          <AnimatePresence mode="popLayout" custom={direction} initial={false}>
-            {filteredDestinations.map((dest) => (
-              <motion.div 
-                key={dest.title}
-                custom={direction}
-                variants={{
-                  enter: (direction: number) => ({
-                    x: direction > 0 ? "20%" : "-20%",
-                    opacity: 0
-                  }),
-                  center: {
-                    x: 0,
-                    opacity: 1
-                  },
-                  exit: (direction: number) => ({
-                    x: direction > 0 ? "-20%" : "20%",
-                    opacity: 0
-                  })
-                }}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 200, damping: 25, mass: 0.8 },
-                  opacity: { duration: 0.3 }
-                }}
-                className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[200px] md:h-[240px]"
-              >
-                <img 
-                  src={dest.image} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-6 left-6 pointer-events-none">
-                  <h3 className="text-xl font-serif text-white tracking-wide">{dest.title}</h3>
+        <div className="w-full relative h-[480px] md:h-[580px]">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={filter}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
+            >
+              {filteredDestinations.map((dest) => (
+                <div 
+                  key={dest.title}
+                  className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[200px] md:h-[260px]"
+                >
+                  <img 
+                    src={dest.image} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-6 left-6 pointer-events-none">
+                    <h3 className="text-xl font-serif text-white tracking-wide">{dest.title}</h3>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>
