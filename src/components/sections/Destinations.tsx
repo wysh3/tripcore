@@ -3,40 +3,17 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const DESTINATIONS = [
-  {
-    title: "Tuscany",
-    image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1886&auto=format&fit=crop",
-    category: "International",
-  },
-  {
-    title: "Maldives",
-    image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?q=80&w=1965&auto=format&fit=crop",
-    category: "International",
-  },
-  {
-    title: "Jaipur",
-    image: "/images/rajasthan.png",
-    category: "Domestic",
-  },
-  {
-    title: "Swiss Alps",
-    image: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?q=80&w=1965&auto=format&fit=crop",
-    category: "International",
-  },
-  {
-    title: "Amalfi",
-    image: "https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop",
-    category: "International",
-  },
-  {
-    title: "Leh",
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop",
-    category: "Domestic",
-  },
-];
+interface DestinationItem {
+  title: string;
+  image: string;
+  category: string;
+}
 
-export const Destinations = () => {
+interface DestinationsProps {
+  destinations: DestinationItem[];
+}
+
+export const Destinations = ({ destinations }: DestinationsProps) => {
   const [filter, setFilter] = useState("International");
   const [direction, setDirection] = useState(0);
 
@@ -47,7 +24,7 @@ export const Destinations = () => {
     setFilter(newFilter);
   };
 
-  const filteredDestinations = DESTINATIONS.filter(d => d.category === filter);
+  const filteredDestinations = destinations.filter(d => d.category === filter);
 
   return (
     <section className="min-h-screen flex flex-col justify-center py-24 px-10 md:px-20 relative bg-[#f5f2ed] overflow-hidden">

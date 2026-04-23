@@ -5,48 +5,18 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsapConfig";
 import Image from "next/image";
 
-const REVIEWS = [
-  {
-    id: 1,
-    name: "Alexander Davies",
-    role: "Explorer & Philanthropist",
-    location: "Rajasthan, India",
-    content: "A truly bespoke design experience. The studio's meticulous approach brought concepts to life with a fresh and impactful vision.",
-    image: "/images/rajasthan.png",
-  },
-  {
-    id: 2,
-    name: "Eleanor Vance",
-    role: "Creative Director",
-    location: "Amalfi Coast, Italy",
-    content: "Their vision completely transformed our brand identity. The depth and precision in their design work are unmatched.",
-    image: "/images/hero.png",
-  },
-  {
-    id: 3,
-    name: "Chen Wei",
-    role: "Architectural Visionary",
-    location: "Kyoto, Japan",
-    content: "Professionalism, creativity, and incredible execution. They did not just design a space, they designed an experience.",
-    image: "/images/amalfi.png",
-  },
-  {
-    id: 4,
-    name: "Chloe Isabella",
-    role: "Cultural Curator",
-    location: "Florence, Italy",
-    content: "Professional execution and collision of ideas that brought our vision to life in ways we never imagined.",
-    image: "/images/rajasthan.png",
-  },
-  {
-    id: 5,
-    name: "Marcus Webb",
-    role: "Principal Architect",
-    location: "Santorini, Greece",
-    content: "An extraordinary collaboration. Every detail was considered, every moment crafted with intentionality and grace.",
-    image: "/images/hero.png",
-  },
-];
+interface ReviewItem {
+  id: number | string;
+  name: string;
+  role: string;
+  location: string;
+  content: string;
+  image: string;
+}
+
+interface TestimonialsProps {
+  reviews: ReviewItem[];
+}
 
 const TestimonialCard = memo(({ review, isActive, onClick, cardRef }: any) => {
   const activeContentRef = useRef<HTMLDivElement>(null);
@@ -121,7 +91,7 @@ const TestimonialCard = memo(({ review, isActive, onClick, cardRef }: any) => {
 
 TestimonialCard.displayName = "TestimonialCard";
 
-export const Testimonials = () => {
+export const Testimonials = ({ reviews }: TestimonialsProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -138,7 +108,9 @@ export const Testimonials = () => {
   const resetInterval = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % REVIEWS.length);
+      if (reviews.length > 0) {
+        setActiveIndex((prev) => (prev + 1) % reviews.length);
+      }
     }, 4500);
   };
 
@@ -155,7 +127,8 @@ export const Testimonials = () => {
   }, { scope: containerRef });
 
   useGSAP(() => {
-    const total = REVIEWS.length;
+    const total = reviews.length;
+    if (total === 0) return;
     const isMobile = window.innerWidth < 768;
     cardRefs.current.forEach((card, i) => {
       if (!card) return;
@@ -205,7 +178,7 @@ export const Testimonials = () => {
         </div>
       </div>
       <div className="relative w-full flex-1 flex items-center justify-center perspective-2000" style={{ minHeight: "350px" }}>
-        {REVIEWS.map((review, i) => (
+        {reviews.map((review, i) => (
           <TestimonialCard key={review.id} review={review} isActive={i === activeIndex} onClick={() => goTo(i)} cardRef={(el: any) => { cardRefs.current[i] = el; }} />
         ))}
       </div>

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,31 +32,37 @@ export const Navbar = () => {
         `}
       >
         <div className="flex items-center gap-16">
-          <a 
-            href="#" 
+          <Link 
+            href="/" 
             className={`text-3xl font-serif tracking-tighter transition-colors duration-500 ${
               isScrolled ? "text-black" : "text-white"
             }`}
           >
             TRIPCORE
-          </a>
+          </Link>
         </div>
 
         <div className="hidden lg:flex items-center gap-12">
-          {["Journeys", "Experiences", "About", "Contact"].map((item) => (
-            <a 
-              key={item} 
-              href={`#${item.toLowerCase()}`}
+          {[
+            { name: "Packages", href: "/packages" },
+            { name: "Services", href: "/#services" },
+            { name: "About", href: "/#about" },
+            { name: "Contact", href: "/enquiry" }
+          ].map((item) => (
+            <Link 
+              key={item.name} 
+              href={item.href}
               className={`font-jost text-[10px] uppercase tracking-[0.3em] transition-colors duration-500 ${
                 isScrolled ? "text-black/60 hover:text-accent-blue" : "text-white/70 hover:text-white"
               }`}
             >
-              {item}
-            </a>
+              {item.name}
+            </Link>
           ))}
         </div>
 
-        <button 
+        <Link 
+          href="/enquiry"
           className={`px-8 py-3 rounded-full font-jost text-[10px] uppercase tracking-widest transition-all duration-500 shadow-lg ${
             isScrolled 
               ? "bg-black text-white hover:bg-accent-blue" 
@@ -63,7 +70,7 @@ export const Navbar = () => {
           }`}
         >
           Book Now
-        </button>
+        </Link>
       </div>
     </motion.nav>
   );

@@ -4,9 +4,15 @@ import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsapConfig";
 import { motion } from "framer-motion";
 
-export const Hero = () => {
+interface HeroProps {
+  backgroundImage?: string;
+}
+
+export const Hero = ({ backgroundImage }: HeroProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const defaultImage = "https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop";
 
   useEffect(() => {
     if (titleRef.current) {
@@ -50,8 +56,8 @@ export const Hero = () => {
       {/* Background with specific texture/image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop"
-          alt="Amalfi Coast"
+          src={backgroundImage || defaultImage}
+          alt="Luxury Escape"
           className="w-full h-full object-cover brightness-[0.75] contrast-[1.1]"
         />
         <div className="absolute inset-0 bg-black/10" />

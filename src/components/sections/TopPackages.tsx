@@ -3,53 +3,22 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsapConfig";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
-const PACKAGES = [
-  {
-    id: "201",
-    title: "Rajasthan Royal",
-    price: "$500",
-    location: "Jaipur, India",
-    image: "/images/rajasthan.png",
-  },
-  {
-    id: "202",
-    title: "Amalfi Coast",
-    price: "$350",
-    location: "Positano, Italy",
-    image: "/images/amalfi.png",
-  },
-  {
-    id: "203",
-    title: "Tuscan Hills",
-    price: "$450",
-    location: "Florence, Italy",
-    image: "/images/amalfi.png",
-  },
-  {
-    id: "204",
-    title: "Desert Oasis",
-    price: "$600",
-    location: "Jodhpur, India",
-    image: "/images/rajasthan.png",
-  },
-  {
-    id: "205",
-    title: "Venice Serenade",
-    price: "$300",
-    location: "Venice, Italy",
-    image: "/images/hero.png",
-  },
-  {
-    id: "206",
-    title: "Himalayan Peak",
-    price: "$750",
-    location: "Leh, India",
-    image: "/images/rajasthan.png",
-  },
-];
+interface PackageItem {
+  id: string;
+  slug?: string;
+  title: string;
+  price: string;
+  location: string;
+  image: string;
+}
 
-export const TopPackages = () => {
+interface TopPackagesProps {
+  packages: PackageItem[];
+}
+
+export const TopPackages = ({ packages }: TopPackagesProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -176,9 +145,10 @@ export const TopPackages = () => {
         ref={sliderRef}
         className="flex gap-6 px-10 md:px-20 overflow-x-auto no-scrollbar cursor-grab select-none"
       >
-        {PACKAGES.map((pkg) => (
-          <div
+        {packages.map((pkg) => (
+          <Link
             key={pkg.id}
+            href={`/packages/${pkg.slug || pkg.id}`}
             className="package-card group relative flex-shrink-0 w-[280px] md:w-[380px] aspect-[10/14] rounded-[1rem] overflow-hidden bg-white snap-start pointer-events-none md:pointer-events-auto"
           >
             <img
@@ -201,7 +171,7 @@ export const TopPackages = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

@@ -60,7 +60,7 @@ export const AboutUs = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-60 px-10 md:px-20 bg-[#f5f2ed] overflow-hidden">
+    <section id="about" ref={sectionRef} className="py-60 px-10 md:px-20 bg-[#f5f2ed] overflow-hidden">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         {/* TEXT CONTENT */}
         <div ref={textRef} className="space-y-16 order-2 lg:order-1">
@@ -72,16 +72,16 @@ export const AboutUs = () => {
 
           <div className="space-y-8 max-w-sm">
             <p className="text-[10px] md:text-xs font-jost text-black/50 leading-relaxed uppercase tracking-[0.25em]">
-              Lorem ipsum dolor sit amet, consect <br />
-              duispeee que-saessmetat <br />
-              euismod amper sssuisi.antfla <br />
-              edlamnoom stai oenvel dbi rvilterssac <br />
-              asese lass al sar cermoess.
+              At TripCore, we curate bespoke <br />
+              journeys that transcend ordinary <br />
+              travel. Our approach blends deep <br />
+              local expertise with uncompromising <br />
+              luxury to craft timeless memories.
             </p>
             <p className="text-[10px] md:text-xs font-jost text-black/50 leading-relaxed uppercase tracking-[0.25em]">
-              Balnao-sem excet socila flrar- dinia <br />
-              exceterne meda examadation abiass <br />
-              anucatlat ii ouftaen.
+              Every itinerary is meticulously <br />
+              designed to ensure an immersive <br />
+              and extraordinary global escape.
             </p>
           </div>
         </div>

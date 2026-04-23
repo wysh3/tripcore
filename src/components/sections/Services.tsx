@@ -105,7 +105,7 @@ export const Services = () => {
   }, [isHovering]);
 
   return (
-    <section className="min-h-screen flex flex-col justify-center py-20 px-10 md:px-20 bg-[#f5f2ed] text-black relative overflow-hidden perspective-2000">
+    <section id="services" className="min-h-screen flex flex-col justify-center py-20 px-10 md:px-20 bg-[#f5f2ed] text-black relative overflow-hidden perspective-2000">
       <div className="relative preserve-3d" ref={listContainerRef}>
         {/* Floating Preview Card - Optimized as per Video Analysis */}
         <div

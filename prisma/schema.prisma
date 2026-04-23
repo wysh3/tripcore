@@ -4,27 +4,56 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
+
 
 model Package {
   id                String   @id @default(cuid())
-  title             String   // e.g., "Amalfi Coast"
+  title             String
   slug              String   @unique
+  destination       String?
   durationDays      Int
+  maxPersons        Int?
+  tourCategory      String?
+  tourTypes         String?  // Added based on travel.md
+  accommodation     String?  // Added based on travel.md
+  citiesRoute       String?  // Added based on travel.md
+  ageRange          String?
   
-  // Pricing & Toggles
-  sellingPrice      Float
+  // Toggles
   isCustomizable    Boolean  @default(false)
   flightsIncluded   Boolean  @default(false)
+  bestPriceGuarantee Boolean @default(false)
   
   // Content
   mainImage         String
+  mapImage          String?
   shortDescription  String   @db.Text
+  highlights        String?  @db.Text
+  specialNotes      String?  @db.Text
+  tags              String?
+  
+  // Pricing
+  sellingPrice      Float
+  originalPrice     Float?
+  discountLabel     String?
+  
+  // Itinerary
+  pdfBrochure       String?
+  itinerary         Json?
+  inclusions        String?  @db.Text
+  exclusions        String?  @db.Text
+  cancellationPolicy String? @db.Text
+  galleryImages     String?  @db.Text
+  
+  // Departures
+  departureType     String?
+  departurePoints   String?
   
   // Relations
   departures        DepartureDate[]
   bookings          Booking[]
+  reviews           Review[] // Added relation
     
   @@map("packages")
 }
@@ -53,7 +82,7 @@ model Booking {
   user            User     @relation(fields: [userId], references: [id])
   packageId       String
   package         Package  @relation(fields: [packageId], references: [id])
-  status          String   @default("PENDING") // PENDING, CONFIRMED
+  status          String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED
   totalAmount     Float
   createdAt       DateTime @default(now())
 }
@@ -68,4 +97,91 @@ model User {
   
   bookings      Booking[]
   inventoryItems LuxuryInventoryItem[]
+}
+
+model Destination {
+  id          String   @id @default(cuid())
+  country     String
+  city        String?
+  region      String?
+  description String?  @db.Text
+  image       String?
+  createdAt   DateTime @default(now())
+  reviews     Review[] // Added relation
+  
+  @@map("destinations")
+}
+
+model Enquiry {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  message     String?  @db.Text
+  status      String   @default("NEW") // NEW, CONTACTED, CONVERTED
+  createdAt   DateTime @default(now())
+  
+  @@map("enquiries")
+}
+
+model Sale {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  heroImage   String?
+  isActive    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  @@map("sales")
+}
+
+model Review {
+  id            String   @id @default(cuid())
+  customerName  String
+  packageId     String?
+  package       Package? @relation(fields: [packageId], references: [id])
+  destinationId String?
+  destination   Destination? @relation(fields: [destinationId], references: [id])
+  rating        Int      // 1 to 5
+  videoUrl      String?
+  text          String?  @db.Text
+  createdAt     DateTime @default(now())
+  
+  @@map("reviews")
+}
+
+model CarRental {
+  id          String   @id @default(cuid())
+  fullName    String
+  whatsapp    String
+  email       String
+  pickupDrop  String
+  startDate   DateTime
+  endDate     DateTime
+  adults      Int
+  children    Int
+  carType     String   // Sedan, SUV, Tempo, Luxury
+  driverLang  String   // English, Spanish, Hindi
+  tripType    String   // One Way, Round Trip, Multi-City
+  createdAt   DateTime @default(now())
+  
+  @@map("car_rentals")
+}
+
+model HomepageSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique // e.g. 'hero_bg', 'feature_banner'
+  value       String   @db.Text
+  
+  @@map("homepage_settings")
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String   // e.g. 'Created Package'
+  details   String?
+  createdAt DateTime @default(now())
+  
+  @@map("activity_logs")
 }
