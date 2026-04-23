@@ -51,7 +51,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
           {[
             { name: "Packages", href: "/packages" },
             { name: "Services", href: "/services" },
-            { name: "About", href: "/#about" },
+            { name: "About", href: "/about" },
             { name: "Contact", href: "/enquiry" }
           ].map((item) => (
             <Link 
