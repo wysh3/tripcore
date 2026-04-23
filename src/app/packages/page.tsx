@@ -4,9 +4,14 @@ import { prisma } from "@/lib/prisma";
 import PackagesClient from "./PackagesClient";
 
 export default async function PackagesPage() {
-  const packages = await prisma.package.findMany({
-    orderBy: { id: "desc" },
-  });
+  const [packages, destinations] = await Promise.all([
+    prisma.package.findMany({
+      orderBy: { id: "desc" },
+    }),
+    prisma.destination.findMany({
+      orderBy: { country: "asc" }
+    })
+  ]);
 
   // Map Prisma data to simpler client types if needed, though they match here
   const serializedPackages = packages.map(pkg => ({
@@ -21,9 +26,16 @@ export default async function PackagesPage() {
     tourCategory: pkg.tourCategory,
   }));
 
+  const serializedDestinations = destinations.map(d => 
+    d.city ? `${d.city}, ${d.country}` : d.country
+  );
+
   return (
     <Suspense fallback={<div className="min-h-screen bg-[#f5f2ed] flex items-center justify-center font-serif text-2xl">Loading Journeys...</div>}>
-      <PackagesClient packages={serializedPackages} />
+      <PackagesClient 
+        packages={serializedPackages} 
+        destinations={Array.from(new Set(serializedDestinations))} 
+      />
     </Suspense>
   );
 }

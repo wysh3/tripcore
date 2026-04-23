@@ -32,9 +32,10 @@ interface Package {
 
 interface PackagesClientProps {
   packages: Package[];
+  destinations: string[];
 }
 
-export default function PackagesClient({ packages }: PackagesClientProps) {
+export default function PackagesClient({ packages, destinations }: PackagesClientProps) {
   const searchParams = useSearchParams();
   const [priceRange, setPriceRange] = useState(3000);
   const [viewType, setViewType] = useState<"grid" | "list">("grid");
@@ -141,9 +142,9 @@ export default function PackagesClient({ packages }: PackagesClientProps) {
                     className="w-full bg-transparent border border-black/10 rounded-xl px-4 py-3 text-xs appearance-none focus:outline-none focus:border-black/30"
                   >
                     <option>All Destinations</option>
-                    <option>India</option>
-                    <option>Italy</option>
-                    <option>Switzerland</option>
+                    {destinations.map(dest => (
+                      <option key={dest} value={dest}>{dest}</option>
+                    ))}
                   </select>
                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
                 </div>
