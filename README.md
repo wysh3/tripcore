@@ -1,51 +1,34 @@
 # TripCore - The Art of Escape
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwysh3%2Ftripcore-app&env=DATABASE_URL,NEXTAUTH_SECRET&project-name=tripcore-app&repository-name=tripcore-app)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwysh3%2Ftripcore-app&env=DATABASE_URL&project-name=tripcore-app&repository-name=tripcore-app)
 
-Hey there! Welcome to TripCore. This is a high-end luxury travel platform built with Next.js, designed to look and feel premium with smooth animations and a minimalist editorial aesthetic.
+Hey! Welcome to TripCore. This is a high-end luxury travel platform built with Next.js, designed for a premium editorial feel with smooth animations.
 
-## 🚀 Quick Start
+## 🚀 Get it running in 2 minutes
 
-1.  **Clone & Install**:
+1.  **Install**:
     ```bash
-    git clone https://github.com/wysh3/tripcore-app.git
-    cd tripcore-app
     npm install
     ```
 
 2.  **Database (Neon)**:
-    - Create a free project on [Neon.tech](https://neon.tech/).
-    - Copy your **Connection String**.
-    - Add it to your `.env` as `DATABASE_URL`.
+    - Grab a free database at [Neon.tech](https://neon.tech/).
+    - Put your connection string in a `.env` file as `DATABASE_URL`.
+    - Run `npx prisma db push` to create the tables.
 
-3.  **Setup DB**:
-    ```bash
-    npx prisma db push
-    ```
-
-4.  **Run**:
+3.  **Start**:
     ```bash
     npm run dev
     ```
 
-## 🌍 Deployment
+## 🌍 Going Live
 
-The easiest way to go live:
+The fastest way to deploy:
 
-1.  Click the **Deploy to Vercel** button above.
-2.  Connect your GitHub.
-3.  Paste your **Neon Connection String** into the `DATABASE_URL` variable.
-4.  Add any random string to `NEXTAUTH_SECRET`.
-5.  Done! Vercel handles the rest.
-
-## Tech Stack
-- **Framework**: Next.js 15
-- **Styling**: Tailwind CSS
-- **Animations**: GSAP & Framer Motion
-- **Database**: Prisma with PostgreSQL
-- **Icons**: Lucide React
+1.  Click the **Deploy to Vercel** button at the top.
+2.  Paste your **Neon Connection String**.
+3.  That's it. Vercel handles the build and hosting.
 
 ---
-**Version**: 1.0.0 | **Author**: [wysh3](https://github.com/wysh3/) | **License**: MIT
-
-
+**Tech Stack**: Next.js 15, Tailwind CSS, GSAP, Prisma.
+**Author**: [wysh3](https://github.com/wysh3/) | **Version**: 1.0.0
