@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import PackagesClient from "./PackagesClient";
 
@@ -19,5 +20,9 @@ export default async function PackagesPage() {
     tourCategory: pkg.tourCategory,
   }));
 
-  return <PackagesClient packages={serializedPackages} />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f5f2ed] flex items-center justify-center font-serif text-2xl">Loading Journeys...</div>}>
+      <PackagesClient packages={serializedPackages} />
+    </Suspense>
+  );
 }

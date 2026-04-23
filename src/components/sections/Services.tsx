@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 const SERVICES = [
   {
@@ -126,9 +128,15 @@ export const Services = () => {
 
         <div className="space-y-10">
           <div onMouseEnter={() => setIsHovering(false)}>
-            <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
-              SERVICES
-            </h2>
+            <Link 
+              href="/services" 
+              className="group inline-flex items-center gap-4 hover:text-black/60 transition-all duration-500"
+            >
+              <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+                SERVICES
+              </h2>
+              <ArrowUpRight className="w-[4vw] h-[4vw] text-black/10 stroke-[1px] group-hover:text-black group-hover:stroke-[2.5px] group-hover:translate-x-2 group-hover:-translate-y-2 transition-all duration-500" />
+            </Link>
           </div>
 
           <div className="space-y-0 max-w-5xl" onMouseLeave={() => setIsHovering(false)}>

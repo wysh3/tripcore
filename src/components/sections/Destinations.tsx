@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 interface DestinationItem {
   title: string;
@@ -45,9 +47,15 @@ export const Destinations = ({ destinations }: DestinationsProps) => {
       <div className="relative z-10 w-full flex flex-col items-center">
         <div className="w-full flex flex-col md:flex-row justify-between items-end mb-12 gap-8">
           <div>
-            <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
-              DESTINATIONS
-            </h2>
+            <Link 
+              href="/packages" 
+              className="group inline-flex items-center gap-4 hover:text-black/60 transition-all duration-500"
+            >
+              <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+                DESTINATIONS
+              </h2>
+              <ArrowUpRight className="w-[4vw] h-[4vw] text-black/10 stroke-[1px] group-hover:text-black group-hover:stroke-[2.5px] group-hover:translate-x-2 group-hover:-translate-y-2 transition-all duration-500" />
+            </Link>
           </div>
           
           <div className="relative flex bg-white/40 backdrop-blur-md p-1 rounded-full border border-black/5 mb-4">
@@ -83,19 +91,21 @@ export const Destinations = ({ destinations }: DestinationsProps) => {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
             >
               {filteredDestinations.map((dest) => (
-                <div 
+                <Link 
                   key={dest.title}
-                  className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[200px] md:h-[260px]"
+                  href={`/packages?destination=${encodeURIComponent(dest.title)}`}
+                  className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[200px] md:h-[260px] cursor-pointer"
                 >
                   <img 
                     src={dest.image} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    alt={dest.title}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute bottom-6 left-6 pointer-events-none">
                     <h3 className="text-xl font-serif text-white tracking-wide">{dest.title}</h3>
                   </div>
-                </div>
+                </Link>
               ))}
             </motion.div>
           </AnimatePresence>

@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { 
@@ -34,8 +35,25 @@ interface PackagesClientProps {
 }
 
 export default function PackagesClient({ packages }: PackagesClientProps) {
+  const searchParams = useSearchParams();
   const [priceRange, setPriceRange] = useState(3000);
   const [viewType, setViewType] = useState<"grid" | "list">("grid");
+  const [selectedDestination, setSelectedDestination] = useState<string>("All Destinations");
+
+  useEffect(() => {
+    const dest = searchParams.get("destination");
+    if (dest) {
+      // Find matching destination in our list or just set it
+      setSelectedDestination(dest);
+    }
+  }, [searchParams]);
+
+  const filteredPackages = packages.filter(pkg => {
+    const matchesPrice = pkg.sellingPrice <= (priceRange * 100); // Assuming range is up to 300k
+    const matchesDest = selectedDestination === "All Destinations" || 
+                        pkg.destination?.toLowerCase().includes(selectedDestination.toLowerCase());
+    return matchesPrice && matchesDest;
+  });
 
   return (
     <main className="bg-[#f5f2ed] min-h-screen font-sans selection:bg-black selection:text-white">
@@ -117,7 +135,11 @@ export default function PackagesClient({ packages }: PackagesClientProps) {
               <div className="space-y-3">
                 <label className="text-xs font-bold text-gray-900 uppercase tracking-wider">Destination</label>
                 <div className="relative">
-                  <select className="w-full bg-transparent border border-black/10 rounded-xl px-4 py-3 text-xs appearance-none focus:outline-none focus:border-black/30">
+                  <select 
+                    value={selectedDestination}
+                    onChange={(e) => setSelectedDestination(e.target.value)}
+                    className="w-full bg-transparent border border-black/10 rounded-xl px-4 py-3 text-xs appearance-none focus:outline-none focus:border-black/30"
+                  >
                     <option>All Destinations</option>
                     <option>India</option>
                     <option>Italy</option>
@@ -187,7 +209,7 @@ export default function PackagesClient({ packages }: PackagesClientProps) {
           <div className="flex-1 space-y-10">
             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
               <p className="text-xs text-gray-400 font-jost">
-                <span className="text-gray-900 font-bold">{packages.length} Packages</span> Found
+                <span className="text-gray-900 font-bold">{filteredPackages.length} Packages</span> Found
               </p>
               
               <div className="flex items-center gap-4">
@@ -219,7 +241,7 @@ export default function PackagesClient({ packages }: PackagesClientProps) {
 
             {/* PACKAGE GRID */}
             <div className={`grid ${viewType === "grid" ? "grid-cols-1 md:grid-cols-2 gap-8" : "grid-cols-1 gap-6"}`}>
-              {packages.map((pkg) => (
+              {filteredPackages.map((pkg) => (
                 <Link 
                   key={pkg.id} 
                   href={`/packages/${pkg.slug}`}

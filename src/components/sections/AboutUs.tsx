@@ -4,6 +4,9 @@ import { useRef, useEffect } from "react";
 import { gsap } from "@/lib/gsapConfig";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+
 export const AboutUs = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -65,9 +68,15 @@ export const AboutUs = () => {
         {/* TEXT CONTENT */}
         <div ref={textRef} className="space-y-16 order-2 lg:order-1">
           <div>
-            <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
-              ABOUT US
-            </h2>
+            <Link 
+              href="/about" 
+              className="group inline-flex items-center gap-4 hover:text-black/60 transition-all duration-500"
+            >
+              <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+                ABOUT US
+              </h2>
+              <ArrowUpRight className="w-[4vw] h-[4vw] text-black/10 stroke-[1px] group-hover:text-black group-hover:stroke-[2.5px] group-hover:translate-x-2 group-hover:-translate-y-2 transition-all duration-500" />
+            </Link>
           </div>
 
           <div className="space-y-8 max-w-sm">

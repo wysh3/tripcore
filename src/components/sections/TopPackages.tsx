@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsapConfig";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 interface PackageItem {
   id: string;
@@ -107,9 +108,15 @@ export const TopPackages = ({ packages }: TopPackagesProps) => {
     <section ref={containerRef} className="min-h-screen flex flex-col justify-center bg-[#f5f2ed] text-black overflow-hidden relative py-20">
       <div className="px-10 md:px-20 mb-12 flex flex-col md:flex-row justify-between items-end gap-10">
         <div>
-          <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
-            TOP PACKAGES
-          </h2>
+          <Link 
+            href="/packages" 
+            className="group inline-flex items-center gap-4 hover:text-black/60 transition-all duration-500"
+          >
+            <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
+              TOP PACKAGES
+            </h2>
+            <ArrowUpRight className="w-[4vw] h-[4vw] text-black/10 stroke-[1px] group-hover:text-black group-hover:stroke-[2.5px] group-hover:translate-x-2 group-hover:-translate-y-2 transition-all duration-500" />
+          </Link>
         </div>
 
         <div className="flex gap-10 items-center pb-4">

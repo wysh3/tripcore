@@ -12,24 +12,24 @@ export const Hero = ({ backgroundImage }: HeroProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
-  const defaultImage = "https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop";
+  const defaultImage = "https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop ";
 
   useEffect(() => {
     if (titleRef.current) {
-      const content = titleRef.current.innerHTML;
-      const lines = content.split(/<br\s*\/?>/i);
-      
+      // Use a fixed string to avoid splitting already-split HTML
+      const rawTitle = "THE ART OF<br />ESCAPE";
+      const lines = rawTitle.split(/<br\s*\/?>/i);
+
       titleRef.current.innerHTML = lines
         .map((line) => {
-          const chars = line.trim().split("");
-          return chars
+          return line.trim().split("")
             .map((char) => `<span class="char inline-block">${char === " " ? "&nbsp;" : char}</span>`)
             .join("");
         })
         .join("<br />");
 
       gsap.fromTo(
-        ".char",
+        titleRef.current.querySelectorAll(".char"),
         {
           y: 100,
           opacity: 0,
@@ -63,14 +63,19 @@ export const Hero = ({ backgroundImage }: HeroProps) => {
         <div className="absolute inset-0 bg-black/10" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-6 text-center">
-        <h1
-          ref={titleRef}
-          className="text-[12vw] md:text-[14vw] font-serif text-white leading-[0.85] tracking-tighter opacity-90 mix-blend-soft-light"
-          style={{ fontWeight: 500 }}
-        >
-          THE ART OF <br /> ESCAPE
-        </h1>
+      <div className="container relative z-10 mx-auto px-6 h-full flex items-center">
+        <div className="max-w-4xl text-left">
+          <h1
+            ref={titleRef}
+            className="text-[16vw] md:text-[12vw] lg:text-[10vw] font-serif text-white leading-[0.85] tracking-tighter opacity-90"
+            style={{ fontWeight: 500 }}
+          >
+            THE ART OF <br /> ESCAPE
+          </h1>
+          <p className="mt-8 md:mt-10 text-white/80 text-base md:text-lg max-w-md leading-relaxed">
+            Thoughtfully designed experiences that take you beyond the ordinary.
+          </p>
+        </div>
       </div>
 
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6">
