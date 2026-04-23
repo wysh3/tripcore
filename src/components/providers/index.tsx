@@ -3,6 +3,7 @@
 import { SmoothScrollProvider } from "./SmoothScrollProvider";
 import { CanvasContainer } from "../canvas/CanvasContainer";
 import { MagneticCursor } from "../ui/MagneticCursor";
+import { TransitionProvider } from "./TransitionProvider";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -10,7 +11,9 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       <CanvasContainer />
       <MagneticCursor />
       <div className="relative z-10">
-        {children}
+        <TransitionProvider>
+          {children}
+        </TransitionProvider>
       </div>
     </SmoothScrollProvider>
   );

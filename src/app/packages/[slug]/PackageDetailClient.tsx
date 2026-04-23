@@ -94,7 +94,6 @@ export default function PackageDetailClient({ pkg }: { pkg: Package }) {
 
   return (
     <main className="bg-[#f5f2ed] min-h-screen font-sans selection:bg-black selection:text-white">
-      <Navbar variant="dark" />
 
       {/* TOP SECTION: Breadcrumbs & Header */}
       <section className="pt-32 pb-12 px-6 md:px-16 max-w-7xl mx-auto">
@@ -113,7 +112,7 @@ export default function PackageDetailClient({ pkg }: { pkg: Package }) {
               <span className="inline-block bg-black text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-6">
                 Bestseller
               </span>
-              <h1 className="text-4xl md:text-6xl font-serif text-gray-900 leading-tight mb-4">
+              <h1 className="text-3xl md:text-6xl font-serif text-gray-900 leading-tight mb-4">
                 {pkg.title}
               </h1>
               <div className="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-widest">

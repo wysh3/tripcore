@@ -67,10 +67,10 @@ export const AboutUs = ({ bannerImage }: AboutUsProps) => {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-60 px-10 md:px-20 bg-[#f5f2ed] overflow-hidden">
+    <section id="about" ref={sectionRef} className="py-24 md:py-60 px-10 md:px-20 bg-[#f5f2ed] overflow-hidden">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         {/* TEXT CONTENT */}
-        <div ref={textRef} className="space-y-16 order-2 lg:order-1">
+        <div ref={textRef} className="space-y-10 md:space-y-16 order-2 lg:order-1 text-center lg:text-left flex flex-col items-center lg:items-start">
           <div>
             <Link 
               href="/about" 

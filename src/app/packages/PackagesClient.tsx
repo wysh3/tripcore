@@ -40,6 +40,7 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
   const [priceRange, setPriceRange] = useState(3000);
   const [viewType, setViewType] = useState<"grid" | "list">("grid");
   const [selectedDestination, setSelectedDestination] = useState<string>("All Destinations");
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     const dest = searchParams.get("destination");
@@ -58,7 +59,6 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
 
   return (
     <main className="bg-[#f5f2ed] min-h-screen font-sans selection:bg-black selection:text-white">
-      <Navbar variant="dark" />
 
       {/* HEADER SECTION */}
       <section className="relative pt-44 pb-20 px-10 md:px-20 overflow-hidden">
@@ -122,8 +122,19 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
       <section className="px-10 md:px-20 pb-40">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
           
+          {/* MOBILE FILTER TOGGLE */}
+          <div className="lg:hidden w-full mb-8">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className="w-full bg-white border border-black/5 p-4 rounded-2xl flex justify-between items-center text-[10px] font-bold uppercase tracking-widest"
+            >
+              Filter & Sort
+              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showFilters ? "rotate-180" : ""}`} />
+            </button>
+          </div>
+
           {/* SIDEBAR FILTER */}
-          <aside className="w-full lg:w-[280px] flex-shrink-0">
+          <aside className={`w-full lg:w-[280px] flex-shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
             <div className="bg-white/60 backdrop-blur-xl border border-white p-8 rounded-3xl sticky top-32 space-y-8">
               <div className="flex justify-between items-center border-b border-black/5 pb-4">
                 <h2 className="text-base font-serif text-gray-900">Filter Packages</h2>

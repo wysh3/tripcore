@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface NavbarProps {
   variant?: "light" | "dark";
@@ -11,9 +12,13 @@ interface NavbarProps {
 import { BookingModal } from "./BookingModal";
 
 export const Navbar = ({ variant }: NavbarProps) => {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const isDark = variant === "dark" || isScrolled;
+
+  // Auto-determine variant based on route
+  const isDarkPageRoute = pathname.startsWith("/packages") || pathname.startsWith("/services") || pathname.startsWith("/dashboard");
+  const isDark = isDarkPageRoute || isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +53,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
               <img 
                 src="/logo.png" 
                 alt="TRIPCORE" 
-                className={`h-14 w-auto object-contain ${isDark ? "brightness-0" : "brightness-0 invert"}`} 
+                className={`h-10 md:h-14 w-auto object-contain ${isDark ? "brightness-0" : "brightness-0 invert"}`} 
               />
             </Link>
           </div>
@@ -81,7 +86,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
 
           <button 
             onClick={() => setIsBookingOpen(true)}
-            className={`px-8 py-3 rounded-full font-jost text-[11px] font-semibold uppercase tracking-widest transition-all duration-500 shadow-lg ${
+            className={`hidden md:flex px-8 py-3 rounded-full font-jost text-[11px] font-semibold uppercase tracking-widest transition-all duration-500 shadow-lg ${
               isDark 
                 ? "bg-black text-white hover:bg-accent-blue" 
                 : "bg-white/90 backdrop-blur-md text-black hover:bg-white"

@@ -49,7 +49,6 @@ const stats = [
 export default function AboutPage() {
   return (
     <main className="bg-[#f5f2ed] min-h-screen font-sans selection:bg-black selection:text-white overflow-hidden">
-      <Navbar variant="dark" />
 
       {/* HERO SECTION */}
       <section className="relative pt-44 pb-32 px-10 md:px-20 overflow-hidden">

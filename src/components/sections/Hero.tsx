@@ -67,7 +67,7 @@ export const Hero = ({ backgroundImage }: HeroProps) => {
         <div className="max-w-4xl text-left">
           <h1
             ref={titleRef}
-            className="text-[16vw] md:text-[12vw] lg:text-[10vw] font-serif text-white leading-[0.85] tracking-tighter opacity-90"
+            className="text-[14vw] md:text-[12vw] lg:text-[10vw] font-serif text-white leading-[0.85] tracking-tighter opacity-90"
             style={{ fontWeight: 500 }}
           >
             THE ART OF <br /> ESCAPE
