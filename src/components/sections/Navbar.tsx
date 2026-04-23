@@ -4,8 +4,13 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export const Navbar = () => {
+interface NavbarProps {
+  variant?: "light" | "dark";
+}
+
+export const Navbar = ({ variant }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const isDark = variant === "dark" || isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +40,7 @@ export const Navbar = () => {
           <Link 
             href="/" 
             className={`text-3xl font-serif tracking-tighter transition-colors duration-500 ${
-              isScrolled ? "text-black" : "text-white"
+              isDark ? "text-black" : "text-white"
             }`}
           >
             TRIPCORE
@@ -53,7 +58,7 @@ export const Navbar = () => {
               key={item.name} 
               href={item.href}
               className={`font-jost text-[10px] uppercase tracking-[0.3em] transition-colors duration-500 ${
-                isScrolled ? "text-black/60 hover:text-accent-blue" : "text-white/70 hover:text-white"
+                isDark ? "text-black/60 hover:text-accent-blue" : "text-white/70 hover:text-white"
               }`}
             >
               {item.name}
@@ -64,7 +69,7 @@ export const Navbar = () => {
         <Link 
           href="/enquiry"
           className={`px-8 py-3 rounded-full font-jost text-[10px] uppercase tracking-widest transition-all duration-500 shadow-lg ${
-            isScrolled 
+            isDark 
               ? "bg-black text-white hover:bg-accent-blue" 
               : "bg-white/90 backdrop-blur-md text-black hover:bg-white"
           }`}
