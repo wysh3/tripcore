@@ -13,10 +13,9 @@ Hey there! Welcome to TripCore. This is a high-end luxury travel platform built 
     npm install
     ```
 
-2.  **Database (Supabase)**:
-    - Create a free project on [Supabase](https://supabase.com/).
-    - Go to **Project Settings > Database**.
-    - Copy the **Connection String** (use the one for Prisma/Direct connection).
+2.  **Database (Neon)**:
+    - Create a free project on [Neon.tech](https://neon.tech/).
+    - Copy your **Connection String**.
     - Add it to your `.env` as `DATABASE_URL`.
 
 3.  **Setup DB**:
@@ -35,7 +34,7 @@ The easiest way to go live:
 
 1.  Click the **Deploy to Vercel** button above.
 2.  Connect your GitHub.
-3.  Paste your **Supabase Connection String** into the `DATABASE_URL` variable.
+3.  Paste your **Neon Connection String** into the `DATABASE_URL` variable.
 4.  Add any random string to `NEXTAUTH_SECRET`.
 5.  Done! Vercel handles the rest.
 
