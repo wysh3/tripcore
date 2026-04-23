@@ -26,10 +26,15 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "TripCore | The Art of Escape",
+  title: "TripCore",
   description: "A hyper-fluid, WebGL-enhanced journey through the world's most exclusive destinations.",
   icons: {
-    icon: "/logo.png",
+    icon: [
+      {
+        url: "/logo.png",
+        href: "/logo.png",
+      },
+    ],
   },
 };
 
