@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Map, Plane, Calendar, Heart, Briefcase } from "lucide-react";
 import Link from "next/link";
 
 const SERVICES = [
@@ -10,26 +10,31 @@ const SERVICES = [
     id: "01",
     title: "Domestic & International Tours",
     image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1886&auto=format&fit=crop",
+    icon: Map,
   },
   {
     id: "02",
     title: "Hotel & Flight Bookings",
     image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=2070&auto=format&fit=crop",
+    icon: Plane,
   },
   {
     id: "03",
     title: "Visa Assistance",
     image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop",
+    icon: Calendar,
   },
   {
     id: "04",
     title: "Leisure Packages (Family, Honeymoon, Group/Bachelor)",
     image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop",
+    icon: Heart,
   },
   {
     id: "05",
     title: "Corporate Travel",
     image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=1965&auto=format&fit=crop",
+    icon: Briefcase,
   },
 ];
 
@@ -41,10 +46,9 @@ export const Services = () => {
   const listContainerRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Velocity and Smoothing Variables
+  // Mouse tracking variables
   const mouse = useRef({ x: 0, y: 0 });
   const delayedMouse = useRef({ x: 0, y: 0 });
-  const rotationRef = useRef(0);
 
   useEffect(() => {
     if (!floatingRef.current || !listContainerRef.current) return;
@@ -57,23 +61,18 @@ export const Services = () => {
       mouse.current.y = e.clientY - rect.top;
     };
 
-    const ticker = (time: number, deltaTime: number) => {
-      // Lerp for smooth position
-      const lerpFactor = 0.08;
+    const ticker = () => {
+      // Lerp for smooth position following
+      const lerpFactor = 0.15;
       delayedMouse.current.x += (mouse.current.x - delayedMouse.current.x) * lerpFactor;
       delayedMouse.current.y += (mouse.current.y - delayedMouse.current.y) * lerpFactor;
 
-      // Velocity based rotation (The "Tilt" effect from the video)
-      const diffX = mouse.current.x - delayedMouse.current.x;
-      const targetRotation = gsap.utils.clamp(-20, 20, diffX * 0.4);
-      rotationRef.current += (targetRotation - rotationRef.current) * 0.1;
-
       gsap.set(floating, {
-        x: delayedMouse.current.x,
-        y: delayedMouse.current.y,
-        xPercent: -50,
-        yPercent: -50,
-        rotation: rotationRef.current,
+        // Offset by 15px to sit precisely at the bottom right of the cursor
+        x: delayedMouse.current.x + 15,
+        y: delayedMouse.current.y + 15,
+        xPercent: 0,
+        yPercent: 0,
       });
     };
 
@@ -86,50 +85,72 @@ export const Services = () => {
     };
   }, []);
 
-  // Entrance/Exit Animations (Matching the video's snappiness)
+  // Entrance/Exit Animations & Fixed Tilt
   useEffect(() => {
     if (!floatingRef.current) return;
+
     if (isHovering) {
+      // Fixed tilt to the right (+6 deg)
+      const targetRotation = 6;
+
       gsap.to(floatingRef.current, {
         scale: 1,
         autoAlpha: 1,
-        duration: 0.5,
-        ease: "power4.out",
+        rotation: targetRotation,
+        duration: 0.3,
+        ease: "back.out(1.5)", // Snappy bounce open
       });
     } else {
       gsap.to(floatingRef.current, {
-        scale: 0,
+        scale: 0.5,
         autoAlpha: 0,
-        duration: 0.3,
+        duration: 0.2, // Fast close
         ease: "power2.in",
       });
     }
-  }, [isHovering]);
+  }, [isHovering, currentIndex]);
 
   return (
     <section id="services" className="min-h-screen flex flex-col justify-center py-20 px-10 md:px-20 bg-[#f5f2ed] text-black relative overflow-hidden perspective-2000">
       <div className="relative preserve-3d" ref={listContainerRef}>
-        {/* Floating Preview Card - Optimized as per Video Analysis */}
+
+        {/* Floating Preview Card - Sized down, bottom-right offset, origin-top-left */}
         <div
           ref={floatingRef}
-          className="absolute top-0 left-0 w-56 aspect-[4/3] pointer-events-none z-[100] opacity-0 invisible scale-0 origin-center preserve-3d"
+          className="absolute top-0 left-0 w-48 aspect-[4/3] pointer-events-none z-[100] opacity-0 invisible scale-50 origin-top-left preserve-3d"
           style={{ willChange: "transform, opacity" }}
         >
-          <div className="w-full h-full rounded-2xl overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.35)] bg-white">
-            {/* Smooth transition between images using cross-fade technique if needed, or simple update */}
-            <img 
-              src={activeImage} 
-              className="w-full h-full object-cover transition-all duration-300" 
-              alt="Floating Preview" 
-              loading="lazy" 
+          <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.3)] bg-black relative">
+            {/* Direct image swap */}
+            <img
+              src={activeImage}
+              className="absolute inset-0 w-full h-full object-cover opacity-80"
+              alt="Floating Preview"
             />
+            {/* Dark overlay for contrast */}
+            <div className="absolute inset-0 bg-black/30" />
+
+            {/* Centered White Icon */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {SERVICES[currentIndex]?.icon && (() => {
+                const Icon = SERVICES[currentIndex].icon;
+                const isHeart = Icon === Heart;
+                return (
+                  <Icon
+                    className="w-10 h-10 text-white"
+                    fill={isHeart ? "white" : "none"}
+                    strokeWidth={isHeart ? 0 : 1.5}
+                  />
+                );
+              })()}
+            </div>
           </div>
         </div>
 
         <div className="space-y-10">
           <div onMouseEnter={() => setIsHovering(false)}>
-            <Link 
-              href="/services" 
+            <Link
+              href="/services"
               className="group inline-flex items-center gap-4 hover:text-black/60 transition-all duration-500"
             >
               <h2 className="text-[7vw] md:text-[8vw] font-serif leading-[0.85] tracking-tighter text-black/90 uppercase">
@@ -141,22 +162,15 @@ export const Services = () => {
 
           <div className="space-y-0 max-w-5xl" onMouseLeave={() => setIsHovering(false)}>
             {SERVICES.map((service, idx) => (
-              <div
+              <Link
                 key={service.id}
+                href="/services"
                 className="group py-6 border-b border-black/10 flex justify-between items-center relative z-10"
                 onMouseEnter={() => {
                   setActiveId(service.id);
                   setActiveImage(service.image);
                   setCurrentIndex(idx);
                   setIsHovering(true);
-                  
-                  // Small rotational jolt when switching (as seen in high-end implementations)
-                  if (floatingRef.current) {
-                    gsap.fromTo(floatingRef.current, 
-                      { scale: 0.95 }, 
-                      { scale: 1, duration: 0.4, ease: "back.out(1.7)" }
-                    );
-                  }
                 }}
               >
                 <h3 className={`text-xl md:text-4xl font-serif transition-all duration-500 cursor-pointer w-fit leading-tight  ${activeId === service.id && isHovering ? "text-black translate-x-6" : "text-black/40 translate-x-0"}`}>
@@ -166,7 +180,7 @@ export const Services = () => {
                   <span className="text-[9px] font-jost uppercase tracking-[0.2em] font-semibold text-black/60 ">DISCOVER</span>
                   <div className="w-6 h-px bg-black/20" />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

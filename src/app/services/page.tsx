@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { 
-  Compass, 
-  Hotel, 
-  Map as MapIcon, 
-  Car, 
-  ShieldCheck, 
-  Plane, 
-  Camera, 
+import {
+  Compass,
+  Hotel,
+  Map as MapIcon,
+  Car,
+  ShieldCheck,
+  Plane,
+  Camera,
   Gift,
   ArrowRight,
   UserCheck,
@@ -54,7 +54,7 @@ const services = [
   {
     title: "Flights & Ticket Bookings",
     description: "Domestic and international flight bookings with the best routes and fares.",
-    image: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1539612793508-4539a972242b?auto=format&fit=crop&q=80",
     icon: Plane
   },
   {
@@ -103,10 +103,10 @@ export default function ServicesPage() {
       <section className="relative pt-44 pb-32 px-10 md:px-20 overflow-hidden">
         {/* Ripple Background Pattern - Repositioned and stylized */}
         <div className="absolute top-0 right-0 w-full h-full opacity-[0.08] pointer-events-none z-0">
-          <img 
-            src="/images/ripples.png" 
-            alt="" 
-            className="w-full h-full object-cover origin-top-right scale-125 mix-blend-multiply" 
+          <img
+            src="/images/ripples.png"
+            alt=""
+            className="w-full h-full object-cover origin-top-right scale-125 mix-blend-multiply"
           />
         </div>
 
@@ -121,8 +121,8 @@ export default function ServicesPage() {
                 Seamless Journeys
               </h1>
               <p className="text-gray-500 text-sm md:text-base max-w-lg leading-relaxed font-jost">
-                From travel planning to on-ground experiences, our services 
-                are designed to make every moment of your journey effortless 
+                From travel planning to on-ground experiences, our services
+                are designed to make every moment of your journey effortless
                 and unforgettable.
               </p>
             </div>
@@ -138,16 +138,16 @@ export default function ServicesPage() {
                   </defs>
                 </svg>
 
-                <div 
+                <div
                   className="w-full h-full bg-[#e5e1da] overflow-hidden relative shadow-2xl shadow-black/10"
                   style={{ clipPath: "url(#blob-mask-services)", transform: "translateZ(0) scale(1.1)" }}
                 >
-                  <img 
-                    src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80" 
-                    alt="" 
+                  <img
+                    src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80"
+                    alt=""
                     className="w-full h-full object-cover scale-110"
                   />
-                  <div 
+                  <div
                     className="absolute inset-0 pointer-events-none z-10"
                     style={{
                       background: "radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.3) 100%)",
@@ -170,7 +170,7 @@ export default function ServicesPage() {
                 Everything you need for a perfectly curated journey.
               </p>
             </div>
-            <Link 
+            <Link
               href="/enquiry"
               className="flex items-center gap-3 bg-black text-white px-8 py-4 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-all shadow-xl shadow-black/10 group"
             >
@@ -190,13 +190,13 @@ export default function ServicesPage() {
                 className="group relative"
               >
                 <div className="aspect-[4/3] rounded-[2.5rem] overflow-hidden relative shadow-sm group-hover:shadow-2xl group-hover:shadow-black/10 transition-all duration-700">
-                  <img 
-                    src={service.image} 
-                    alt={service.title} 
+                  <img
+                    src={service.image}
+                    alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  
+
                   {/* Icon Badge - Top Left as in mockup */}
                   <div className="absolute top-6 left-6 w-10 h-10 bg-white/95 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-lg transform group-hover:-translate-y-1 transition-transform">
                     <service.icon className="w-4 h-4 text-black" />
@@ -235,11 +235,11 @@ export default function ServicesPage() {
               <p className="text-xs text-gray-400 font-jost max-w-[280px] mx-auto uppercase tracking-widest leading-loose">
                 Tell us your needs and we'll create a journey just for you.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row items-center gap-4 max-w-md mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="Your email address" 
+                <input
+                  type="email"
+                  placeholder="Your email address"
                   className="w-full bg-white/50 border border-black/5 px-8 py-5 rounded-full text-xs font-jost focus:outline-none focus:border-black/20 shadow-inner"
                 />
                 <button className="whitespace-nowrap bg-black text-white px-10 py-5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-all shadow-xl shadow-black/10">
@@ -249,7 +249,7 @@ export default function ServicesPage() {
             </div>
 
             <div className="hidden lg:block h-72 rounded-[3rem] overflow-hidden shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-700">
-              <img src="https://images.unsplash.com/photo-1530789253516-ad160829c9ad?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="" />
+              <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&q=80" className="w-full h-full object-cover" alt="" />
             </div>
           </div>
         </div>
