@@ -50,7 +50,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
         <div className="hidden lg:flex items-center gap-12">
           {[
             { name: "Packages", href: "/packages" },
-            { name: "Services", href: "/#services" },
+            { name: "Services", href: "/services" },
             { name: "About", href: "/#about" },
             { name: "Contact", href: "/enquiry" }
           ].map((item) => (
