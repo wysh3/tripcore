@@ -44,7 +44,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
             <img 
               src="/logo.png" 
               alt="TRIPCORE" 
-              className={`h-8 w-auto object-contain ${isDark ? "brightness-0" : "brightness-0 invert"}`} 
+              className={`h-11 w-auto object-contain ${isDark ? "brightness-0" : "brightness-0 invert"}`} 
             />
           </Link>
         </div>
