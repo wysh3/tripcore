@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Jost, Roboto } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { CustomScrollbar } from "@/components/ui/CustomScrollbar";
+import { Preloader } from "@/components/ui/Preloader";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -47,6 +48,7 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${jost.variable} ${roboto.variable}`}>
       <body className="antialiased selection:bg-accent-blue selection:text-white overflow-x-hidden">
         <Providers>
+          <Preloader />
           <CustomScrollbar />
           {children}
         </Providers>
