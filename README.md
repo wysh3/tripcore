@@ -1,42 +1,43 @@
 # TripCore - The Art of Escape
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwysh3%2Ftripcore-app&env=DATABASE_URL,NEXTAUTH_SECRET&project-name=tripcore-app&repository-name=tripcore-app)
+
 Hey there! Welcome to TripCore. This is a high-end luxury travel platform built with Next.js, designed to look and feel premium with smooth animations and a minimalist editorial aesthetic.
 
-## How to get this running
+## 🚀 Quick Start
 
-Getting started is pretty straightforward. Just follow these steps:
-
-1.  **Install dependencies**:
+1.  **Clone & Install**:
     ```bash
+    git clone https://github.com/wysh3/tripcore-app.git
+    cd tripcore-app
     npm install
     ```
 
-2.  **Setup your environment**:
-    Copy `.env.example` to `.env` and add your PostgreSQL database URL:
-    ```bash
-    cp .env.example .env
-    ```
+2.  **Database (Supabase)**:
+    - Create a free project on [Supabase](https://supabase.com/).
+    - Go to **Project Settings > Database**.
+    - Copy the **Connection String** (use the one for Prisma/Direct connection).
+    - Add it to your `.env` as `DATABASE_URL`.
 
-3.  **Sync the database**:
-    We use Prisma to keep things simple. Run this to set up your tables:
+3.  **Setup DB**:
     ```bash
     npx prisma db push
     ```
 
-4.  **Fire it up**:
+4.  **Run**:
     ```bash
     npm run dev
     ```
-    Your app should now be running at `http://localhost:3000`.
 
-## Deployment (The easy way)
+## 🌍 Deployment
 
-The easiest way to put this live is using **Vercel**. 
+The easiest way to go live:
 
-1.  Push your code to GitHub.
-2.  Import the project in Vercel.
-3.  Add your `DATABASE_URL` in the environment variables.
-4.  Hit Deploy!
+1.  Click the **Deploy to Vercel** button above.
+2.  Connect your GitHub.
+3.  Paste your **Supabase Connection String** into the `DATABASE_URL` variable.
+4.  Add any random string to `NEXTAUTH_SECRET`.
+5.  Done! Vercel handles the rest.
 
 ## Tech Stack
 - **Framework**: Next.js 15
@@ -46,6 +47,6 @@ The easiest way to put this live is using **Vercel**.
 - **Icons**: Lucide React
 
 ---
-**Version**: 1.0.0
-**Author**: [wysh3](https://github.com/wysh3/)
-**License**: MIT
+**Version**: 1.0.0 | **Author**: [wysh3](https://github.com/wysh3/) | **License**: MIT
+
+
