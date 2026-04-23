@@ -39,11 +39,13 @@ export const Navbar = ({ variant }: NavbarProps) => {
         <div className="flex items-center gap-16">
           <Link 
             href="/" 
-            className={`text-3xl font-serif tracking-tighter transition-colors duration-500 ${
-              isDark ? "text-black" : "text-white"
-            }`}
+            className="transition-opacity duration-500 hover:opacity-70"
           >
-            TRIPCORE
+            <img 
+              src="/logo.png" 
+              alt="TRIPCORE" 
+              className={`h-8 w-auto object-contain ${isDark ? "brightness-0" : "brightness-0 invert"}`} 
+            />
           </Link>
         </div>
 

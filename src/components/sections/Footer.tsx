@@ -98,7 +98,10 @@ export const Footer = () => {
         <div className="w-full text-white/90">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 items-end">
             {/* Brand */}
-            <div className="lg:col-span-4">
+            <div className="lg:col-span-4 flex flex-col gap-8">
+              <Link href="/">
+                <img src="/logo.png" alt="TRIPCORE" className="h-12 w-auto object-contain brightness-0 invert" />
+              </Link>
               <h1 className="text-4xl md:text-5xl font-serif leading-tight text-white font-medium uppercase tracking-tighter">
                 Art of Escape<br />Travel
               </h1>

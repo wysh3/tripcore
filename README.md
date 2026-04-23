@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TripCore - The Art of Escape
 
-## Getting Started
+Hey there! Welcome to TripCore. This is a high-end luxury travel platform built with Next.js, designed to look and feel premium with smooth animations and a minimalist editorial aesthetic.
 
-First, run the development server:
+## How to get this running
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Getting started is pretty straightforward. Just follow these steps:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2.  **Setup your environment**:
+    Copy `.env.example` to `.env` and add your PostgreSQL database URL:
+    ```bash
+    cp .env.example .env
+    ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3.  **Sync the database**:
+    We use Prisma to keep things simple. Run this to set up your tables:
+    ```bash
+    npx prisma db push
+    ```
 
-## Learn More
+4.  **Fire it up**:
+    ```bash
+    npm run dev
+    ```
+    Your app should now be running at `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment (The easy way)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The easiest way to put this live is using **Vercel**. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  Push your code to GitHub.
+2.  Import the project in Vercel.
+3.  Add your `DATABASE_URL` in the environment variables.
+4.  Hit Deploy!
 
-## Deploy on Vercel
+## Tech Stack
+- **Framework**: Next.js 15
+- **Styling**: Tailwind CSS
+- **Animations**: GSAP & Framer Motion
+- **Database**: Prisma with PostgreSQL
+- **Icons**: Lucide React
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+**Version**: 1.0.0
+**Author**: [wysh3](https://github.com/wysh3/)
+**License**: MIT
