@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { TopPackages } from "@/components/sections/TopPackages";
 import { Hero } from "@/components/sections/Hero";
 import { AboutUs } from "@/components/sections/AboutUs";
@@ -54,7 +55,7 @@ export default async function Home() {
     <main className="relative">
       <Navbar />
       <Hero backgroundImage={settings.hero_bg} />
-      <AboutUs />
+      <AboutUs bannerImage={settings.feature_banner} />
       <TopPackages packages={packages} />
       <Destinations destinations={destinations} />
       <Services />

@@ -113,13 +113,18 @@ model Destination {
 }
 
 model Enquiry {
-  id          String   @id @default(cuid())
-  name        String
-  email       String
-  phone       String?
-  message     String?  @db.Text
-  status      String   @default("NEW") // NEW, CONTACTED, CONVERTED
-  createdAt   DateTime @default(now())
+  id              String    @id @default(cuid())
+  name            String
+  email           String
+  phone           String?
+  destination     String?
+  checkIn         DateTime?
+  checkOut        DateTime?
+  adults          Int?
+  children        Int?
+  message         String?   @db.Text
+  status          String    @default("NEW") // NEW, CONTACTED, CONVERTED
+  createdAt       DateTime  @default(now())
   
   @@map("enquiries")
 }

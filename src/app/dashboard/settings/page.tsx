@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { Save, Image as ImageIcon, Layout } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -9,6 +10,7 @@ export default function SettingsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [settings, setSettings] = useState({
     hero_bg: "",
+    feature_banner: "",
   });
 
   useEffect(() => {
@@ -16,6 +18,7 @@ export default function SettingsPage() {
       const data = await getSettings();
       setSettings({
         hero_bg: data.hero_bg || "",
+        feature_banner: data.feature_banner || "",
       });
     }
     fetchSettings();
@@ -89,7 +92,43 @@ export default function SettingsPage() {
           </div>
         </div>
 
-
+        {/* Feature Section */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-gray-200 bg-gray-50/50 flex items-center gap-2">
+            <ImageIcon className="w-4 h-4 text-gray-400" />
+            <h2 className="font-semibold text-gray-900">Feature Section</h2>
+          </div>
+          <div className="p-6 space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-900">Banner Image URL</label>
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <input 
+                    type="text" 
+                    name="feature_banner"
+                    value={settings.feature_banner}
+                    onChange={handleInputChange}
+                    placeholder="https://example.com/banner.jpg"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:ring-1 focus:ring-gray-900"
+                  />
+                </div>
+                <button 
+                  onClick={() => handleSave("feature_banner")}
+                  disabled={isSubmitting}
+                  className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center gap-2"
+                >
+                  <Save className="w-4 h-4" />
+                  Update
+                </button>
+              </div>
+            </div>
+            {settings.feature_banner && (
+              <div className="relative aspect-[21/9] rounded-lg overflow-hidden bg-gray-100 border border-gray-100">
+                <img src={settings.feature_banner} alt="Banner Preview" className="w-full h-full object-cover" />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

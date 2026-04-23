@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { CalendarDays, DollarSign, CheckCircle2, Clock, CheckSquare } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { EnquiryStatusSelect } from "../components/EnquiryStatusSelect";

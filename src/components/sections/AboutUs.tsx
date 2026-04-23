@@ -7,7 +7,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-export const AboutUs = () => {
+interface AboutUsProps {
+  bannerImage?: string;
+}
+
+export const AboutUs = ({ bannerImage }: AboutUsProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const innerImageRef = useRef<HTMLImageElement>(null);
@@ -115,7 +119,7 @@ export const AboutUs = () => {
             >
               <img
                 ref={innerImageRef}
-                src="/images/rajasthan.png"
+                src={bannerImage || "/images/rajasthan.png"}
                 alt="Architectural Detail"
                 className="w-full h-full object-cover brightness-[0.85] contrast-[1.15] origin-center"
               />

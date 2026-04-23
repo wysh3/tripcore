@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { BookingModal } from "@/components/sections/BookingModal";
 import { 
   MapPin, 
   Clock, 
@@ -52,6 +53,7 @@ interface Package {
 
 export default function PackageDetailClient({ pkg }: { pkg: Package }) {
   const [activeSection, setActiveSection] = useState("overview");
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   const tabs = [
     { id: "overview", label: "Overview" },
@@ -376,12 +378,12 @@ export default function PackageDetailClient({ pkg }: { pkg: Package }) {
                 </div>
 
                 <div className="space-y-4">
-                  <Link
-                    href={`/enquiry?package=${pkg.slug}`}
+                  <button
+                    onClick={() => setIsBookingOpen(true)}
                     className="block w-full bg-black text-white text-center py-5 rounded-[1.5rem] text-[10px] font-bold uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg shadow-black/10"
                   >
                     Enquire Now
-                  </Link>
+                  </button>
                   
                   <div className="space-y-4 pt-4">
                     <div className="flex items-center gap-3">
@@ -468,6 +470,12 @@ export default function PackageDetailClient({ pkg }: { pkg: Package }) {
           </aside>
         </div>
       </section>
+
+      <BookingModal 
+        isOpen={isBookingOpen} 
+        onClose={() => setIsBookingOpen(false)} 
+        defaultPackage={pkg.title}
+      />
 
       <Footer />
     </main>

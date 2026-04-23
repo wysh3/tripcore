@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Users as UsersIcon, ShieldAlert, UserCheck, Plus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";

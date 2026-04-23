@@ -7,6 +7,11 @@ export async function createEnquiry(data: {
   name: string;
   email: string;
   phone?: string;
+  destination?: string;
+  checkIn?: Date;
+  checkOut?: Date;
+  adults?: number;
+  children?: number;
   message?: string;
 }) {
   try {
@@ -15,6 +20,11 @@ export async function createEnquiry(data: {
         name: data.name,
         email: data.email,
         phone: data.phone || null,
+        destination: data.destination || null,
+        checkIn: data.checkIn || null,
+        checkOut: data.checkOut || null,
+        adults: data.adults || null,
+        children: data.children || null,
         message: data.message || null,
         status: "NEW",
       },
