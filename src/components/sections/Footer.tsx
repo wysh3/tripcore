@@ -100,7 +100,7 @@ export const Footer = () => {
             {/* Brand */}
             <div className="lg:col-span-4 flex flex-col gap-8">
               <Link href="/">
-                <img src="/logo.png" alt="TRIPCORE" className="h-16 w-auto object-contain brightness-0 invert" />
+                <img src="/logo.png" alt="TRIPCORE" className="h-20 w-auto object-contain brightness-0 invert" />
               </Link>
               <h1 className="text-4xl md:text-5xl font-serif leading-tight text-white font-medium uppercase tracking-tighter">
                 Art of Escape<br />Travel

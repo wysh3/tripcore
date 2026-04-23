@@ -241,7 +241,7 @@ async function main() {
   await prisma.homepageSetting.create({
     data: {
       key: 'hero_bg',
-      value: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80'
+      value: 'https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop'
     }
   });
 
