@@ -92,6 +92,7 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  password      String?
   image         String?
   role          String    @default("USER") // SUPERADMIN, ADMIN, USER
   
@@ -149,6 +150,7 @@ model Review {
   destinationId String?
   destination   Destination? @relation(fields: [destinationId], references: [id])
   rating        Int      // 1 to 5
+  image         String?
   videoUrl      String?
   text          String?  @db.Text
   createdAt     DateTime @default(now())

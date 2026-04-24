@@ -16,6 +16,7 @@ import {
   MessageSquare
 } from "lucide-react";
 import clsx from "clsx";
+import { signOut } from "next-auth/react";
 
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -79,6 +80,7 @@ export default function DashboardSidebar() {
             Settings
           </Link>
           <button
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-red-600 hover:bg-red-50 w-full text-left"
           >
             <LogOut className="w-5 h-5" />

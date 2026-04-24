@@ -22,6 +22,7 @@ export default function EditReviewPage() {
     customerName: "",
     rating: "5",
     text: "",
+    image: "",
     videoUrl: "",
     packageId: "",
     destinationId: "",
@@ -38,6 +39,7 @@ export default function EditReviewPage() {
           customerName: reviewData.customerName,
           rating: reviewData.rating.toString(),
           text: reviewData.text ?? "",
+          image: reviewData.image ?? "",
           videoUrl: reviewData.videoUrl ?? "",
           packageId: reviewData.packageId ?? "",
           destinationId: reviewData.destinationId ?? "",
@@ -190,6 +192,18 @@ export default function EditReviewPage() {
               rows={5}
               placeholder="Enter the customer testimonial here..."
               className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 transition-all text-sm resize-none"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-900">Review Image URL (Optional)</label>
+            <input 
+              type="text" 
+              name="image"
+              value={formData.image}
+              onChange={handleInputChange}
+              placeholder="https://..."
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 transition-all text-sm"
             />
           </div>
 

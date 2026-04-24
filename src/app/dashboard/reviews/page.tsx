@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import { Plus, Star, Video } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { ReviewDeleteButton } from "../components/ReviewDeleteButton";
 
@@ -63,8 +64,12 @@ export default async function ReviewsPage() {
           ) : (
             reviews.map((review) => (
               <div key={review.id} className="p-6 hover:bg-gray-50 transition-colors flex gap-4">
-                <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500 text-sm flex-shrink-0">
-                  {review.customerName.charAt(0).toUpperCase()}
+                <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500 text-sm flex-shrink-0 relative overflow-hidden">
+                  {review.image ? (
+                    <Image src={review.image} alt="" fill className="object-cover" />
+                  ) : (
+                    review.customerName.charAt(0).toUpperCase()
+                  )}
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-start mb-1">

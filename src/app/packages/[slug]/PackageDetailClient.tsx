@@ -370,7 +370,7 @@ export default function PackageDetailClient({ pkg }: { pkg: Package }) {
                 <div className="space-y-1">
                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">From</p>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-serif text-gray-900">₹{pkg.sellingPrice.toLocaleString("en-IN")}</span>
+                    <span className="text-4xl font-sans text-gray-900">₹{pkg.sellingPrice.toLocaleString("en-IN")}</span>
                     <span className="text-xs text-gray-400 font-jost">/ person</span>
                   </div>
                   <p className="text-[9px] text-gray-400 font-jost italic">Price varies by season and group size</p>

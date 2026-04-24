@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface DestinationItem {
   title: string;
@@ -96,9 +97,11 @@ export const Destinations = ({ destinations }: DestinationsProps) => {
                   href={`/packages?destination=${encodeURIComponent(dest.title)}`}
                   className="group relative rounded-[1rem] overflow-hidden bg-white shadow-sm h-[200px] md:h-[260px] cursor-pointer"
                 >
-                  <img 
+                  <Image 
                     src={dest.image} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
                     alt={dest.title}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />

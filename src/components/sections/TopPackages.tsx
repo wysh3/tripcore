@@ -5,6 +5,7 @@ import { gsap } from "@/lib/gsapConfig";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 
 interface PackageItem {
   id: string;
@@ -158,10 +159,12 @@ export const TopPackages = ({ packages }: TopPackagesProps) => {
             href={`/packages/${pkg.slug || pkg.id}`}
             className="package-card group relative flex-shrink-0 w-[280px] md:w-[380px] aspect-[10/14] rounded-[1rem] overflow-hidden bg-white snap-start pointer-events-none md:pointer-events-auto"
           >
-            <img
+            <Image
               src={pkg.image}
               alt={pkg.title}
-              className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
+              fill
+              sizes="(max-width: 768px) 280px, 380px"
+              className="object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
@@ -174,7 +177,7 @@ export const TopPackages = ({ packages }: TopPackagesProps) => {
                   </p>
                 </div>
                 <div className="text-right flex-shrink-0 mb-1">
-                  <span className="text-base font-serif opacity-90">{pkg.price}</span>
+                  <span className="text-base font-sans opacity-90">{pkg.price}</span>
                 </div>
               </div>
             </div>

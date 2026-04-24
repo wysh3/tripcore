@@ -23,15 +23,14 @@ export const TransitionProvider = ({ children }: { children: React.ReactNode }) 
   }, [pathname, lenis, isFirstMount]);
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ 
-          duration: 0.8, 
-          ease: [0.32, 0.72, 0, 1], // Custom cinematic easing
+          duration: 0.3, 
+          ease: "easeOut",
         }}
         className="w-full"
       >

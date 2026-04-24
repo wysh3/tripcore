@@ -65,7 +65,7 @@ export default async function DashboardOverview() {
     <div className="space-y-8 font-sans pb-20">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight font-sans">Dashboard</h1>
           <p className="text-gray-500 mt-1">Welcome back, here's what's happening today.</p>
         </div>
         <div className="hidden sm:flex gap-2">
@@ -100,7 +100,7 @@ export default async function DashboardOverview() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
-              <h2 className="font-bold text-gray-900">Activity Overview</h2>
+              <h2 className="font-bold text-gray-900 font-sans">Activity Overview</h2>
             </div>
             <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
               {secondaryStats.map((item) => (
@@ -115,19 +115,9 @@ export default async function DashboardOverview() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gray-900 rounded-2xl p-6 text-white relative overflow-hidden shadow-xl">
-              <div className="relative z-10">
-                <h3 className="text-lg font-bold mb-2">Need Help?</h3>
-                <p className="text-gray-400 text-sm mb-6 leading-relaxed">Check the documentation for managing packages and site settings.</p>
-                <button className="bg-white text-gray-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-100 transition-colors">
-                  View Guide
-                </button>
-              </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
-            </div>
+          <div className="grid grid-cols-1 gap-6">
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Quick Actions</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 font-sans">Quick Actions</h3>
               <p className="text-gray-500 text-sm mb-4 leading-relaxed">Jump to common tasks quickly.</p>
               <div className="flex flex-col gap-2">
                 <Link href="/dashboard/packages/new" className="inline-block bg-gray-100 text-gray-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors text-center">
@@ -144,7 +134,7 @@ export default async function DashboardOverview() {
         {/* Real-time Activity Logs */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
           <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/30">
-            <h2 className="font-bold text-gray-900">System Activity</h2>
+            <h2 className="font-bold text-gray-900 font-sans">System Activity</h2>
           </div>
           <div className="p-6 space-y-6 flex-1">
             {recentLogs.length === 0 ? (

@@ -7,7 +7,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 font-sans">
       <Toaster position="top-right" richColors />
       <DashboardSidebar />
       <main className="flex-1 overflow-y-auto p-8" data-lenis-prevent>

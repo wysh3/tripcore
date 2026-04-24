@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface AboutUsProps {
   bannerImage?: string;
@@ -117,11 +118,12 @@ export const AboutUs = ({ bannerImage }: AboutUsProps) => {
               className="w-full h-full bg-[#e5e1da] overflow-hidden relative" 
               style={{ clipPath: "url(#blob-mask)", transform: "translateZ(0)" }}
             >
-              <img
+              <Image
                 ref={innerImageRef}
                 src={bannerImage || "/images/rajasthan.png"}
                 alt="Architectural Detail"
-                className="w-full h-full object-cover brightness-[0.85] contrast-[1.15] origin-center"
+                fill
+                className="object-cover brightness-[0.85] contrast-[1.15] origin-center"
               />
               <div 
                 className="absolute inset-0 pointer-events-none z-10"

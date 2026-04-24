@@ -13,11 +13,15 @@ import { BookingModal } from "./BookingModal";
 
 export const Navbar = ({ variant }: NavbarProps) => {
   const pathname = usePathname();
+  const isDashboard = pathname?.startsWith("/dashboard");
+  const isLogin = pathname === "/login";
   const [isScrolled, setIsScrolled] = useState(false);
+
+  if (isDashboard || isLogin) return null;
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   // Auto-determine variant based on route
-  const isDarkPageRoute = pathname?.startsWith("/packages") || pathname?.startsWith("/services") || pathname?.startsWith("/dashboard");
+  const isDarkPageRoute = ["/packages", "/services", "/about", "/enquiry"].some(p => pathname?.startsWith(p));
   const isDark = isDarkPageRoute || isScrolled;
 
   useEffect(() => {
@@ -74,14 +78,14 @@ export const Navbar = ({ variant }: NavbarProps) => {
                 {item.name}
               </Link>
             ))}
-            <button
-              onClick={() => setIsBookingOpen(true)}
+            <Link 
+              href="/enquiry"
               className={`font-jost text-[11px] font-semibold uppercase tracking-[0.3em] transition-colors duration-500 ${
                 isDark ? "text-black/60 hover:text-accent-blue" : "text-white/70 hover:text-white"
               }`}
             >
-              Contact
-            </button>
+              Enquire
+            </Link>
           </div>
 
           <button 
@@ -92,7 +96,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
                 : "bg-white/90 backdrop-blur-md text-black hover:bg-white"
             }`}
           >
-            Book Now
+            Reserve
           </button>
         </div>
       </motion.nav>

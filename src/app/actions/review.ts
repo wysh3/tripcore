@@ -17,6 +17,7 @@ export async function createReview(formData: any) {
         videoUrl: formData.videoUrl || null,
         packageId: formData.packageId || null,
         destinationId: formData.destinationId || null,
+        image: formData.image || null,
       },
     });
 
@@ -52,6 +53,7 @@ export async function updateReview(id: string, formData: any) {
         videoUrl: formData.videoUrl || null,
         packageId: formData.packageId || null,
         destinationId: formData.destinationId || null,
+        image: formData.image || null,
       },
     });
     revalidatePath("/dashboard/reviews");

@@ -9,17 +9,20 @@ import { BookingModal } from "./BookingModal";
 
 export const MobileNavbar = () => {
   const pathname = usePathname();
+  const isDashboard = pathname?.startsWith("/dashboard");
+
+  if (isDashboard) return null;
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   const navItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "Packages", href: "/packages", icon: Compass },
     { name: "Services", href: "/services", icon: Briefcase },
-    { name: "Contact", href: "/enquiry", icon: MessageSquare },
+    { name: "Enquire", href: "/enquiry", icon: MessageSquare },
   ];
 
-  // Don't show in dashboard
-  if (pathname?.startsWith("/dashboard")) return null;
+  // Don't show in dashboard or login
+  if (pathname?.startsWith("/dashboard") || pathname === "/login") return null;
 
   return (
     <>
@@ -61,7 +64,7 @@ export const MobileNavbar = () => {
             className="bg-white text-black p-4 px-6 rounded-[1.8rem] flex items-center gap-2 group transition-all duration-300 active:scale-95 shadow-lg flex-shrink-0"
           >
             <Plus className="w-5 h-5" />
-            <span className="text-[10px] font-bold uppercase tracking-widest pr-1">Book</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest pr-1">Reserve</span>
           </button>
         </div>
       </motion.div>

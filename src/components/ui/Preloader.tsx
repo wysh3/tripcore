@@ -30,21 +30,21 @@ export const Preloader = () => {
         opacity: 1,
         scale: 1,
         letterSpacing: "0.5em",
-        duration: 2,
+        duration: 1.2,
         ease: "power2.out"
       })
       .to(logoRef.current, {
         opacity: 0,
-        scale: 1.1,
-        duration: 1,
+        scale: 1.05,
+        duration: 0.6,
         ease: "power2.inOut",
-        delay: 0.5
+        delay: 0.2
       })
       .to(containerRef.current, {
         opacity: 0,
-        duration: 1.2,
+        duration: 0.8,
         ease: "power3.inOut"
-      }, "-=0.2");
+      }, "-=0.1");
     });
 
     return () => ctx.revert();

@@ -15,7 +15,11 @@ export default async function Home() {
     await Promise.all([
       prisma.package.findMany({ take: 10, orderBy: { id: "desc" } }),
       prisma.destination.findMany({ take: 6, orderBy: { id: "asc" } }),
-      prisma.review.findMany({ take: 5, orderBy: { createdAt: "desc" } }),
+      prisma.review.findMany({ 
+        take: 5, 
+        orderBy: { createdAt: "desc" },
+        include: { package: true, destination: true }
+      }),
       prisma.homepageSetting.findMany(),
     ]);
 
@@ -42,13 +46,13 @@ export default async function Home() {
     category: d.country.toLowerCase() === "india" ? "Domestic" : "International",
   }));
 
-  const reviews = rawReviews.map((r: Review) => ({
+  const reviews = rawReviews.map((r: any) => ({
     id: r.id,
     name: r.customerName,
     role: "Traveller",
-    location: "Verified Guest",
+    location: r.destination?.city || r.package?.destination || "Verified Guest",
     content: r.text || "An unforgettable journey.",
-    image: "/images/rajasthan.png",
+    image: r.image || r.package?.mainImage || r.destination?.image || "/images/hero.png",
   }));
 
   return (

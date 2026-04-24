@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsapConfig";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface HeroProps {
   backgroundImage?: string;
@@ -55,10 +56,12 @@ export const Hero = ({ backgroundImage }: HeroProps) => {
     >
       {/* Background with specific texture/image */}
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src={backgroundImage || defaultImage}
           alt="Luxury Escape"
-          className="w-full h-full object-cover brightness-[0.75] contrast-[1.1]"
+          fill
+          priority
+          className="object-cover brightness-[0.75] contrast-[1.1]"
         />
         <div className="absolute inset-0 bg-black/10" />
       </div>

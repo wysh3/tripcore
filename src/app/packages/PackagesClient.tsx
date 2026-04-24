@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { 
@@ -125,10 +126,11 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
                   className="w-full h-full bg-white overflow-hidden shadow-2xl shadow-black/10"
                   style={{ clipPath: "url(#blob-mask-final)" }}
                 >
-                  <img 
+                  <Image 
                     src={packages[0]?.mainImage || "/images/hero.png"} 
                     alt="" 
-                    className="w-full h-full object-cover scale-110"
+                    fill
+                    className="object-cover scale-110"
                   />
                 </div>
               </div>
@@ -308,10 +310,12 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
                   className="group bg-white rounded-[2.5rem] overflow-hidden border border-black/5 shadow-sm hover:shadow-2xl hover:shadow-black/5 transition-all duration-700"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
-                    <img 
+                    <Image 
                       src={pkg.mainImage || "/images/rajasthan.png"} 
                       alt={pkg.title} 
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
                     
                     {/* CARD BADGES */}
@@ -364,7 +368,7 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
                     <div className="flex justify-between items-center pt-4">
                       <div className="space-y-0.5">
                         <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">From</p>
-                        <p className="text-lg font-serif text-gray-900">
+                        <p className="text-lg font-sans text-gray-900">
                           ₹{pkg.sellingPrice.toLocaleString("en-IN")} <span className="text-[10px] text-gray-400 font-sans font-normal lowercase">/ person</span>
                         </p>
                       </div>
