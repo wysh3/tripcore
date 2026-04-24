@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { createDestination } from "@/app/actions/destination";
 import { toast } from "sonner";
 
+import { CustomSelect } from "@/components/ui/CustomSelect";
+
 export default function NewDestinationPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,6 +23,10 @@ export default function NewDestinationPage() {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleValueChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -108,21 +114,21 @@ export default function NewDestinationPage() {
 
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-900">Region (Optional)</label>
-            <select 
-              name="region" 
-              value={formData.region} 
-              onChange={handleInputChange} 
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 transition-all text-sm bg-white"
-            >
-              <option value="">Select Region</option>
-              <option value="Asia">Asia</option>
-              <option value="Europe">Europe</option>
-              <option value="North America">North America</option>
-              <option value="South America">South America</option>
-              <option value="Africa">Africa</option>
-              <option value="Oceania">Oceania</option>
-              <option value="Middle East">Middle East</option>
-            </select>
+            <CustomSelect 
+              options={[
+                { value: "Asia", label: "Asia" },
+                { value: "Europe", label: "Europe" },
+                { value: "North America", label: "North America" },
+                { value: "South America", label: "South America" },
+                { value: "Africa", label: "Africa" },
+                { value: "Oceania", label: "Oceania" },
+                { value: "Middle East", label: "Middle East" },
+              ]}
+              value={formData.region}
+              onChange={(val) => handleValueChange("region", val)}
+              placeholder="Select Region"
+              className="!rounded-lg !py-2"
+            />
           </div>
 
           <div className="space-y-2">

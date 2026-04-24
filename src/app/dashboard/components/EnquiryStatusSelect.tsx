@@ -9,6 +9,8 @@ interface EnquiryStatusSelectProps {
   currentStatus: string;
 }
 
+import { CustomSelect } from "../../../components/ui/CustomSelect";
+
 export function EnquiryStatusSelect({ enquiryId, currentStatus }: EnquiryStatusSelectProps) {
   const [status, setStatus] = useState(currentStatus);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -27,22 +29,20 @@ export function EnquiryStatusSelect({ enquiryId, currentStatus }: EnquiryStatusS
     }
   };
 
-  const colorMap: Record<string, string> = {
-    NEW: "text-blue-600",
-    CONTACTED: "text-orange-600",
-    CONVERTED: "text-green-600",
-  };
+  const statusOptions = [
+    { value: "NEW", label: "New" },
+    { value: "CONTACTED", label: "Contacted" },
+    { value: "CONVERTED", label: "Converted" },
+  ];
 
   return (
-    <select
-      value={status}
-      onChange={(e) => handleChange(e.target.value)}
-      disabled={isUpdating}
-      className={`text-xs font-semibold border-0 bg-transparent focus:ring-0 cursor-pointer disabled:opacity-50 ${colorMap[status] ?? "text-gray-600"}`}
-    >
-      <option value="NEW">New</option>
-      <option value="CONTACTED">Contacted</option>
-      <option value="CONVERTED">Converted</option>
-    </select>
+    <div className="w-32">
+      <CustomSelect
+        options={statusOptions}
+        value={status}
+        onChange={handleChange}
+        className="!py-1.5 !px-3 !rounded-lg !text-[10px]"
+      />
+    </div>
   );
 }

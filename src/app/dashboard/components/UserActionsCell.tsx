@@ -9,6 +9,8 @@ interface UserActionsCellProps {
   userRole: string;
 }
 
+import { CustomSelect } from "../../../components/ui/CustomSelect";
+
 export function UserActionsCell({ userId, userRole }: UserActionsCellProps) {
   const [role, setRole] = useState(userRole);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -46,16 +48,18 @@ export function UserActionsCell({ userId, userRole }: UserActionsCellProps) {
 
   return (
     <div className="flex items-center gap-3 justify-end">
-      <select
-        value={role}
-        onChange={(e) => handleRoleChange(e.target.value)}
-        disabled={isUpdatingRole}
-        className="text-xs border border-gray-200 rounded-md px-2 py-1 bg-white text-gray-700 focus:ring-1 focus:ring-gray-900 outline-none disabled:opacity-50 cursor-pointer"
-      >
-        <option value="USER">USER</option>
-        <option value="ADMIN">ADMIN</option>
-        <option value="SUPERADMIN">SUPERADMIN</option>
-      </select>
+      <div className="w-32">
+        <CustomSelect
+          options={[
+            { value: "USER", label: "USER" },
+            { value: "ADMIN", label: "ADMIN" },
+            { value: "SUPERADMIN", label: "SUPERADMIN" },
+          ]}
+          value={role}
+          onChange={handleRoleChange}
+          className="!py-1 !px-2 !rounded-md !text-[10px]"
+        />
+      </div>
       <button
         onClick={handleDelete}
         disabled={isDeleting}

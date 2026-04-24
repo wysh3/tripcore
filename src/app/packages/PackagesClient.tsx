@@ -38,6 +38,8 @@ interface PackagesClientProps {
   destinations: string[];
 }
 
+import { CustomSelect } from "@/components/ui/CustomSelect";
+
 export default function PackagesClient({ packages, destinations }: PackagesClientProps) {
   const searchParams = useSearchParams();
   const [priceRange, setPriceRange] = useState(3000);
@@ -45,12 +47,12 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
   const [selectedDestination, setSelectedDestination] = useState<string>("All Destinations");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("Popular");
+  const [duration, setDuration] = useState("Any Duration");
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     const dest = searchParams.get("destination");
     if (dest) {
-      // Find matching destination in our list or just set it
       setSelectedDestination(dest);
     }
   }, [searchParams]);
@@ -62,7 +64,13 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
                           pkg.destination?.toLowerCase().includes(selectedDestination.toLowerCase());
       const matchesSearch = pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             pkg.destination?.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesPrice && matchesDest && matchesSearch;
+      
+      let matchesDuration = true;
+      if (duration === "1-5 Days") matchesDuration = (pkg.durationDays || 0) <= 5;
+      if (duration === "5-10 Days") matchesDuration = (pkg.durationDays || 0) > 5 && (pkg.durationDays || 0) <= 10;
+      if (duration === "10+ Days") matchesDuration = (pkg.durationDays || 0) > 10;
+
+      return matchesPrice && matchesDest && matchesSearch && matchesDuration;
     })
     .sort((a, b) => {
       if (sortBy === "Price: Low to High") return a.sellingPrice - b.sellingPrice;
@@ -75,6 +83,7 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
     setSelectedDestination("All Destinations");
     setSearchTerm("");
     setSortBy("Popular");
+    setDuration("Any Duration");
   };
 
   return (
@@ -192,33 +201,28 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
               {/* Destination Dropdown */}
               <div className="space-y-3">
                 <label className="text-xs font-bold text-gray-900 uppercase tracking-wider">Destination</label>
-                <div className="relative">
-                  <select 
-                    value={selectedDestination}
-                    onChange={(e) => setSelectedDestination(e.target.value)}
-                    className="w-full bg-transparent border border-black/10 rounded-xl px-4 py-3 text-xs appearance-none focus:outline-none focus:border-black/30"
-                  >
-                    <option>All Destinations</option>
-                    {destinations.map(dest => (
-                      <option key={dest} value={dest}>{dest}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
-                </div>
+                <CustomSelect 
+                  options={["All Destinations", ...destinations].map(d => ({ value: d, label: d }))}
+                  value={selectedDestination}
+                  onChange={(val) => setSelectedDestination(val)}
+                  className="!rounded-xl !py-3"
+                />
               </div>
 
               {/* Duration Dropdown */}
               <div className="space-y-3">
                 <label className="text-xs font-bold text-gray-900 uppercase tracking-wider">Duration</label>
-                <div className="relative">
-                  <select className="w-full bg-transparent border border-black/10 rounded-xl px-4 py-3 text-xs appearance-none focus:outline-none focus:border-black/30">
-                    <option>Any Duration</option>
-                    <option>1-5 Days</option>
-                    <option>5-10 Days</option>
-                    <option>10+ Days</option>
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
-                </div>
+                <CustomSelect 
+                  options={[
+                    { value: "Any Duration", label: "Any Duration" },
+                    { value: "1-5 Days", label: "1-5 Days" },
+                    { value: "5-10 Days", label: "5-10 Days" },
+                    { value: "10+ Days", label: "10+ Days" },
+                  ]}
+                  value={duration}
+                  onChange={(val) => setDuration(val)}
+                  className="!rounded-xl !py-3"
+                />
               </div>
 
               {/* Price Range Slider */}
@@ -228,8 +232,8 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between text-[10px] text-gray-400 font-jost">
-                    <span>$200</span>
-                    <span>$3000+</span>
+                    <span>₹20,000</span>
+                    <span>₹3,00,000+</span>
                   </div>
                   <input 
                     type="range" 
@@ -271,17 +275,16 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
               </p>
               
               <div className="flex items-center gap-4">
-                <div className="relative">
-                  <select 
+                <div className="relative min-w-[180px]">
+                  <CustomSelect 
+                    options={[
+                      { value: "Popular", label: "Sort by: Popular" },
+                      { value: "Price: Low to High", label: "Price: Low to High" },
+                      { value: "Price: High to Low", label: "Price: High to Low" },
+                    ]}
                     value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-white/50 border border-black/5 rounded-xl px-6 py-2 text-[10px] font-bold uppercase tracking-widest appearance-none pr-10 focus:outline-none cursor-pointer"
-                  >
-                    <option>Sort by: Popular</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
+                    onChange={(val) => setSortBy(val)}
+                  />
                 </div>
                 
                 <div className="flex bg-white/50 border border-black/5 rounded-xl p-1">

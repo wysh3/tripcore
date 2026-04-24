@@ -7,6 +7,8 @@ import { createEnquiry } from "@/app/actions/enquiry";
 import { getPackageFormContext } from "@/app/actions/get-package-context";
 import { toast } from "sonner";
 
+import { CustomSelect } from "../ui/CustomSelect";
+
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -45,8 +47,12 @@ export const BookingModal = ({ isOpen, onClose, defaultPackage }: BookingModalPr
     return () => { document.body.style.overflow = "unset"; };
   }, [isOpen, defaultPackage]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleValueChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -155,17 +161,14 @@ export const BookingModal = ({ isOpen, onClose, defaultPackage }: BookingModalPr
                   </div>
                 </div>
 
-                <div className="relative">
+                <div className="relative z-[50]">
                   <MapPin className={iconCls} />
-                  <select 
-                    name="destination" value={formData.destination} onChange={handleInputChange}
-                    className={`${inputCls} appearance-none bg-white`}
-                  >
-                    <option value="">Select a package or destination</option>
-                    {packages.map(p => (
-                      <option key={p.id} value={p.title}>{p.title}</option>
-                    ))}
-                  </select>
+                  <CustomSelect 
+                    options={packages.map(p => ({ value: p.title, label: p.title }))}
+                    value={formData.destination}
+                    onChange={(val) => handleValueChange("destination", val)}
+                    placeholder="Select a package or destination"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -186,17 +189,21 @@ export const BookingModal = ({ isOpen, onClose, defaultPackage }: BookingModalPr
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="relative">
+                  <div className="relative z-[40]">
                     <Users className={iconCls} />
-                    <select name="adults" value={formData.adults} onChange={handleInputChange} className={`${inputCls} appearance-none bg-white`}>
-                      {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} Adults</option>)}
-                    </select>
+                    <CustomSelect 
+                      options={[1,2,3,4,5,6].map(n => ({ value: n.toString(), label: `${n} Adults` }))}
+                      value={formData.adults}
+                      onChange={(val) => handleValueChange("adults", val)}
+                    />
                   </div>
-                  <div className="relative">
+                  <div className="relative z-[40]">
                     <Users className={iconCls} />
-                    <select name="children" value={formData.children} onChange={handleInputChange} className={`${inputCls} appearance-none bg-white`}>
-                      {[0,1,2,3,4].map(n => <option key={n} value={n}>{n} Children</option>)}
-                    </select>
+                    <CustomSelect 
+                      options={[0,1,2,3,4].map(n => ({ value: n.toString(), label: `${n} Children` }))}
+                      value={formData.children}
+                      onChange={(val) => handleValueChange("children", val)}
+                    />
                   </div>
                 </div>
 

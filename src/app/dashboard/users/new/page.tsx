@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { createUser } from "@/app/actions/user";
 import { toast } from "sonner";
 
+import { CustomSelect } from "@/components/ui/CustomSelect";
+
 export default function NewUserPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,6 +21,10 @@ export default function NewUserPage() {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleValueChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -103,16 +109,17 @@ export default function NewUserPage() {
 
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-900">System Role</label>
-            <select 
-              name="role" 
-              value={formData.role} 
-              onChange={handleInputChange} 
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 transition-all text-sm bg-white"
-            >
-              <option value="USER">User (Traveler)</option>
-              <option value="ADMIN">Admin (Staff)</option>
-              <option value="SUPERADMIN">Super Admin (Manager)</option>
-            </select>
+            <CustomSelect 
+              options={[
+                { value: "USER", label: "User (Traveler)" },
+                { value: "ADMIN", label: "Admin (Staff)" },
+                { value: "SUPERADMIN", label: "Super Admin (Manager)" },
+              ]}
+              value={formData.role}
+              onChange={(val) => handleValueChange("role", val)}
+              placeholder="Select Role"
+              className="!rounded-lg !py-2"
+            />
           </div>
         </form>
       </div>

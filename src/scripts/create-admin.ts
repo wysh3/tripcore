@@ -12,10 +12,15 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const email = "admin@tripcore.com";
-  const password = "password123";
+  const email = "admin@tripcore";
+  const password = process.env.ADMIN_PASSWORD;
+
+  if (!password) {
+    console.error("❌ ADMIN_PASSWORD not found in environment variables.");
+    process.exit(1);
+  }
   
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 12);
   
   const user = await prisma.user.upsert({
     where: { email },

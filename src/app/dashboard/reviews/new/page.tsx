@@ -9,6 +9,8 @@ import { createReview } from "@/app/actions/review";
 import { getReviewFormContext } from "@/app/actions/get-review-context";
 import { toast } from "sonner";
 
+import { CustomSelect } from "@/components/ui/CustomSelect";
+
 export default function NewReviewPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,6 +36,10 @@ export default function NewReviewPage() {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleValueChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -109,31 +115,26 @@ export default function NewReviewPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-900">Link to Package</label>
-              <select 
-                name="packageId" 
-                value={formData.packageId} 
-                onChange={handleInputChange} 
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 transition-all text-sm bg-white"
-              >
-                <option value="">None / All Packages</option>
-                {context.packages.map(p => (
-                  <option key={p.id} value={p.id}>{p.title}</option>
-                ))}
-              </select>
+              <CustomSelect 
+                options={[{ value: "", label: "None / All Packages" }, ...context.packages.map(p => ({ value: p.id, label: p.title }))]}
+                value={formData.packageId}
+                onChange={(val) => handleValueChange("packageId", val)}
+                placeholder="Select Package"
+                className="!rounded-lg !py-2"
+              />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-900">Link to Destination</label>
-              <select 
-                name="destinationId" 
-                value={formData.destinationId} 
-                onChange={handleInputChange} 
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 transition-all text-sm bg-white"
-              >
-                <option value="">None / All Destinations</option>
-                {context.destinations.map(d => (
-                  <option key={d.id} value={d.id}>{d.city ? `${d.city}, ${d.country}` : d.country}</option>
-                ))}
-              </select>
+              <CustomSelect 
+                options={[{ value: "", label: "None / All Destinations" }, ...context.destinations.map(d => ({ 
+                  value: d.id, 
+                  label: d.city ? `${d.city}, ${d.country}` : d.country 
+                }))]}
+                value={formData.destinationId}
+                onChange={(val) => handleValueChange("destinationId", val)}
+                placeholder="Select Destination"
+                className="!rounded-lg !py-2"
+              />
             </div>
           </div>
 

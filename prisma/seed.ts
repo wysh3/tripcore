@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
+import bcrypt from "bcryptjs";
+
 const connectionString = process.env.DATABASE_URL!;
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
@@ -16,6 +18,21 @@ async function main() {
   await prisma.review.deleteMany({});
   await prisma.homepageSetting.deleteMany({});
   await prisma.sale.deleteMany({});
+  // 1.5 Create Admin User
+  const rawAdminPassword = process.env.ADMIN_PASSWORD;
+  if (!rawAdminPassword) {
+    console.error("❌ ADMIN_PASSWORD not found in environment variables. Seeding aborted for security.");
+    process.exit(1);
+  }
+  const adminPassword = await bcrypt.hash(rawAdminPassword, 12);
+  await prisma.user.create({
+    data: {
+      email: 'admin@tripcore',
+      password: adminPassword,
+      name: 'Admin',
+      role: 'ADMIN'
+    }
+  });
 
   // 2. Destinations
   const destJaipur = await prisma.destination.create({

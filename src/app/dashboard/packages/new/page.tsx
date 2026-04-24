@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { createPackage } from "@/app/actions/package";
 import { getPackageFormContext } from "@/app/actions/get-package-context";
 import { toast } from "sonner";
+import { CustomSelect } from "@/components/ui/CustomSelect";
 
 const TOUR_TYPE_OPTIONS = [
   "Group Tour",
@@ -16,7 +17,6 @@ const TOUR_TYPE_OPTIONS = [
   "Family Tour",
   "Honeymoon Tour",
   "Adventure Tour",
-  "Cultural Tour",
   "Luxury Tour",
 ];
 
@@ -53,13 +53,17 @@ export default function NewPackagePage() {
     loadContext();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const target = e.target as HTMLInputElement;
     const { name, value, type } = target;
     setFormData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? target.checked : value
     }));
+  };
+
+  const handleValueChange = (name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const toggleTourType = (type: string) => {
@@ -192,18 +196,16 @@ export default function NewPackagePage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className={labelCls}>Destination</label>
-                  <select name="destination" value={formData.destination} onChange={handleInputChange} className={`${inputCls} bg-white`}>
-                    <option value="">Select Destination</option>
-                    {destinations.length === 0 ? (
-                      <option disabled>No destinations yet — add one first</option>
-                    ) : (
-                      destinations.map(d => (
-                        <option key={d.id} value={d.city ? `${d.city}, ${d.country}` : d.country}>
-                          {d.city ? `${d.city}, ${d.country}` : d.country}
-                        </option>
-                      ))
-                    )}
-                  </select>
+                  <CustomSelect 
+                    options={destinations.map(d => ({ 
+                      value: d.city ? `${d.city}, ${d.country}` : d.country, 
+                      label: d.city ? `${d.city}, ${d.country}` : d.country 
+                    }))}
+                    value={formData.destination}
+                    onChange={(val) => handleValueChange("destination", val)}
+                    placeholder="Select Destination"
+                    className="!rounded-lg !py-2"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className={labelCls}>Duration (Days) <span className="text-red-500">*</span></label>
@@ -249,15 +251,20 @@ export default function NewPackagePage() {
                 </div>
                 <div className="space-y-2">
                   <label className={labelCls}>Tour Category</label>
-                  <select name="tourCategory" value={formData.tourCategory} onChange={handleInputChange} className={`${inputCls} bg-white`}>
-                    <option value="">Select Category</option>
-                    <option value="Luxury">Luxury</option>
-                    <option value="Adventure">Adventure</option>
-                    <option value="Cultural">Cultural</option>
-                    <option value="Honeymoon">Honeymoon</option>
-                    <option value="Family">Family</option>
-                    <option value="Budget">Budget</option>
-                  </select>
+                  <CustomSelect 
+                    options={[
+                      { value: "Luxury", label: "Luxury" },
+                      { value: "Adventure", label: "Adventure" },
+                      { value: "Cultural", label: "Cultural" },
+                      { value: "Honeymoon", label: "Honeymoon" },
+                      { value: "Family", label: "Family" },
+                      { value: "Budget", label: "Budget" },
+                    ]}
+                    value={formData.tourCategory}
+                    onChange={(val) => handleValueChange("tourCategory", val)}
+                    placeholder="Select Category"
+                    className="!rounded-lg !py-2"
+                  />
                 </div>
               </div>
 
@@ -513,11 +520,17 @@ export default function NewPackagePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className={labelCls}>Departure Type</label>
-                  <select name="departureType" value={formData.departureType} onChange={handleInputChange} className={`${inputCls} bg-white`}>
-                    <option value="fixed">Fixed Dates</option>
-                    <option value="daily">Daily Departures</option>
-                    <option value="weekly">Weekly Departures</option>
-                  </select>
+                  <CustomSelect 
+                    options={[
+                      { value: "fixed", label: "Fixed Dates" },
+                      { value: "daily", label: "Daily Departures" },
+                      { value: "weekly", label: "Weekly Departures" },
+                    ]}
+                    value={formData.departureType}
+                    onChange={(val) => handleValueChange("departureType", val)}
+                    placeholder="Select Type"
+                    className="!rounded-lg !py-2"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className={labelCls}>Departure Points</label>

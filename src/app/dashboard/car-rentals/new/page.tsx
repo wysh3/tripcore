@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { createCarRental } from "@/app/actions/car-rental";
 import { toast } from "sonner";
 
+import { CustomSelect } from "@/components/ui/CustomSelect";
+
 export default function NewCarRentalPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,6 +29,10 @@ export default function NewCarRentalPage() {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleValueChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -126,28 +132,46 @@ export default function NewCarRentalPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="space-y-1">
                 <label className="text-xs font-semibold text-gray-500 uppercase">Car Type</label>
-                <select name="carType" value={formData.carType} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white outline-none">
-                  <option>Sedan</option>
-                  <option>SUV / Innova</option>
-                  <option>Tempo Traveller</option>
-                  <option>Luxury Car</option>
-                </select>
+                <CustomSelect 
+                  options={[
+                    { value: "Sedan", label: "Sedan" },
+                    { value: "SUV / Innova", label: "SUV / Innova" },
+                    { value: "Tempo Traveller", label: "Tempo Traveller" },
+                    { value: "Luxury Car", label: "Luxury Car" },
+                  ]}
+                  value={formData.carType}
+                  onChange={(val) => handleValueChange("carType", val)}
+                  placeholder="Select Car"
+                  className="!rounded-lg !py-2"
+                />
               </div>
               <div className="space-y-1">
                 <label className="text-xs font-semibold text-gray-500 uppercase">Driver Language</label>
-                <select name="driverLang" value={formData.driverLang} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white outline-none">
-                  <option>English</option>
-                  <option>Spanish</option>
-                  <option>Hindi</option>
-                </select>
+                <CustomSelect 
+                  options={[
+                    { value: "English", label: "English" },
+                    { value: "Spanish", label: "Spanish" },
+                    { value: "Hindi", label: "Hindi" },
+                  ]}
+                  value={formData.driverLang}
+                  onChange={(val) => handleValueChange("driverLang", val)}
+                  placeholder="Select Lang"
+                  className="!rounded-lg !py-2"
+                />
               </div>
               <div className="space-y-1">
                 <label className="text-xs font-semibold text-gray-500 uppercase">Trip Type</label>
-                <select name="tripType" value={formData.tripType} onChange={handleInputChange} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white outline-none">
-                  <option>One Way</option>
-                  <option>Round Trip</option>
-                  <option>Multi-City Tour</option>
-                </select>
+                <CustomSelect 
+                  options={[
+                    { value: "One Way", label: "One Way" },
+                    { value: "Round Trip", label: "Round Trip" },
+                    { value: "Multi-City Tour", label: "Multi-City Tour" },
+                  ]}
+                  value={formData.tripType}
+                  onChange={(val) => handleValueChange("tripType", val)}
+                  placeholder="Select Type"
+                  className="!rounded-lg !py-2"
+                />
               </div>
               <div className="flex gap-4">
                 <div className="space-y-1 flex-1">

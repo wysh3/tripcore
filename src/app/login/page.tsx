@@ -4,13 +4,14 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Lock, Mail, ArrowRight, Loader2 } from "lucide-react";
+import { Lock, Mail, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,11 +20,17 @@ export default function LoginPage() {
     setError("");
 
     try {
-      await signIn("credentials", {
+      const res = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/dashboard",
+        redirect: false,
       });
+
+      if (res?.error) {
+        setError("Invalid credentials");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err) {
       setError("An unexpected error occurred");
     } finally {
@@ -52,15 +59,15 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-gray-900 uppercase tracking-widest pl-4">Email Address</label>
+              <label className="text-[10px] font-bold text-gray-900 uppercase tracking-widest pl-4">Login ID</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input 
-                  type="email"
+                  type="text"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@tripcore.com"
+                  placeholder="admin@tripcore"
                   className="w-full bg-gray-50 border border-black/5 rounded-2xl py-4 pl-12 pr-6 text-sm focus:outline-none focus:border-black/20 transition-colors"
                 />
               </div>
@@ -71,13 +78,20 @@ export default function LoginPage() {
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input 
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-gray-50 border border-black/5 rounded-2xl py-4 pl-12 pr-6 text-sm focus:outline-none focus:border-black/20 transition-colors"
+                  className="w-full bg-gray-50 border border-black/5 rounded-2xl py-4 pl-12 pr-12 text-sm focus:outline-none focus:border-black/20 transition-colors"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 

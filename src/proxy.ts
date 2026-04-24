@@ -16,7 +16,6 @@ export const proxy = auth((req) => {
     
     // If authenticated but not admin, redirect to home
     if (!isAdmin) {
-      console.log("Access denied for role:", user?.role);
       return NextResponse.redirect(new URL("/", req.url));
     }
   }

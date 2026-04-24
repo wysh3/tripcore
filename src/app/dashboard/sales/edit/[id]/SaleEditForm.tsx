@@ -17,6 +17,8 @@ interface SaleEditFormProps {
   };
 }
 
+import { CustomSelect } from "@/components/ui/CustomSelect";
+
 export default function SaleEditForm({ sale }: SaleEditFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,6 +31,10 @@ export default function SaleEditForm({ sale }: SaleEditFormProps) {
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleValueChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -138,15 +144,16 @@ export default function SaleEditForm({ sale }: SaleEditFormProps) {
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-900">Status</label>
-              <select 
-                name="isActive" 
-                value={formData.isActive} 
-                onChange={handleInputChange} 
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/10 focus:border-gray-900 transition-all text-sm bg-white"
-              >
-                <option value="true">Active (Published)</option>
-                <option value="false">Draft (Hidden)</option>
-              </select>
+              <CustomSelect 
+                options={[
+                  { value: "true", label: "Active (Published)" },
+                  { value: "false", label: "Draft (Hidden)" },
+                ]}
+                value={formData.isActive}
+                onChange={(val) => handleValueChange("isActive", val)}
+                placeholder="Select Status"
+                className="!rounded-lg !py-2"
+              />
             </div>
           </div>
         </form>
