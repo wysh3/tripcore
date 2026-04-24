@@ -5,16 +5,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "@/lib/gsapConfig";
 
 export const Preloader = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const hasShown = sessionStorage.getItem("preloader-shown");
+    if (hasShown) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {
           setIsLoading(false);
-          // Unlock scroll
+          sessionStorage.setItem("preloader-shown", "true");
           document.body.style.overflow = "unset";
         }
       });
@@ -26,25 +34,36 @@ export const Preloader = () => {
         letterSpacing: "0.2em"
       });
 
+      // Enter Animation
       tl.to(logoRef.current, {
         opacity: 1,
         scale: 1,
-        letterSpacing: "0.5em",
-        duration: 1.2,
-        ease: "power2.out"
-      })
-      .to(logoRef.current, {
-        opacity: 0,
-        scale: 1.05,
-        duration: 0.6,
-        ease: "power2.inOut",
-        delay: 0.2
-      })
-      .to(containerRef.current, {
-        opacity: 0,
+        letterSpacing: "0.4em",
         duration: 0.8,
-        ease: "power3.inOut"
-      }, "-=0.1");
+        ease: "power2.out"
+      });
+
+      // WAIT FOR LOAD: If page is already loaded, proceed. Otherwise, wait for 'load' event.
+      const proceed = () => {
+        tl.to(logoRef.current, {
+          opacity: 0,
+          scale: 1.02,
+          duration: 0.5,
+          ease: "power2.inOut",
+          delay: 0.1
+        })
+        .to(containerRef.current, {
+          opacity: 0,
+          duration: 0.6,
+          ease: "power3.inOut"
+        }, "-=0.1");
+      };
+
+      if (document.readyState === "complete") {
+        proceed();
+      } else {
+        window.addEventListener("load", proceed, { once: true });
+      }
     });
 
     return () => ctx.revert();

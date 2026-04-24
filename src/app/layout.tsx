@@ -6,7 +6,6 @@ import { CustomScrollbar } from "@/components/ui/CustomScrollbar";
 import { Preloader } from "@/components/ui/Preloader";
 import { MobileNavbar } from "@/components/sections/MobileNavbar";
 import { Navbar } from "@/components/sections/Navbar";
-import { TransitionProvider } from "@/components/providers/TransitionProvider";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -54,9 +53,7 @@ export default function RootLayout({
           <Preloader />
           <CustomScrollbar />
           <Navbar />
-          <TransitionProvider>
-            {children}
-          </TransitionProvider>
+          {children}
           <MobileNavbar />
         </Providers>
       </body>
