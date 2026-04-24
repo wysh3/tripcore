@@ -53,7 +53,6 @@ export default async function Home() {
 
   return (
     <main className="relative">
-      <Navbar />
       <Hero backgroundImage={settings.hero_bg} />
       <AboutUs bannerImage={settings.feature_banner} />
       <TopPackages packages={packages} />

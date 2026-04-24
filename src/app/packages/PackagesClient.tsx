@@ -15,7 +15,9 @@ import {
   List,
   History,
   Crown,
-  Plane
+  Plane,
+  Search,
+  X
 } from "lucide-react";
 
 interface Package {
@@ -40,6 +42,8 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
   const [priceRange, setPriceRange] = useState(3000);
   const [viewType, setViewType] = useState<"grid" | "list">("grid");
   const [selectedDestination, setSelectedDestination] = useState<string>("All Destinations");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("Popular");
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
@@ -50,12 +54,27 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
     }
   }, [searchParams]);
 
-  const filteredPackages = packages.filter(pkg => {
-    const matchesPrice = pkg.sellingPrice <= (priceRange * 100); // Assuming range is up to 300k
-    const matchesDest = selectedDestination === "All Destinations" || 
-                        pkg.destination?.toLowerCase().includes(selectedDestination.toLowerCase());
-    return matchesPrice && matchesDest;
-  });
+  const filteredPackages = packages
+    .filter(pkg => {
+      const matchesPrice = pkg.sellingPrice <= (priceRange * 100);
+      const matchesDest = selectedDestination === "All Destinations" || 
+                          pkg.destination?.toLowerCase().includes(selectedDestination.toLowerCase());
+      const matchesSearch = pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            pkg.destination?.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesPrice && matchesDest && matchesSearch;
+    })
+    .sort((a, b) => {
+      if (sortBy === "Price: Low to High") return a.sellingPrice - b.sellingPrice;
+      if (sortBy === "Price: High to Low") return b.sellingPrice - a.sellingPrice;
+      return 0; // Popular (Default)
+    });
+
+  const clearFilters = () => {
+    setPriceRange(3000);
+    setSelectedDestination("All Destinations");
+    setSearchTerm("");
+    setSortBy("Popular");
+  };
 
   return (
     <main className="bg-[#f5f2ed] min-h-screen font-sans selection:bg-black selection:text-white">
@@ -138,9 +157,34 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
             <div className="bg-white/60 backdrop-blur-xl border border-white p-8 rounded-3xl sticky top-32 space-y-8">
               <div className="flex justify-between items-center border-b border-black/5 pb-4">
                 <h2 className="text-base font-serif text-gray-900">Filter Packages</h2>
-                <button className="text-[10px] text-gray-400 uppercase tracking-wider font-bold hover:text-black transition-colors">
+                <button 
+                  onClick={clearFilters}
+                  className="text-[10px] text-gray-400 uppercase tracking-wider font-bold hover:text-black transition-colors"
+                >
                   Clear All
                 </button>
+              </div>
+
+              {/* Search Bar */}
+              <div className="space-y-3">
+                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider">Search</label>
+                <div className="relative">
+                  <input 
+                    type="text"
+                    placeholder="Search destinations..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full bg-transparent border border-black/10 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-black/30 pr-10"
+                  />
+                  {searchTerm ? (
+                    <X 
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-black" 
+                      onClick={() => setSearchTerm("")}
+                    />
+                  ) : (
+                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+                  )}
+                </div>
               </div>
 
               {/* Destination Dropdown */}
@@ -226,12 +270,16 @@ export default function PackagesClient({ packages, destinations }: PackagesClien
               
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <select className="bg-white/50 border border-black/5 rounded-xl px-6 py-2 text-[10px] font-bold uppercase tracking-widest appearance-none pr-10 focus:outline-none">
+                  <select 
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="bg-white/50 border border-black/5 rounded-xl px-6 py-2 text-[10px] font-bold uppercase tracking-widest appearance-none pr-10 focus:outline-none cursor-pointer"
+                  >
                     <option>Sort by: Popular</option>
                     <option>Price: Low to High</option>
                     <option>Price: High to Low</option>
                   </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400" />
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" />
                 </div>
                 
                 <div className="flex bg-white/50 border border-black/5 rounded-xl p-1">

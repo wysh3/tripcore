@@ -66,7 +66,7 @@ export const Preloader = () => {
           <div className="relative flex flex-col items-center">
             <div 
               ref={logoRef}
-              className="text-white text-4xl md:text-6xl font-serif tracking-[0.5em] font-light text-center"
+              className="text-white text-4xl md:text-6xl font-serif tracking-[0.5em] font-light text-center opacity-0"
             >
               TRIPCORE
             </div>

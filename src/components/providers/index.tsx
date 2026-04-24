@@ -11,9 +11,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       <CanvasContainer />
       <MagneticCursor />
       <div className="relative z-10">
-        <TransitionProvider>
-          {children}
-        </TransitionProvider>
+        {children}
       </div>
     </SmoothScrollProvider>
   );

@@ -17,7 +17,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   // Auto-determine variant based on route
-  const isDarkPageRoute = pathname.startsWith("/packages") || pathname.startsWith("/services") || pathname.startsWith("/dashboard");
+  const isDarkPageRoute = pathname?.startsWith("/packages") || pathname?.startsWith("/services") || pathname?.startsWith("/dashboard");
   const isDark = isDarkPageRoute || isScrolled;
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const Navbar = ({ variant }: NavbarProps) => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 1, ease: [0.32, 0.72, 0, 1] }}
-        className="fixed top-0 left-0 right-0 z-[100] flex justify-center pointer-events-none"
+        className="fixed top-0 left-0 right-0 z-[100] hidden lg:flex justify-center pointer-events-none"
       >
         <div 
           className={`
