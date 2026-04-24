@@ -31,7 +31,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "TripCore",
-  description: "A hyper-fluid, WebGL-enhanced journey through the world's most exclusive destinations.",
+  description: "Curated travel experiences and bespoke journeys through the world's most exclusive destinations.",
   icons: {
     icon: [
       {
