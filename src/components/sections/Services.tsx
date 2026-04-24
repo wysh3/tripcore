@@ -9,31 +9,31 @@ const SERVICES = [
   {
     id: "01",
     title: "Domestic & International Tours",
-    image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1886&auto=format&fit=crop",
+    image: "/images/service-1.png",
     icon: Map,
   },
   {
     id: "02",
     title: "Hotel & Flight Bookings",
-    image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/service-2.png",
     icon: Plane,
   },
   {
     id: "03",
     title: "Visa Assistance",
-    image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/service-3.png",
     icon: Calendar,
   },
   {
     id: "04",
     title: "Leisure Packages (Family, Honeymoon, Group/Bachelor)",
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop",
+    image: "/images/service-4.png",
     icon: Heart,
   },
   {
     id: "05",
     title: "Corporate Travel",
-    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=1965&auto=format&fit=crop",
+    image: "/images/service-5.png",
     icon: Briefcase,
   },
 ];

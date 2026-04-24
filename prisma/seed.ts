@@ -24,7 +24,7 @@ async function main() {
       city: "Jaipur",
       region: "Rajasthan",
       description: "The Pink City, known for its royal palaces and majestic forts.",
-      image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/dest-jaipur.png",
     },
   });
 
@@ -34,7 +34,7 @@ async function main() {
       city: "Male",
       region: "Indian Ocean",
       description: "A tropical haven of white sand beaches and crystal clear waters.",
-      image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?q=80&w=1965&auto=format&fit=crop",
+      image: "/images/dest-maldives.png",
     },
   });
 
@@ -43,7 +43,7 @@ async function main() {
       country: "Italy",
       region: "Tuscany",
       description: "Rolling hills, world-class wine, and Renaissance art.",
-      image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1886&auto=format&fit=crop",
+      image: "/images/pkg-tuscany.png",
     },
   });
 
@@ -52,7 +52,7 @@ async function main() {
       country: "Switzerland",
       region: "Alps",
       description: "Breathtaking mountain peaks, serene lakes, and luxury resorts.",
-      image: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?q=80&w=1965&auto=format&fit=crop",
+      image: "/images/pkg-swiss.png",
     },
   });
 
@@ -62,7 +62,7 @@ async function main() {
       city: "Positano",
       region: "Amalfi Coast",
       description: "Cliffside villages overlooking the sparkling Mediterranean Sea.",
-      image: "https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/pkg-amalfi.png",
     },
   });
 
@@ -72,7 +72,7 @@ async function main() {
       city: "Leh",
       region: "Ladakh",
       description: "High-altitude desert landscapes and ancient Buddhist monasteries.",
-      image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/pkg-himalayas.png",
     },
   });
 
@@ -85,7 +85,7 @@ async function main() {
       durationDays: 7,
       maxPersons: 12,
       tourCategory: "Luxury",
-      mainImage: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop",
+      mainImage: "/images/pkg-rajasthan.png",
       shortDescription: "Experience the grandeur of Rajasthan with stays in authentic royal palaces.",
       highlights: "Stay in heritage hotels\nPrivate guided tours of forts\nExclusive desert safari",
       sellingPrice: 125000,
@@ -98,7 +98,7 @@ async function main() {
         { title: "Arrival in Jaipur", duration: "Day 1", description: "Welcome to the Pink City." },
         { title: "Palace Tour", duration: "Day 2", description: "Explore the Amber Fort and City Palace." },
       ],
-      galleryImages: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop",
+      galleryImages: "/images/pkg-rajasthan.png",
     },
   });
 
@@ -110,7 +110,7 @@ async function main() {
       durationDays: 5,
       maxPersons: 8,
       tourCategory: "Honeymoon",
-      mainImage: "https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop",
+      mainImage: "/images/pkg-amalfi.png",
       shortDescription: "A romantic getaway along the stunning cliffs of the Amalfi Coast.",
       sellingPrice: 280000,
       isCustomizable: true,
@@ -126,7 +126,7 @@ async function main() {
       durationDays: 8,
       maxPersons: 10,
       tourCategory: "Leisure",
-      mainImage: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1886&auto=format&fit=crop",
+      mainImage: "/images/pkg-tuscany.png",
       shortDescription: "Relax in a private villa surrounded by vineyards and olive groves.",
       sellingPrice: 320000,
       bestPriceGuarantee: true,
@@ -141,7 +141,7 @@ async function main() {
       durationDays: 10,
       maxPersons: 15,
       tourCategory: "Adventure",
-      mainImage: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070&auto=format&fit=crop",
+      mainImage: "/images/pkg-himalayas.png",
       shortDescription: "A thrilling journey through the rugged terrains of Ladakh.",
       sellingPrice: 85000,
       isCustomizable: false,
@@ -157,7 +157,7 @@ async function main() {
       durationDays: 6,
       maxPersons: 2,
       tourCategory: "Honeymoon",
-      mainImage: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?q=80&w=1965&auto=format&fit=crop",
+      mainImage: "/images/pkg-maldives.png",
       shortDescription: "Wake up to the sound of the ocean in your private overwater villa.",
       sellingPrice: 450000,
       flightsIncluded: true,
@@ -173,7 +173,7 @@ async function main() {
       durationDays: 7,
       maxPersons: 6,
       tourCategory: "Luxury",
-      mainImage: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?q=80&w=1965&auto=format&fit=crop",
+      mainImage: "/images/pkg-swiss.png",
       shortDescription: "Experience world-class skiing and luxury alpine resorts.",
       sellingPrice: 380000,
       isCustomizable: true,
@@ -232,18 +232,31 @@ async function main() {
       name: "Summer European Elegance",
       slug: "summer-europe",
       description: "Exclusive access to our curated European itineraries with complimentary flight upgrades and private transfers for bookings made this month.",
-      heroImage: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=1886&auto=format&fit=crop",
+      heroImage: "/images/pkg-amalfi.png",
       isActive: true,
     },
   });
 
   // 6. Homepage Settings
+  // Note: We are preserving the existing hero_bg to honor user request, 
+  // but updating feature_banner to our new serene visual.
   await prisma.homepageSetting.create({
     data: {
-      key: 'hero_bg',
-      value: 'https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop'
+      key: 'feature_banner',
+      value: '/images/about-feature.png'
     }
   });
+
+  // We only create hero_bg if it doesn't exist, to avoid overwriting user's preferred hero
+  const existingHero = await prisma.homepageSetting.findFirst({ where: { key: 'hero_bg' } });
+  if (!existingHero) {
+    await prisma.homepageSetting.create({
+      data: {
+        key: 'hero_bg',
+        value: 'https://images.unsplash.com/photo-1633321088355-d0f81134ca3b?q=80&w=2070&auto=format&fit=crop'
+      }
+    });
+  }
 
   console.log("Database restored and seeded successfully!");
 }

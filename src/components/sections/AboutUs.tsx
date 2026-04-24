@@ -120,7 +120,7 @@ export const AboutUs = ({ bannerImage }: AboutUsProps) => {
             >
               <Image
                 ref={innerImageRef}
-                src={bannerImage || "/images/rajasthan.png"}
+                src={bannerImage || "/images/about-feature.png"}
                 alt="Architectural Detail"
                 fill
                 className="object-cover brightness-[0.85] contrast-[1.15] origin-center"

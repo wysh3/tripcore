@@ -85,7 +85,7 @@ export default function EnquiryPage() {
                   style={{ clipPath: "url(#blob-mask-contact)", transform: "translateZ(0) scale(1.1)" }}
                 >
                   <img 
-                    src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80" 
+                    src="/images/enquiry-hero.png" 
                     alt="" 
                     className="w-full h-full object-cover scale-110"
                   />
@@ -275,7 +275,7 @@ export default function EnquiryPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 items-center gap-16">
             <div className="hidden lg:block h-64 rounded-[3rem] overflow-hidden shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform">
-              <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80" alt="" className="w-full h-full object-cover" />
+              <img src="/images/enquiry-hero.png" alt="" className="w-full h-full object-cover" />
             </div>
 
             <div className="text-center space-y-8">
@@ -295,7 +295,7 @@ export default function EnquiryPage() {
             </div>
 
             <div className="hidden lg:block h-64 rounded-[3rem] overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform">
-              <img src="https://images.unsplash.com/photo-1530789253516-ad160829c9ad?auto=format&fit=crop&q=80" alt="" className="w-full h-full object-cover" />
+              <img src="/images/enquiry-cta.png" alt="" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
