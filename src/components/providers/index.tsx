@@ -2,7 +2,6 @@
 
 import { SmoothScrollProvider } from "./SmoothScrollProvider";
 import { MagneticCursor } from "../ui/MagneticCursor";
-import { TransitionProvider } from "./TransitionProvider";
 import { SessionProvider } from "next-auth/react";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
